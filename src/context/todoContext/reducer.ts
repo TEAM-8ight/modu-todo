@@ -1,9 +1,9 @@
 import { LSHelper } from 'utils';
 import { CREATE, REMOVE, LOAD, UPDATE } from './actionTypes';
-import { IState, Action, CreateTodoDto} from 'types/context';
+import { IState, Action } from 'types/context';
 import { ITodo, TPriority, TStatus } from 'types/todo';
 import { TODOS } from 'utils/contants';
-import { ITodos } from 'types';
+import { ITodos, TCategory } from 'types';
 
 export default function reducer(state: IState, action: Action): IState {
   const { type, payload } = action;
@@ -46,14 +46,18 @@ const updateTodos = (payload: { id: number }, prevTodos: ITodos) => {
 const removeTodo = (payload: {id: number }, prevTodos: ITodos) => 
   prevTodos.filter((todo: ITodo) => todo.id !== payload.id);
 
-const createTodo = (nextId: number, createTodoDto: CreateTodoDto): ITodo => {
-  const { text, due, category } = createTodoDto;
+const createTodo = (
+  nextId: number,
+  payload: {text: string, due: Date, category: TCategory}
+):ITodo => {
+  const { text, due, category } = payload;
+  const current = new Date();
   const newTodo: ITodo  = {
     id: nextId,
     text,
     status: TStatus.NOT_STARTED,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: current,
+    updatedAt: current,
     due,
     category,
     priority: TPriority.MIDDLE,
