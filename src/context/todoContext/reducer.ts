@@ -24,8 +24,7 @@ export default function reducer(state: IState, action: Action): IState {
 
 const loadTodos = (): IState => {
   const todos = LSHelper.getItem(TODOS) || [];
-  if (todos.length === 0) { return { todos, nextId: 0 }}
-  const nextId = Math.max(...todos.map((todo: ITodo) => todo.id)) + 1;
+  const nextId = todos.length ? Math.max(...todos.map((todo: ITodo) => todo.id)) + 1 : 0
   return { todos,  nextId: nextId};
 }
 
