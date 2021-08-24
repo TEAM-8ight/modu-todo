@@ -1,5 +1,5 @@
 import { LSHelper } from 'utils';
-import { CREATE, DELETE, LOAD } from './actionTypes';
+import { CREATE, REMOVE, LOAD } from './actionTypes';
 import { IState, Action, CreateTodoDto} from 'types/context';
 import { ITodo, TPriority, TStatus } from 'types/todo';
 import { TODOS } from 'utils/contants';
@@ -15,8 +15,9 @@ export default function reducer(state: IState, action: Action): IState {
         todos : state.todos.concat(newTodo),
         nextId: newTodo.id + 1,
       }
-    case DELETE:
-      return { ...state };
+    case REMOVE:
+      const todos = state.todos.filter((todo) => todo.id !== payload );
+      return { ...state, todos };
     default:
       return { ...state };
   }

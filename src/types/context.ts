@@ -13,6 +13,6 @@ export interface IState {
 
 export type Action =
   | { type: 'CREATE'; payload: CreateTodoDto }
-  | { type: 'DELETE'; payload: any }
+  | { type: 'REMOVE'; payload: any }
   | { type: 'UPDATE'; payload: any }
   | { type: 'LOAD'; payload?: {} };
