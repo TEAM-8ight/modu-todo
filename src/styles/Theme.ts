@@ -10,7 +10,7 @@ export const Theme = {
     indigo: '#7180FE',
     white: '#FFFFFF',
     black: '#2D2D2D',
-    lightGray: '#FAFAFA',
+    lightGray: '#F9F9F9',
     gray: '#4B4B4B',
     darkGray: '#3B3B3B',
   },
