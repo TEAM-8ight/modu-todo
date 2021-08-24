@@ -8,7 +8,7 @@ export const create = (createTodoDto: CreateTodoDto): Action => {
 
 export const load = (): Action => ({type: LOAD})
 
-export const remove = (id: number): Action => ({type: REMOVE, payload: id})
+export const remove = (payload: {}): Action => ({ type: REMOVE, payload })
 
 export const update = (payload: {}): Action => {
   return {

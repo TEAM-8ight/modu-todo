@@ -43,8 +43,8 @@ const updateTodos = (payload: { id: number }, prevTodos: ITodos) => {
   })
 }
 
-const removeTodo = (id: number, prevTodos: ITodos) => 
-  prevTodos.filter((todo: ITodo) => todo.id !== id);
+const removeTodo = (payload: {id: number }, prevTodos: ITodos) => 
+  prevTodos.filter((todo: ITodo) => todo.id !== payload.id);
 
 const createTodo = (nextId: number, createTodoDto: CreateTodoDto): ITodo => {
   const { text, due, category } = createTodoDto;
