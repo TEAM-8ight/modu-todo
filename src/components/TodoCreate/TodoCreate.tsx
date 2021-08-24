@@ -73,6 +73,7 @@ const Wrapper = styled.div`
   background-color: ${(props) => props.theme.color.lightGray};
   border-radius: 5px;
   text-align: center;
+  cursor: pointer;
 `;
 
 const Button = styled.button`
