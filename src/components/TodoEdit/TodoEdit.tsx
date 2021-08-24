@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ITodo, TCategory, TPriority } from 'types';
+import { useTodosDispatch } from 'context/todoContext/TodoContext';
+import { update } from 'context/todoContext/actionCreators';
 
 interface TodoEditProps {
   todo: ITodo;
@@ -8,6 +10,7 @@ interface TodoEditProps {
 }
 
 const TodoEdit: React.FC<TodoEditProps> = ({ todo, closeModal }: TodoEditProps) => {
+  const dispatch = useTodosDispatch();
   const [todoTask, setTodoTask] = useState<ITodo>(todo);
 
   const changeTask = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,25 +27,26 @@ const TodoEdit: React.FC<TodoEditProps> = ({ todo, closeModal }: TodoEditProps) 
     const enumProperty: { [index: string]: any } = enumType;
     return (
       <div>
-        {Object.keys(enumType)
-          .filter((item) => item !== 'DEFAULT')
-          .map((item, index) => (
-            <label key={index}>
-              <input
-                type="radio"
-                name={name}
-                value={enumProperty[item]}
-                checked={enumProperty[item] === taskProperty[name]}
-                onChange={changeTask}
-              />
-              {enumProperty[item]}
-            </label>
-          ))}
+        {Object.keys(enumType).map((item, index) => (
+          <label key={index}>
+            <input
+              type="radio"
+              name={name}
+              value={enumProperty[item]}
+              checked={enumProperty[item] === taskProperty[name]}
+              onChange={changeTask}
+            />
+            {enumProperty[item]}
+          </label>
+        ))}
       </div>
     );
   };
 
-  const updateTask = () => {};
+  const updateTask = () => {
+    dispatch(update(todoTask));
+    closeModal();
+  };
 
   if (!todoTask) return null;
 
@@ -50,7 +54,7 @@ const TodoEdit: React.FC<TodoEditProps> = ({ todo, closeModal }: TodoEditProps) 
     <Wrapper>
       <div>
         <div>{todo.status}</div>
-        <input name="taskName" value={todoTask.text} onChange={changeTask} />
+        <input name="text" value={todoTask.text} onChange={changeTask} />
         <div>{changeFormatDate(todoTask.createdAt)}</div>
         <div>{changeFormatDate(todoTask.updatedAt)}</div>
         <div>{changeFormatDate(todoTask.due)}</div>
