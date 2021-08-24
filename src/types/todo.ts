@@ -4,7 +4,7 @@ export interface ITodo {
   status: TStatus;
   createdAt: Date | null;
   updatedAt: Date | null;
-  due: Date | null;
+  due: Date;
   category: TCategory;
   priority: TPriority;
 }

@@ -2,7 +2,7 @@ import { TCategory, ITodos } from "./todo";
 
 export interface CreateTodoDto {
   text:string,
-  due: Date | null,
+  due: Date,
   category: TCategory,
 }
 
