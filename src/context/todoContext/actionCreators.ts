@@ -1,4 +1,4 @@
-import { CREATE, LOAD, REMOVE, UPDATE } from "./actionTypes";
+import { CREATE, LOAD, REMOVE, SWAP, UPDATE } from "./actionTypes";
 import { Action } from "types/context";
 import { TCategory } from 'types';
 
@@ -18,3 +18,10 @@ export const update = (payload: {}): Action => {
     payload
   }
 };
+
+export const swap = (payload: {}): Action => {
+  return {
+    type: SWAP,
+    payload
+  }
+}

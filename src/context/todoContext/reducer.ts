@@ -1,5 +1,5 @@
 import { LSHelper } from 'utils';
-import { CREATE, REMOVE, LOAD, UPDATE } from './actionTypes';
+import { CREATE, REMOVE, LOAD, UPDATE, SWAP } from './actionTypes';
 import { IState, Action } from 'types/context';
 import { ITodo, TPriority, TStatus } from 'types/todo';
 import { TODOS } from 'utils/contants';
@@ -20,9 +20,22 @@ export default function reducer(state: IState, action: Action): IState {
       return { ...state, todos: updateTodos(payload, state.todos) }
     case REMOVE:
       return { ...state, todos: removeTodo(payload, state.todos)};
+    case SWAP:
+      return { ...state, todos: swapTodos(payload, state.todos)}
     default:
       return { ...state };
   }
+}
+
+const swapTodos = (payload: { first: number, second: number}, prevTodos: ITodos) => {
+  const { first, second } = payload;
+  if (first === second ) return prevTodos;
+  const firstIndex = prevTodos.findIndex((todo) => todo.id === first);
+  const secondIndex = prevTodos.findIndex((todo) => todo.id === second);
+  if (!firstIndex || !secondIndex) return prevTodos;
+  const newTodos = [...prevTodos];
+  [newTodos[firstIndex], newTodos[secondIndex]] = [newTodos[secondIndex], newTodos[firstIndex]];
+  return newTodos;
 }
 
 const loadTodos = (): IState => {
