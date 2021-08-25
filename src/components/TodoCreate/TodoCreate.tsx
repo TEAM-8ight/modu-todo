@@ -1,5 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import styled from 'styled-components';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import styled from 'styled-components/macro';
 import { ReactComponent as CirclePlus } from 'assets/svg/circle-plus.svg';
 import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
 import { ReactComponent as DownArraow } from 'assets/svg/down-arrow.svg';
@@ -8,17 +10,23 @@ import { useTodosDispatch } from 'context/todoContext/TodoContext';
 import { CreateTodoDto, TCategory } from 'types';
 
 const TodoCreate: React.FC = () => {
-  const [todoText, setTodoText] = useState<string>('');
+  const today = new Date();
+  const [text, setText] = useState<string>('');
+  const [due, setDue] = useState(today);
   const dispatch = useTodosDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTodoText(e.target.value);
+    setText(e.target.value);
   };
 
   const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const temp: CreateTodoDto = { text: todoText, due: new Date(), category: TCategory.STUDY };
+    const temp: CreateTodoDto = { text, due, category: TCategory.STUDY };
     dispatch(create(temp));
+  };
+
+  const selectDateHandler = (d: Date) => {
+    setDue(d);
   };
 
   return (
@@ -27,12 +35,18 @@ const TodoCreate: React.FC = () => {
         <TodoInput
           type="text"
           placeholder="할 일을 입력해주세요."
-          value={todoText}
+          value={text}
           onChange={handleChange}
         />
-        <Wrapper>
-          <Calender width="20" height="20" />
-        </Wrapper>
+        <CalendarWrapper>
+          <DatePicker
+            closeOnScroll={true}
+            selected={due}
+            minDate={today}
+            onChange={selectDateHandler}
+            customInput={<Calender width="20" height="20" />}
+          />
+        </CalendarWrapper>
         <Wrapper>
           <span>카테고리</span>
           <DownArraow />
@@ -81,6 +95,13 @@ const Wrapper = styled.div`
   border-radius: 5px;
   text-align: center;
   cursor: pointer;
+`;
+
+const CalendarWrapper = styled(Wrapper)`
+  width: 30px;
+  .react-datepicker-popper {
+    margin-top: 10px;
+  }
 `;
 
 const Button = styled.button`
