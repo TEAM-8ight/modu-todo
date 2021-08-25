@@ -13,5 +13,6 @@ export const Theme = {
     lightGray: '#FAFAFA',
     gray: '#4B4B4B',
     darkGray: '#3B3B3B',
+    alabaster: '#F9F9F9',
   },
 };

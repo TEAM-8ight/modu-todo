@@ -1,8 +1,8 @@
 import { LSHelper } from 'utils';
 import { CREATE, DELETE, LOAD } from './actionTypes';
-import { IState, Action, CreateTodoDto} from 'types/context';
-import { ITodo, TPriority, TStatus } from 'types/todo';
+import { ITodo, TPriority, TStatus, IState, Action, CreateTodoDto } from 'types';
 import { TODOS } from 'utils/contants';
+import { mockData } from './mockData';
 
 export default function reducer(state: IState, action: Action): IState {
   const { type, payload } = action;
@@ -10,11 +10,11 @@ export default function reducer(state: IState, action: Action): IState {
     case LOAD:
       return loadTodos();
     case CREATE:
-      const newTodo = createTodo(state.nextId, payload)
+      const newTodo = createTodo(state.nextId, payload);
       return {
-        todos : state.todos.concat(newTodo),
+        todos: state.todos.concat(newTodo),
         nextId: newTodo.id + 1,
-      }
+      };
     case DELETE:
       return { ...state };
     default:
@@ -23,14 +23,14 @@ export default function reducer(state: IState, action: Action): IState {
 }
 
 const loadTodos = (): IState => {
-  const todos = LSHelper.getItem(TODOS) || [];
-  const nextId = todos.length ? Math.max(...todos.map((todo: ITodo) => todo.id)) + 1 : 0
-  return { todos,  nextId: nextId};
-}
+  const todos = LSHelper.getItem(TODOS) || mockData;
+  const nextId = todos.length ? Math.max(...todos.map((todo: ITodo) => todo.id)) + 1 : 0;
+  return { todos, nextId: nextId };
+};
 
 const createTodo = (nextId: number, createTodoDto: CreateTodoDto): ITodo => {
   const { text, due, category } = createTodoDto;
-  const newTodo: ITodo  = {
+  const newTodo: ITodo = {
     id: nextId,
     text,
     status: TStatus.NOT_STARTED,
@@ -39,7 +39,7 @@ const createTodo = (nextId: number, createTodoDto: CreateTodoDto): ITodo => {
     due,
     category,
     priority: TPriority.MIDDLE,
-  }
+  };
 
-  return newTodo
-}
+  return newTodo;
+};
