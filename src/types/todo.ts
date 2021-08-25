@@ -18,7 +18,6 @@ export enum TStatus {
 }
 
 export enum TCategory {
-  DEFAULT = '선택',
   WORK = '업무',
   STUDY = '공부',
   LIVING = '생활',

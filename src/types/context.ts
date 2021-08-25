@@ -1,9 +1,9 @@
-import { TCategory, ITodos } from "./todo";
+import { TCategory, ITodos } from './todo';
 
 export interface CreateTodoDto {
-  text:string,
-  due: Date,
-  category: TCategory,
+  text: string;
+  due: Date;
+  category: TCategory;
 }
 
 export interface IState {
