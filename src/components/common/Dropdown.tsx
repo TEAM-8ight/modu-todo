@@ -53,12 +53,12 @@ const DropdownContainer = styled.div<{ theme: {} }>`
   align-items: center;
   position: relative;
   min-width: 72px;
-  height: 30px;
-  padding: 5px;
+  height: 35px;
+  padding: 8px 15px;
   font-size: 16px;
   background-color: ${({ theme }) => theme.color.alabaster};
   border-radius: 5px;
-  font-size: 12px;
+  font-size: 16px;
 `;
 
 const DropdownHeader = styled.div`
@@ -69,7 +69,7 @@ const DropdownHeader = styled.div`
     cursor: pointer;
   }
   svg {
-    margin-left: 4px;
+    margin-left: 8px;
   }
 `;
 

@@ -1,6 +1,6 @@
 import { LSHelper } from 'utils';
 import { CREATE, DELETE, LOAD } from './actionTypes';
-import { ITodo, TPriority, TStatus, IState, Action, CreateTodoDto } from 'types';
+import { ITodo, TStatus, IState, Action, CreatedTodo, TCategory, TPriority } from 'types';
 import { TODOS } from 'utils/contants';
 import { mockData } from './mockData';
 
@@ -10,9 +10,20 @@ export default function reducer(state: IState, action: Action): IState {
     case LOAD:
       return loadTodos();
     case CREATE:
-      const newTodo = createTodo(state.nextId, payload);
+      const { text, due, category, priority } = payload;
+      const now = new Date();
+      const newTodo: ITodo = {
+        id: state.nextId,
+        status: TStatus.NOT_STARTED,
+        createdAt: now,
+        updatedAt: now,
+        text,
+        due,
+        category,
+        priority,
+      };
       return {
-        todos: state.todos.concat(newTodo),
+        todos: [...state.todos, newTodo],
         nextId: newTodo.id + 1,
       };
     case DELETE:
@@ -28,18 +39,3 @@ const loadTodos = (): IState => {
   return { todos, nextId: nextId };
 };
 
-const createTodo = (nextId: number, createTodoDto: CreateTodoDto): ITodo => {
-  const { text, due, category } = createTodoDto;
-  const newTodo: ITodo = {
-    id: nextId,
-    text,
-    status: TStatus.NOT_STARTED,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    due,
-    category,
-    priority: TPriority.MIDDLE,
-  };
-
-  return newTodo;
-};

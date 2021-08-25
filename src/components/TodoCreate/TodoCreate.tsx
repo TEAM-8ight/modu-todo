@@ -6,7 +6,7 @@ import { ReactComponent as CirclePlus } from 'assets/svg/circle-plus.svg';
 import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
 import { create } from 'context/todoContext/actionCreators';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
-import { CreateTodoDto, TCategory, TPriority } from 'types';
+import { CreatedTodo, TCategory, TPriority } from 'types';
 import Dropdown from '../common/Dropdown';
 
 const categoryEmoji = {
@@ -55,8 +55,8 @@ const TodoCreate: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    // const temp: CreateTodoDto = { text, due, category: TCategory.ETC, priority: TPriority.HIGH };
-    // dispatch(create(temp));
+    const temp: CreatedTodo = { text, due, category, priority };
+    dispatch(create(temp));
     console.log({ text, due, category, priority });
   };
 
@@ -107,14 +107,19 @@ const InputContainer = styled.div`
   gap: 5px;
   border: 1px solid #c2c2c2;
   border-radius: 5px;
-  padding: 7px 10px;
+  padding: 0px 15px;
 `;
 
 const TodoInput = styled.input`
   width: 300px;
+  min-height: 45px;
   border: none;
   :focus {
     outline: none;
+  }
+  ::placeholder {
+    font-size: 16px;
+    color: #b1b1b1;
   }
 `;
 
@@ -131,14 +136,16 @@ const Wrapper = styled.div`
 `;
 
 const CalendarWrapper = styled(Wrapper)`
-  width: 30px;
+  width: 35px;
+  height: 35px;
   .react-datepicker-popper {
     margin-top: 10px;
   }
 `;
 
 const Button = styled.button`
-  width: 110px;
+  width: 136px;
+  height: 55px;
   padding: 7px;
   display: flex;
   align-items: center;
@@ -146,6 +153,7 @@ const Button = styled.button`
   justify-content: center;
   background-color: ${(props) => props.theme.color.darkGray};
   color: white;
-  font-size: 12px;
+  font-size: 18px;
   border-radius: 5px;
+  border: none;
 `;
