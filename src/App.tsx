@@ -1,21 +1,33 @@
-import { create } from 'context/todoContext/actionCreators';
-import { useTodosDispatch } from 'context/todoContext/TodoContext';
 import React from 'react';
-
-import { CreateTodoDto, TCategory } from './types';
+import styled from 'styled-components';
+import TodoHeader from 'components/TodoHeader/TodoHeader';
 
 const App: React.FC<any> = () => {
-  const dispatch = useTodosDispatch();
-
-  const handleClick = () => {
-    const temp: CreateTodoDto = { text: 'test입니다.', due: new Date(), category: TCategory.STUDY };
-    dispatch(create(temp));
-  };
   return (
     <div className="App">
-      <button onClick={handleClick}>zz</button>
+      <TodoHeader />
+      <Container>
+        <p>This is the main area.</p>
+        <p>This is the main area.</p>
+        <p>This is the main area.</p>
+        <p>This is the main area.</p>
+        <p>This is the main area.</p>
+        <p>This is the main area.</p>
+        <p>This is the main area.</p>
+        <p>This is the main area.</p>
+        <p>This is the main area.</p>
+        <p>This is the main area.</p>
+        <div style={{ height: '200vh' }} />
+      </Container>
     </div>
   );
 };
 
 export default App;
+
+const Container = styled.main`
+  width: 80vw;
+  height: calc(100vh - 60px);
+  padding-top: 60px;
+  margin: 0 auto;
+`;

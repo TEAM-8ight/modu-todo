@@ -1,6 +1,5 @@
-import { CREATE, LOAD, UPDATE } from './actionTypes';
-import { Action, CreateTodoDto } from 'types/context';
-import { ITodo } from 'types';
+import { CREATE, LOAD, UPDATE, TOGGLE_FILTER } from './actionTypes';
+import { ITodo, Action, CreateTodoDto } from 'types';
 
 export const create = (createTodoDto: CreateTodoDto): Action => {
   const payload = createTodoDto;
@@ -9,3 +8,8 @@ export const create = (createTodoDto: CreateTodoDto): Action => {
 export const load = (): Action => ({ type: LOAD });
 
 export const update = (payload: ITodo): Action => ({ type: UPDATE, payload });
+
+export const toggleFilter = (type: string, name: string): Action => ({
+  type: TOGGLE_FILTER,
+  payload: { type, name },
+});

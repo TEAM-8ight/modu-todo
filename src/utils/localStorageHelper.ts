@@ -4,7 +4,7 @@ interface IlocalStorageHelper {
 }
 
 const localStorageHelper: IlocalStorageHelper = {
-  getItem: key => {
+  getItem: (key) => {
     const data: string | null = localStorage.getItem(key);
     if (!data) return null;
     return JSON.parse(data);
