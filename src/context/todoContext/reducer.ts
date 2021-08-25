@@ -2,6 +2,7 @@ import { LSHelper } from 'utils';
 import { CREATE, DELETE, LOAD } from './actionTypes';
 import { ITodo, TPriority, TStatus, IState, Action, CreateTodoDto } from 'types';
 import { TODOS } from 'utils/contants';
+import { mockData } from './mockData';
 
 export default function reducer(state: IState, action: Action): IState {
   const { type, payload } = action;
@@ -22,7 +23,7 @@ export default function reducer(state: IState, action: Action): IState {
 }
 
 const loadTodos = (): IState => {
-  const todos = LSHelper.getItem(TODOS) || [];
+  const todos = LSHelper.getItem(TODOS) || mockData;
   const nextId = todos.length ? Math.max(...todos.map((todo: ITodo) => todo.id)) + 1 : 0;
   return { todos, nextId: nextId };
 };
