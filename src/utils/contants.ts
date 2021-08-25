@@ -1,5 +1,3 @@
 const TODOS = 'todos';
 
-export {
-  TODOS,
-}
+export { TODOS };
