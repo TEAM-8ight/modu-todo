@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ReactComponent as ModuTodo } from 'assets/svg/modutodo.svg';
+import { ReactComponent as ModuTodo } from 'assets/svg/modu-todo.svg';
 
 const message = [
   ['😎 즐거운 일요일!', '일주일을 마무리해보세요.'],
@@ -39,11 +39,14 @@ const TodoHeader: React.FC = () => {
 export default TodoHeader;
 
 const HeaderContainer = styled.div`
+  position: fixed;
+  top: 0;
+  width: 100vw;
   padding: 20px 10vw;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: #e9e9e9 solid 0.5px;
+  border-bottom: #e9e9e9 solid 1px;
 `;
 
 const DateString = styled.span`
