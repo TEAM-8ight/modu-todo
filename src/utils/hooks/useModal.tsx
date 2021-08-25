@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
@@ -20,6 +20,14 @@ const useModal = () => {
   const Modal: React.FC<ModalProps> = ({ children }) => {
     const ref = useRef<HTMLDivElement | null>(null);
     const elemRef = document.getElementById('modalDom') as HTMLElement;
+
+    useEffect(() => {
+      if (showModal) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'unset';
+      }
+    }, []);
 
     if (!showModal) return null;
 
