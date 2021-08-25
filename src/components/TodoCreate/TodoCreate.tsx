@@ -66,7 +66,7 @@ const TodoCreate: React.FC = () => {
       alert('🎉 할 일이 등록되었습니다!');
     } else {
       const alertElement = {
-        '할 일 내용': !!text,
+        '할 일 내용': text,
         마감일자: due,
         카테고리: category,
         중요도: priority,
@@ -144,19 +144,16 @@ const TodoInput = styled.input`
   }
 `;
 
-const Wrapper = styled.div`
+const CalendarWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
   height: 30px;
   padding: 5px;
-  background-color: ${(props) => props.theme.color.lightGray};
+  background-color: ${(props) => props.theme.color.alabaster};
   border-radius: 5px;
   text-align: center;
   cursor: pointer;
-`;
-
-const CalendarWrapper = styled(Wrapper)`
   width: 35px;
   height: 35px;
   .react-datepicker-popper {
