@@ -1,12 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import TodoHeader from 'components/TodoHeader/TodoHeader';
+import DropdownTemp from 'components/temp/DropdownTemp';
 
 const App: React.FC<any> = () => {
   return (
     <div className="App">
       <TodoHeader />
       <Container>
+        <DropdownTemp />
         <p>This is the main area.</p>
         <p>This is the main area.</p>
         <p>This is the main area.</p>
