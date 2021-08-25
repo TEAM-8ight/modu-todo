@@ -4,15 +4,49 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components/macro';
 import { ReactComponent as CirclePlus } from 'assets/svg/circle-plus.svg';
 import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
-import { ReactComponent as DownArraow } from 'assets/svg/down-arrow.svg';
 import { create } from 'context/todoContext/actionCreators';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
-import { CreateTodoDto, TCategory } from 'types';
+import { CreateTodoDto, TCategory, TPriority } from 'types';
+import Dropdown from '../common/Dropdown';
+
+const categoryEmoji = {
+  업무: '👩‍💻',
+  공부: '📚',
+  생활: '🌱',
+  운동: '🏃‍♂️',
+  기타: '💬',
+};
+
+const priorityEmoji = {
+  상: '🔴',
+  중: '🟡',
+  하: '🟢',
+};
+
+const categoryOptions: any = [
+  { print: '카테고리', data: '', emoji: '' },
+  ...Object.entries(TCategory).map(([key, value]) => {
+    return { print: value, data: key, emoji: categoryEmoji[value] };
+  }),
+];
+
+const priorityOptions: any = [
+  { print: '중요도', data: '', emoji: '' },
+  ...Object.entries(TPriority).map(([key, value]) => {
+    return { print: value, data: key, emoji: priorityEmoji[value] };
+  }),
+];
+
+console.log(categoryOptions);
+console.log(priorityOptions);
 
 const TodoCreate: React.FC = () => {
   const today = new Date();
   const [text, setText] = useState<string>('');
-  const [due, setDue] = useState(today);
+  const [due, setDue] = useState<Date>(today);
+  const [category, setCategory] = useState<string>('');
+  const [priority, setPriority] = useState<string>('');
+
   const dispatch = useTodosDispatch();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -21,8 +55,9 @@ const TodoCreate: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const temp: CreateTodoDto = { text, due, category: TCategory.STUDY };
-    dispatch(create(temp));
+    // const temp: CreateTodoDto = { text, due, category: TCategory.ETC, priority: TPriority.HIGH };
+    // dispatch(create(temp));
+    console.log({ text, due, category, priority });
   };
 
   const selectDateHandler = (d: Date) => {
@@ -47,10 +82,8 @@ const TodoCreate: React.FC = () => {
             customInput={<Calender width="20" height="20" />}
           />
         </CalendarWrapper>
-        <Wrapper>
-          <span>카테고리</span>
-          <DownArraow />
-        </Wrapper>
+        <Dropdown selectedItem={category} onItemClick={setCategory} options={categoryOptions} />
+        <Dropdown selectedItem={priority} onItemClick={setPriority} options={priorityOptions} />
       </InputContainer>
       <Button onClick={handleSubmit}>
         <CirclePlus width="22" height="22" />
