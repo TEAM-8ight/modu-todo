@@ -51,6 +51,7 @@ const DropdownContainer = styled.div<{ theme: {} }>`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   min-width: 72px;
   height: 30px;
   padding: 5px;
