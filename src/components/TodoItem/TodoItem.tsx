@@ -1,34 +1,64 @@
 import React from 'react';
 import styled from 'styled-components/macro';
+import { ITodo } from 'types';
 import { ReactComponent as Edit } from 'assets/svg/edit.svg';
 import { ReactComponent as Delete } from 'assets/svg/delete.svg';
+import { ReactComponent as Work } from 'assets/svg/work.svg';
+import { ReactComponent as Study } from 'assets/svg/study.svg';
+import { ReactComponent as Life } from 'assets/svg/life.svg';
 import { ReactComponent as Exercise } from 'assets/svg/exercise.svg';
+import { ReactComponent as Etc } from 'assets/svg/etc.svg';
 import { ReactComponent as High } from 'assets/svg/high.svg';
+import { ReactComponent as Middle } from 'assets/svg/middle.svg';
+import { ReactComponent as Low } from 'assets/svg/low.svg';
+import { ReactComponent as Check } from 'assets/svg/check.svg';
+import { ReactComponent as Checked } from 'assets/svg/checked.svg';
 
-interface Props {}
+interface TodoItemProps {
+  todo: ITodo;
+}
 
-const TodoItem: React.FC<Props> = (props: Props) => {
-  console.log(props);
+const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
+  const getCategory = (category: string) => {
+    if (category === '업무') return <Work />;
+    if (category === '공부') return <Study />;
+    if (category === '생활') return <Life />;
+    if (category === '운동') return <Exercise />;
+    if (category === '기타') return <Etc />;
+  };
+
+  const getPriority = (priority: string) => {
+    if (priority === '상') return <High />;
+    if (priority === '중') return <Middle />;
+    if (priority === '하') return <Low />;
+  };
+
+  const getStatus = (status: string) => {
+    if (status === '시작안함') return <StartButton>시작</StartButton>;
+    if (status === '진행중') return <Check />;
+    if (status === '완료') return <Checked />;
+  };
+
   return (
     <ItemContainer>
       <Top>
-        <Text>런데이 뛰기</Text>
+        <Text>{todo.text}</Text>
         <div>
-          <button>
+          <EditBtn>
             <Edit />
-          </button>
-          <button>
+          </EditBtn>
+          <DeleteBtn>
             <Delete />
-          </button>
+          </DeleteBtn>
         </div>
       </Top>
-      <DueDate>~ 2021-12-31</DueDate>
+      <DueDate>~ {todo.due.toDateString()}</DueDate>
       <Down>
         <div>
-          <Exercise />
-          <High />
+          {getCategory(todo.category)}
+          {getPriority(todo.priority)}
         </div>
-        <Button>시작</Button>
+        {getStatus(todo.status)}
       </Down>
     </ItemContainer>
   );
@@ -38,6 +68,7 @@ export default TodoItem;
 
 const ItemContainer = styled.div`
   padding: 20px 25px;
+  margin-bottom: 20px;
   width: 300px;
   border: 1px solid #c5c5c5;
   border-radius: 10px;
@@ -75,6 +106,9 @@ const DueDate = styled.p`
   font-size: 16px;
 `;
 
+const EditBtn = styled.button``;
+const DeleteBtn = styled.button``;
+
 const Down = styled.div`
   display: flex;
   flex-direction: row;
@@ -91,7 +125,7 @@ const Down = styled.div`
   }
 `;
 
-const Button = styled.button`
+const StartButton = styled.button`
   width: 51px;
   height: 29px;
   border: none;
