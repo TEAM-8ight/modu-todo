@@ -22,6 +22,9 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
+    // console.log('---------- useEffect ---------------');
+    // console.log(state.todos);
+    // console.log('-------------------------');
     LSHelper.setItem(TODOS, state.todos);
   }, [state]);
 

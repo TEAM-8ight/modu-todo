@@ -6,6 +6,10 @@ export interface CreateTodoDto {
   category: TCategory;
 }
 
+export interface RemoveTodoType {
+  id: number;
+}
+
 export interface IState {
   todos: ITodos;
   nextId: number;
@@ -13,6 +17,6 @@ export interface IState {
 
 export type Action =
   | { type: 'CREATE'; payload: CreateTodoDto }
-  | { type: 'DELETE'; payload: any }
+  | { type: 'REMOVE'; payload: RemoveTodoType }
   | { type: 'UPDATE'; payload: any }
   | { type: 'LOAD'; payload?: {} };

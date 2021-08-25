@@ -1,5 +1,5 @@
 import { LSHelper } from 'utils';
-import { CREATE, DELETE, LOAD } from './actionTypes';
+import { CREATE, REMOVE, LOAD } from './actionTypes';
 import { ITodo, TPriority, TStatus, IState, Action, CreateTodoDto } from 'types';
 import { TODOS } from 'utils/contants';
 import { mockData } from './mockData';
@@ -15,17 +15,27 @@ export default function reducer(state: IState, action: Action): IState {
         todos: state.todos.concat(newTodo),
         nextId: newTodo.id + 1,
       };
-    case DELETE:
-      return { ...state };
+    case REMOVE:
+      return { ...state, todos: state.todos.filter((todo: ITodo) => todo.id !== payload?.id) };
     default:
       return { ...state };
   }
 }
 
+// TODO: 수정하기
 const loadTodos = (): IState => {
-  const todos = LSHelper.getItem(TODOS) || mockData;
+  let todos = LSHelper.getItem(TODOS);
+  if (!todos) {
+    todos = mockData;
+  } else {
+    todos.forEach((todo: ITodo) => {
+      todo.due = new Date(todo.due);
+      if (todo.updatedAt) todo.updatedAt = new Date(todo.updatedAt);
+      if (todo.createdAt) todo.createdAt = new Date(todo.createdAt);
+    });
+  }
   const nextId = todos.length ? Math.max(...todos.map((todo: ITodo) => todo.id)) + 1 : 0;
-  return { todos, nextId: nextId };
+  return { todos, nextId };
 };
 
 const createTodo = (nextId: number, createTodoDto: CreateTodoDto): ITodo => {

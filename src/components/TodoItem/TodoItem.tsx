@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components/macro';
+// import { delete } from 'context/todoContext/actionCreators';
+import { useTodosDispatch } from 'context/todoContext/TodoContext';
 import { ITodo } from 'types';
 import { ReactComponent as Edit } from 'assets/svg/edit.svg';
 import { ReactComponent as Delete } from 'assets/svg/delete.svg';
-import { ReactComponent as Work } from 'assets/svg/work.svg';
-import { ReactComponent as Study } from 'assets/svg/study.svg';
-import { ReactComponent as Life } from 'assets/svg/life.svg';
-import { ReactComponent as Exercise } from 'assets/svg/exercise.svg';
-import { ReactComponent as Etc } from 'assets/svg/etc.svg';
+import Work from 'assets/svg/work.svg';
+import Study from 'assets/svg/study.svg';
+import Life from 'assets/svg/life.svg';
+import Exercise from 'assets/svg/exercise.svg';
+import Etc from 'assets/svg/etc.svg';
 import { ReactComponent as High } from 'assets/svg/high.svg';
 import { ReactComponent as Middle } from 'assets/svg/middle.svg';
 import { ReactComponent as Low } from 'assets/svg/low.svg';
@@ -20,11 +22,22 @@ interface TodoItemProps {
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
   const getCategory = (category: string) => {
-    if (category === '업무') return <Work />;
-    if (category === '공부') return <Study />;
-    if (category === '생활') return <Life />;
-    if (category === '운동') return <Exercise />;
-    if (category === '기타') return <Etc />;
+    // console.log(category);
+    if (category === '업무') {
+      return <img src={Work} alt="업무" />;
+    }
+    if (category === '공부') {
+      return <img src={Study} alt="공부" />;
+    }
+    if (category === '생활') {
+      return <img src={Life} alt="생활" />;
+    }
+    if (category === '운동') {
+      return <img src={Exercise} alt="운동" />;
+    }
+    if (category === '기타') {
+      return <img src={Etc} alt="기타" />;
+    }
   };
 
   const getPriority = (priority: string) => {
@@ -52,13 +65,14 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
           </DeleteBtn>
         </div>
       </Top>
-      <DueDate>~ {todo.due.toDateString()}</DueDate>
+      <DueDate>~ {todo.due.toISOString().split('T')[0]} </DueDate>
       <Down>
-        <div>
+        <LeftIcon>
+          {/* {<h1>{categoryEmoji[todo.category]}</h1>} */}
           {getCategory(todo.category)}
           {getPriority(todo.priority)}
-        </div>
-        {getStatus(todo.status)}
+        </LeftIcon>
+        <RightIcon>{getStatus(todo.status)}</RightIcon>
       </Down>
     </ItemContainer>
   );
@@ -115,13 +129,19 @@ const Down = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 15px;
+`;
 
-  div {
-    display: flex;
-    align-items: center;
-  }
-  svg {
+const LeftIcon = styled.div`
+  display: flex;
+  align-items: center;
+  img {
     margin-right: 10px;
+  }
+`;
+
+const RightIcon = styled.div`
+  svg {
+    cursor: pointer;
   }
 `;
 
