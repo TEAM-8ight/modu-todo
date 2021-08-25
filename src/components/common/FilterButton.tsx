@@ -13,7 +13,7 @@ interface FilterButtonProps {
 const FilterButton: React.FC<FilterButtonProps> = ({ type, icon, name }) => {
   const dispatch: Dispatch<Action> = useTodosDispatch();
   const filter: IFilter = useFilterState();
-  const isActive: boolean = filter[type].find((f) => f === name) ? true : false;
+  const isActive: boolean = filter[type].includes(name);
 
   const onClickFilter = () => {
     dispatch(toggleFilter(type, name));
