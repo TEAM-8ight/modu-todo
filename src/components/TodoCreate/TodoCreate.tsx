@@ -148,11 +148,9 @@ const CalendarWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
-  height: 30px;
   padding: 5px;
   background-color: ${(props) => props.theme.color.alabaster};
   border-radius: 5px;
-  text-align: center;
   cursor: pointer;
   width: 35px;
   height: 35px;
