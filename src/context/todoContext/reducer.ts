@@ -1,6 +1,15 @@
 import { LSHelper } from 'utils';
-import { CREATE, DELETE, LOAD } from './actionTypes';
-import { ITodo, TStatus, IState, Action, CreatedTodo, TCategory, TPriority } from 'types';
+import { CREATE, DELETE, LOAD, TOGGLE_FILTER } from './actionTypes';
+import {
+  ITodo,
+  TStatus,
+  IState,
+  Action,
+  CreatedTodo,
+  TCategory,
+  TPriority,
+  FilterType,
+} from 'types';
 import { TODOS } from 'utils/contants';
 import { mockData } from './mockData';
 
@@ -23,11 +32,21 @@ export default function reducer(state: IState, action: Action): IState {
         priority,
       };
       return {
-        todos: [...state.todos, newTodo],
+        ...state,
+        todos: state.todos.concat(newTodo),
         nextId: newTodo.id + 1,
       };
     case DELETE:
       return { ...state };
+    case TOGGLE_FILTER:
+      const type = payload.type as FilterType;
+      const index = state.filter[type].findIndex((filter) => filter === payload.name);
+      const newFilter =
+        index === -1
+          ? state.filter[type].concat(payload.name)
+          : state.filter[type].filter((_, idx) => idx !== index);
+
+      return { ...state, filter: { ...state.filter, [type]: newFilter } };
     default:
       return { ...state };
   }
@@ -36,6 +55,6 @@ export default function reducer(state: IState, action: Action): IState {
 const loadTodos = (): IState => {
   const todos = LSHelper.getItem(TODOS) || mockData;
   const nextId = todos.length ? Math.max(...todos.map((todo: ITodo) => todo.id)) + 1 : 0;
-  return { todos, nextId: nextId };
+  const filter = { category: [], priority: [] };
+  return { todos, nextId: nextId, filter };
 };
-
