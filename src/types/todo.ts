@@ -26,7 +26,6 @@ export enum TCategory {
 }
 
 export enum TPriority {
-  DEFAULT = '선택',
   HIGH = '상',
   MIDDLE = '중',
   LOW = '하',
