@@ -7,7 +7,7 @@ import { ReactComponent as UpArrow } from 'assets/svg/up-arrow.svg';
 interface DropdownProps {
   selectedItem: string;
   onItemClick: (selectedOption: string) => void;
-  options: Array<{ print: string; data: string; emoji?: string }>;
+  options: Array<{ print: string; data: string }>;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ selectedItem, onItemClick, options }) => {
@@ -17,7 +17,6 @@ const Dropdown: React.FC<DropdownProps> = ({ selectedItem, onItemClick, options 
   const dataToPrint = () => {
     const item = options.find(({ data }) => data === selectedItem);
     if (!item) return '';
-    if (item.emoji) return `${item.emoji} ${item.print}`;
     return item.print;
   };
 
@@ -35,9 +34,9 @@ const Dropdown: React.FC<DropdownProps> = ({ selectedItem, onItemClick, options 
       <DropdownList ref={ref} isOpen={isOpened}>
         {options
           .filter(({ data }) => data)
-          .map(({ print, data, emoji }) => (
+          .map(({ print, data }) => (
             <DropdownItem key={data} onClick={() => handleItemClick(data)}>
-              {emoji} {print}
+              {print}
             </DropdownItem>
           ))}
       </DropdownList>

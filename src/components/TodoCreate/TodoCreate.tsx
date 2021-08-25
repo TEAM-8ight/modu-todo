@@ -24,16 +24,16 @@ const priorityEmoji = {
 };
 
 const categoryOptions: any = [
-  { print: '카테고리', data: '', emoji: '' },
+  { print: '카테고리', data: '' },
   ...Object.entries(TCategory).map(([key, value]) => {
-    return { print: value, data: key, emoji: categoryEmoji[value] };
+    return { print: `${categoryEmoji[value]} ${value}`, data: key };
   }),
 ];
 
 const priorityOptions: any = [
-  { print: '중요도', data: '', emoji: '' },
+  { print: '중요도', data: '' },
   ...Object.entries(TPriority).map(([key, value]) => {
-    return { print: value, data: key, emoji: priorityEmoji[value] };
+    return { print: `${priorityEmoji[value]} ${value}`, data: key };
   }),
 ];
 
