@@ -1,27 +1,33 @@
-import React from 'react';
-import styled from 'styled-components';
-import { TCategory, TPriority } from 'types';
+import React, { Dispatch, memo } from 'react';
+import styled, { css } from 'styled-components';
+import { useTodosDispatch, useFilterState } from 'context/todoContext/TodoContext';
+import { toggleFilter } from 'context/todoContext/actionCreators';
+import { FilterType, TCategory, TPriority, Action, IFilter } from 'types';
 
 interface FilterButtonProps {
-  type: string;
+  type: FilterType;
   icon: string | JSX.Element;
-  item: [string, TCategory | TPriority];
+  name: TCategory | TPriority;
 }
 
-const FilterButton: React.FC<FilterButtonProps> = ({ type, icon, item }) => {
-  const [key, name] = item;
+const FilterButton: React.FC<FilterButtonProps> = ({ type, icon, name }) => {
+  const dispatch: Dispatch<Action> = useTodosDispatch();
+  const filter: IFilter = useFilterState();
+  const isActive: boolean = filter[type].find((f) => f === name) ? true : false;
 
-  const onClickFilter = () => {};
+  const onClickFilter = () => {
+    dispatch(toggleFilter(type, name));
+  };
 
   return (
-    <Button filter={type} onClick={onClickFilter}>
+    <Button filter={type} isActive={isActive} onClick={onClickFilter}>
       <Icon>{icon}</Icon>
       <Name>{name}</Name>
     </Button>
   );
 };
 
-const Button = styled.button<{ filter: string }>`
+const Button = styled.button<{ filter: string; isActive: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -30,6 +36,7 @@ const Button = styled.button<{ filter: string }>`
   background-color: ${({ theme }) => theme.color.lightGray};
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.color.borderGray};
+  color: ${({ theme }) => theme.color.black};
   outline: none;
   cursor: pointer;
 
@@ -38,16 +45,24 @@ const Button = styled.button<{ filter: string }>`
   }
 
   &:hover {
-    border: 1px solid ${({ theme }) => theme.color.blue};
+    border: 1px solid ${({ theme }) => theme.color.black};
   }
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      background-color: ${({ theme }) => theme.color.black};
+      border: 1px solid ${({ theme }) => theme.color.white};
+      color: ${({ theme }) => theme.color.white};
+    `}
 `;
 
-const Icon = styled.span`
+const Icon = memo(styled.span`
   margin-right: 8px;
-`;
+`);
 
-const Name = styled.span`
-  color: ${({ theme }) => theme.color.black};
-`;
+const Name = memo(styled.span`
+  font-weight: 600;
+`);
 
 export default FilterButton;

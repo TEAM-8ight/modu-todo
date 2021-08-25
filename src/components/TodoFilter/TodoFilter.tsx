@@ -1,28 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import FilterButton from 'components/common/FilterButton';
-import { TCategory, TPriority } from 'types';
-
-interface TodoFilterProps {
-  type: string;
-}
+import { TCategory, TPriority, FilterType, emojiType, colorType } from 'types';
 
 type CategoryKey = keyof typeof TCategory;
 type PriorityKey = keyof typeof TPriority;
 
-type emojiType = {
-  WORK: string;
-  STUDY: string;
-  LIVING: string;
-  EXERCISE: string;
-  ETC: string;
-};
-
-type colorType = {
-  HIGH: string;
-  MIDDLE: string;
-  LOW: string;
-};
+interface TodoFilterProps {
+  type: FilterType;
+}
 
 const TodoFilter: React.FC<TodoFilterProps> = ({ type }) => {
   const emoji: emojiType = {
@@ -42,14 +28,16 @@ const TodoFilter: React.FC<TodoFilterProps> = ({ type }) => {
   const renderCategory = () =>
     Object.entries(TCategory).map((item) => {
       const key = item[0] as CategoryKey;
-      return <FilterButton key={key} type={type} icon={emoji[key]} item={item} />;
+      const name = item[1] as TCategory;
+      return <FilterButton key={key} type={type} icon={emoji[key]} name={name} />;
     });
 
   const renderPriority = () =>
     Object.entries(TPriority).map((item) => {
       const key = item[0] as PriorityKey;
+      const name = item[1] as TPriority;
       return (
-        <FilterButton key={key} type={type} icon={<Circle color={circle[key]} />} item={item} />
+        <FilterButton key={key} type={type} icon={<Circle color={circle[key]} />} name={name} />
       );
     });
 
@@ -72,8 +60,8 @@ const Wrapper = styled.div`
 
 const Text = styled.div`
   padding: 10px;
-  font-weight: 700;
   color: ${({ theme }) => theme.color.textGray};
+  font-weight: 700;
 `;
 
 const Circle = styled.div<{ color: string }>`
