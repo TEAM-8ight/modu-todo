@@ -8,6 +8,7 @@ import { TODOS } from 'utils/contants';
 const initialState: IState = {
   todos: [],
   nextId: 0,
+  filter: { category: [], priority: [] },
 };
 
 type TodosDispatch = Dispatch<Action>;
@@ -38,7 +39,24 @@ export function TodoProvider({ children }: { children: React.ReactNode }) {
 export function useTodosState() {
   const state = useContext(TodosContext);
   if (!state) return [];
-  return state.todos;
+
+  let showTodo = state.todos;
+  const categoryFilter = state.filter.category;
+  const priorityFilter = state.filter.priority;
+
+  if (categoryFilter.length) {
+    showTodo = showTodo.filter((todo) => categoryFilter.includes(todo.category));
+  }
+  if (priorityFilter.length) {
+    showTodo = showTodo.filter((todo) => priorityFilter.includes(todo.priority));
+  }
+  return showTodo;
+}
+
+export function useFilterState() {
+  const state = useContext(TodosContext);
+  if (!state) return { category: [], priority: [] };
+  return state.filter;
 }
 
 export function useTodosDispatch() {
