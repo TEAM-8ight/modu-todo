@@ -2,7 +2,7 @@ import { TCategory, ITodos, TPriority } from './todo';
 
 export interface CreatedTodo {
   text: string;
-  due: Date;
+  due: Date | null;
   category: string;
   priority: string;
 }

@@ -37,13 +37,10 @@ const priorityOptions: any = [
   }),
 ];
 
-console.log(categoryOptions);
-console.log(priorityOptions);
-
 const TodoCreate: React.FC = () => {
   const today = new Date();
   const [text, setText] = useState<string>('');
-  const [due, setDue] = useState<Date>(today);
+  const [due, setDue] = useState<Date | null>(null);
   const [category, setCategory] = useState<string>('');
   const [priority, setPriority] = useState<string>('');
 
@@ -55,20 +52,35 @@ const TodoCreate: React.FC = () => {
 
   const initializeState = () => {
     setText('');
-    setDue(today);
+    setDue(null);
     setCategory('');
     setPriority('');
   };
 
   const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const temp: CreatedTodo = { text, due, category, priority };
-    dispatch(create(temp));
-    initializeState();
+    const createdTodo: CreatedTodo = { text, due, category, priority };
+    if (text && due && category && priority) {
+      dispatch(create(createdTodo));
+      initializeState();
+      alert('🎉 할 일이 등록되었습니다!');
+    } else {
+      const alertElement = {
+        '할 일 내용': !!text,
+        마감일자: due,
+        카테고리: category,
+        중요도: priority,
+      };
+      const alertMessage: string[] = [];
+      Object.entries(alertElement).forEach(([key, value]) => {
+        value || alertMessage.push(key);
+      });
+      alert(`✏ ${alertMessage.join(', ')}를 입력해주세요!`);
+    }
   };
 
-  const selectDateHandler = (d: Date) => {
-    setDue(d);
+  const selectDateHandler = (selectedDate: Date) => {
+    setDue(selectedDate);
   };
 
   return (
@@ -110,6 +122,7 @@ const Form = styled.form`
 `;
 
 const InputContainer = styled.div`
+  width: 590px;
   display: flex;
   align-items: center;
   gap: 5px;
