@@ -53,11 +53,18 @@ const TodoCreate: React.FC = () => {
     setText(e.target.value);
   };
 
+  const initializeState = () => {
+    setText('');
+    setDue(today);
+    setCategory('');
+    setPriority('');
+  };
+
   const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const temp: CreatedTodo = { text, due, category, priority };
     dispatch(create(temp));
-    console.log({ text, due, category, priority });
+    initializeState();
   };
 
   const selectDateHandler = (d: Date) => {
@@ -99,6 +106,7 @@ const Form = styled.form`
   display: flex;
   gap: 7px;
   font-size: 12px;
+  margin-top: 10px;
 `;
 
 const InputContainer = styled.div`
