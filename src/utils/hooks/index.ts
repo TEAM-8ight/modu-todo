@@ -1,5 +1,3 @@
-import { useDetectOutsideClick } from "./useDetectOutsideClick";
+import { useDetectOutsideClick } from './useDetectOutsideClick';
 
-export {
-  useDetectOutsideClick
-}
+export { useDetectOutsideClick };
