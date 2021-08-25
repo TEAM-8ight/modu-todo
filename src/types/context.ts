@@ -7,6 +7,13 @@ export interface CreatedTodo {
   priority: string;
 }
 
+export interface NewTodoPayload {
+  text: string;
+  due: Date;
+  category: TCategory;
+  priority: TPriority;
+}
+
 export interface IFilter {
   category: string[];
   priority: string[];
