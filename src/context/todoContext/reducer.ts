@@ -1,6 +1,6 @@
 import { LSHelper } from 'utils';
 import { CREATE, REMOVE, LOAD, TOGGLE_FILTER } from './actionTypes';
-import { IState, Action, CreateTodoDto, FilterType, ITodo, TPriority, TStatus } from 'types';
+import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType } from 'types';
 import { TODOS } from 'utils/contants';
 import { mockData } from './mockData';
 
@@ -10,7 +10,7 @@ export default function reducer(state: IState, action: Action): IState {
     case LOAD:
       return loadTodos();
     case CREATE:
-      const newTodo = createTodo(state.nextId, payload);
+      const newTodo = createNewTodo(state.nextId, payload);
       return {
         ...state,
         todos: state.todos.concat(newTodo),
@@ -33,7 +33,6 @@ export default function reducer(state: IState, action: Action): IState {
   }
 }
 
-// TODO: 수정하기
 const loadTodos = (): IState => {
   let todos = LSHelper.getItem(TODOS);
   if (!todos) {
@@ -50,18 +49,18 @@ const loadTodos = (): IState => {
   return { todos, nextId: nextId, filter };
 };
 
-const createTodo = (nextId: number, createTodoDto: CreateTodoDto): ITodo => {
-  const { text, due, category } = createTodoDto;
+const createNewTodo = (id: number, payload: NewTodoPayload) => {
+  const { text, due, category, priority } = payload;
+  const now = new Date();
   const newTodo: ITodo = {
-    id: nextId,
-    text,
+    id,
     status: TStatus.NOT_STARTED,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: now,
+    updatedAt: now,
+    text,
     due,
     category,
-    priority: TPriority.MIDDLE,
+    priority,
   };
-
   return newTodo;
 };
