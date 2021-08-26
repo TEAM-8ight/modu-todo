@@ -42,7 +42,7 @@ export interface ISwap {
 export type Action =
   | { type: 'CREATE'; payload: CreatedTodo }
   | { type: 'REMOVE'; payload: RemoveTodoType }
-  | { type: 'UPDATE'; payload: ITodo }
+  | { type: 'UPDATE'; payload: any }
   | { type: 'LOAD'; payload?: {} }
   | { type: 'TOGGLE_FILTER'; payload: IToggle }
   | { type: 'SWAP'; payload: ISwap };
