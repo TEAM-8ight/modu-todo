@@ -7,7 +7,10 @@ export const create = (payload: CreatedTodo): Action => {
 
 export const load = (): Action => ({ type: LOAD });
 
-export const update = (payload: ITodo): Action => ({ type: UPDATE, payload });
+export const update = (todos: ITodo): Action => ({
+  type: UPDATE,
+  payload: todos,
+});
 
 export const toggleFilter = (type: string, name: string): Action => ({
   type: TOGGLE_FILTER,

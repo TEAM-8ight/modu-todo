@@ -1,6 +1,6 @@
 import { LSHelper } from 'utils';
 import { CREATE, REMOVE, LOAD, UPDATE, TOGGLE_FILTER } from './actionTypes';
-import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType } from 'types';
+import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType, ITodos } from 'types';
 import { TODOS } from 'utils/contants';
 import { mockData } from './mockData';
 
@@ -17,9 +17,10 @@ export default function reducer(state: IState, action: Action): IState {
         nextId: newTodo.id + 1,
       };
     case UPDATE:
+      const updateTodo = updateTodos(payload, state.todos);
       return {
         ...state,
-        todos: state.todos.map((todo) => (todo.id === payload.id ? payload : todo)),
+        todos: updateTodo,
       };
     case REMOVE:
       return { ...state, todos: state.todos.filter((todo: ITodo) => todo.id !== payload?.id) };
@@ -67,4 +68,9 @@ const createNewTodo = (id: number, payload: NewTodoPayload) => {
     priority,
   };
   return newTodo;
+};
+
+const updateTodos = (payload: ITodo, prevTodos: ITodos) => {
+  const { id } = payload;
+  return prevTodos.map((todo) => (todo.id === id ? { ...payload, updatedAt: new Date() } : todo));
 };
