@@ -99,8 +99,7 @@ const ItemContainer = styled.div<{ isDragOver: boolean }>`
   width: 300px;
   border: 1px solid #c5c5c5;
   border-radius: 10px;
-  // background-color: white;
-  background-color: ${({ isDragOver }) => (isDragOver ? 'red' : 'white')};
+  background-color: ${({ isDragOver }) => (isDragOver ? '#eeeeee' : 'white')};
   cursor: grab;
 `;
 
@@ -118,7 +117,6 @@ const Top = styled.div`
 
   button {
     border: none;
-    background-color: white;
     padding: 0px;
     margin-left: 8px;
   }
@@ -135,8 +133,12 @@ const DueDate = styled.p`
   font-size: 16px;
 `;
 
-const EditBtn = styled.button``;
-const DeleteBtn = styled.button``;
+const EditBtn = styled.button`
+  background-color: transparent;
+`;
+const DeleteBtn = styled.button`
+  background-color: transparent;
+`;
 
 const Down = styled.div`
   display: flex;

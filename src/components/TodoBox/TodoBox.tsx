@@ -81,5 +81,5 @@ const TodoListBoxWrapper = styled.div<{ isLast: boolean; isDragOver: boolean }>`
   border-radius: 10px;
   // background-color: ${({ theme }) => theme.color.lightGray};
   margin-right: ${({ isLast }) => (isLast ? '0' : '25px')};
-  background-color: ${({ isDragOver, theme }) => (isDragOver ? 'pink' : theme.color.lightGray)};
+  background-color: ${({ isDragOver, theme }) => (isDragOver ? '#eeeeee' : theme.color.lightGray)};
 `;
