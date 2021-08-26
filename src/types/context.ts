@@ -14,6 +14,9 @@ export interface NewTodoPayload {
   priority: TPriority;
 }
 
+export interface RemoveTodoType {
+  id: number;
+}
 export interface IFilter {
   category: string[];
   priority: string[];
@@ -33,7 +36,7 @@ export interface IToggle {
 
 export type Action =
   | { type: 'CREATE'; payload: CreatedTodo }
-  | { type: 'DELETE'; payload: any }
+  | { type: 'REMOVE'; payload: RemoveTodoType }
   | { type: 'UPDATE'; payload: any }
   | { type: 'LOAD'; payload?: {} }
   | { type: 'TOGGLE_FILTER'; payload: IToggle };
