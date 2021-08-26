@@ -48,6 +48,7 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   background-color: white;
   border-bottom: #e9e9e9 solid 1px;
+  z-index: 10;
 `;
 
 const Wrapper = styled.div`
