@@ -1,4 +1,4 @@
-import { TCategory, ITodos, TPriority } from './todo';
+import { TCategory, ITodos, TPriority, ITodo } from './todo';
 
 export interface CreatedTodo {
   text: string;
@@ -37,6 +37,6 @@ export interface IToggle {
 export type Action =
   | { type: 'CREATE'; payload: CreatedTodo }
   | { type: 'REMOVE'; payload: RemoveTodoType }
-  | { type: 'UPDATE'; payload: any }
+  | { type: 'UPDATE'; payload: ITodo }
   | { type: 'LOAD'; payload?: {} }
   | { type: 'TOGGLE_FILTER'; payload: IToggle };
