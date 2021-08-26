@@ -21,14 +21,6 @@ const useModal = () => {
     const ref = useRef<HTMLDivElement | null>(null);
     const elemRef = document.getElementById('modalDom') as HTMLElement;
 
-    useEffect(() => {
-      if (showModal) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = 'unset';
-      }
-    }, []);
-
     if (!showModal) return null;
 
     return createPortal(
