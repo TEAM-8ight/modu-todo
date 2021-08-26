@@ -1,71 +1,20 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import TodoItem from '../TodoItem/TodoItem';
-import { ITodos, ITodo } from 'types';
+import { ITodos } from 'types';
 import Dropdown from 'components/common/Dropdown';
+import { TStatus } from 'types/todo';
+import { sortingMachine } from './utils/sort';
+import { dropDownOptions } from './data/dropDownOptions';
 
 interface TodoListBoxProps {
   title: string;
   todos: ITodos;
   isLast?: boolean;
+  status: TStatus;
 }
 
-const options = [
-  {
-    print: '사용자지정',
-    data: 'default',
-  },
-  {
-    print: '신규순',
-    data: 'latest',
-  },
-  {
-    print: '오래된순',
-    data: 'oldest',
-  },
-  {
-    print: '중요도',
-    data: 'priority',
-  },
-  {
-    print: '마감임박',
-    data: 'due',
-  },
-];
-
-const sortingMachine = (todos: ITodos, key: string) => {
-  type Option = {
-    [key: string]: ITodos;
-  };
-  const options: Option = {
-    default: [...todos],
-    latest: [...todos].sort((a: ITodo, b: ITodo) => {
-      if (!a.createdAt || !b.createdAt) return 0;
-      if (a.createdAt > b.createdAt) return 1;
-      if (a.createdAt < b.createdAt) return -1;
-      else return 0;
-    }),
-    oldest: [...todos].sort((a: ITodo, b: ITodo) => {
-      if (!a.createdAt || !b.createdAt) return 0;
-      if (a.createdAt < b.createdAt) return 1;
-      if (a.createdAt > b.createdAt) return -1;
-      else return 0;
-    }),
-    due: [...todos].sort((a: ITodo, b: ITodo) => {
-      if (a.due > b.due) return 1;
-      if (a.due < b.due) return -1;
-      else return 0;
-    }),
-    priority: [...todos].sort((a: ITodo, b: ITodo) => {
-      if (a.priority > b.priority) return 1;
-      if (a.priority < b.priority) return -1;
-      else return 0;
-    }),
-  };
-  return options[key];
-};
-
-const TodoListBox: React.FC<TodoListBoxProps> = ({ title, todos, isLast = false }) => {
+const TodoListBox: React.FC<TodoListBoxProps> = ({ title, todos, status, isLast = false }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [orderBy, setOrderBy] = useState('default');
   const [isDragOver, setIsDragOver] = useState(false);
@@ -101,9 +50,10 @@ const TodoListBox: React.FC<TodoListBoxProps> = ({ title, todos, isLast = false 
     if (!ref.current.isSameNode(e.target as Node)) return;
     // TODO: update 리듀서가 구현되면 사용하기
     // TODO: 현재 박스의 필터를 알려줘야한다.
-    // TODO:
     // TODO: dispatch(update) 상태바꾸기. 아래의 movingTarget이 드래그하는 아이템이다.
-    // TODO: const movingTarget = e.dataTransfer.getData('text/plain');
+    // TODO: 목표 status는 props.status
+    // TODO: const id = +e.dataTransfer.getData('text/plain');
+    // TODO: dispatch(update({id, status}))
     setIsDragOver(false);
   };
 
@@ -122,7 +72,7 @@ const TodoListBox: React.FC<TodoListBoxProps> = ({ title, todos, isLast = false 
     >
       <TodoListBoxHeader>
         <Title>{title}</Title>
-        <Dropdown selectedItem={orderBy} onItemClick={handleOrderClick} options={options} />
+        <Dropdown selectedItem={orderBy} onItemClick={handleOrderClick} options={dropDownOptions} />
       </TodoListBoxHeader>
       {ordered.map((todo) => (
         <TodoItem key={todo.id} todo={todo} />
