@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/macro';
 import TodoItem from 'components/TodoItem/TodoItem';
 import { useTodosState } from 'context/todoContext/TodoContext';
+
+import useModal from 'utils/hooks/useModal';
+import TodoEdit from 'components/TodoEdit/TodoEdit';
+import { ITodo } from 'types';
 
 interface TodoListProps {}
 
 const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
   const todos = useTodosState();
+
+  const { Modal, openModal, closeModal } = useModal();
+  const [selectedTodo, setSelectedTodo] = useState<ITodo>();
+
+  const showEditModal = (todo: ITodo) => {
+    setSelectedTodo(todo);
+    openModal();
+  };
+
   return (
     <TodoListContainer>
       <NotStarted>
@@ -14,7 +27,7 @@ const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
         {todos
           .filter((todo) => todo.status === '시작안함')
           .map((todo) => (
-            <TodoItem key={todo.id} todo={todo} />
+            <TodoItem key={todo.id} todo={todo} showEditModal={() => showEditModal(todo)} />
           ))}
       </NotStarted>
       <InProgress>
@@ -22,7 +35,7 @@ const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
         {todos
           .filter((todo) => todo.status === '진행중')
           .map((todo) => (
-            <TodoItem key={todo.id} todo={todo} />
+            <TodoItem key={todo.id} todo={todo} showEditModal={() => showEditModal(todo)} />
           ))}
       </InProgress>
       <Completed>
@@ -30,9 +43,10 @@ const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
         {todos
           .filter((todo) => todo.status === '완료')
           .map((todo) => (
-            <TodoItem key={todo.id} todo={todo} />
+            <TodoItem key={todo.id} todo={todo} showEditModal={() => showEditModal(todo)} />
           ))}
       </Completed>
+      <Modal>{selectedTodo && <TodoEdit todo={selectedTodo} closeModal={closeModal} />}</Modal>
     </TodoListContainer>
   );
 };

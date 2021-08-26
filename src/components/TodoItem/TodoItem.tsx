@@ -17,9 +17,10 @@ import { ReactComponent as Checked } from 'assets/svg/checked.svg';
 
 interface TodoItemProps {
   todo: ITodo;
+  showEditModal: (todo: ITodo) => void;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
+const TodoItem: React.FC<TodoItemProps> = ({ todo, showEditModal }: TodoItemProps) => {
   const getCategory = (category: string) => {
     if (category === '업무') {
       return <img src={Work} alt="업무" />;
@@ -55,7 +56,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
       <Top>
         <Text>{todo.text}</Text>
         <div>
-          <EditBtn>
+          <EditBtn onClick={() => showEditModal(todo)}>
             <Edit />
           </EditBtn>
           <DeleteBtn>
