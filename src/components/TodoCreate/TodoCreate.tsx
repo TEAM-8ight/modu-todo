@@ -23,17 +23,17 @@ const priorityEmoji = {
   하: '🟢',
 };
 
-const categoryOptions: any = [
+const categoryOptions: { print: string; data: string; }[] = [
   { print: '카테고리', data: '' },
   ...Object.entries(TCategory).map(([key, value]) => {
-    return { print: `${categoryEmoji[value]} ${value}`, data: key };
+    return { print: `${categoryEmoji[value]} ${value}`, data: value };
   }),
 ];
 
-const priorityOptions: any = [
+const priorityOptions: { print: string; data: string; }[] = [
   { print: '중요도', data: '' },
   ...Object.entries(TPriority).map(([key, value]) => {
-    return { print: `${priorityEmoji[value]} ${value}`, data: key };
+    return { print: `${priorityEmoji[value]} ${value}`, data: value };
   }),
 ];
 
@@ -59,6 +59,7 @@ const TodoCreate: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    console.log({ text, due, category, priority });
     const createdTodo: CreatedTodo = { text, due, category, priority };
     if (text && due && category && priority) {
       dispatch(create(createdTodo));
