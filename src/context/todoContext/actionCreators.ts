@@ -1,5 +1,5 @@
-import { CREATE, LOAD, SWAP, TOGGLE_FILTER, UPDATE } from './actionTypes';
-import { Action, CreatedTodo } from 'types';
+import { CREATE, LOAD, SWAP, TOGGLE_FILTER, UPDATE, REMOVE } from './actionTypes';
+import { Action, CreatedTodo, RemoveTodoType } from 'types';
 
 export const create = (payload: CreatedTodo): Action => {
   return { type: CREATE, payload };
@@ -23,3 +23,7 @@ export const update = (payload: {}): Action => {
     payload,
   };
 };
+export const remove = (payload: RemoveTodoType): Action => ({
+  type: REMOVE,
+  payload,
+});

@@ -6,6 +6,7 @@ import type {
   IFilter,
   ISwap,
   FilterType,
+  RemoveTodoType,
 } from 'types/context';
 import type { ITodo, ITodos } from 'types/todo';
 import { TStatus, TCategory, TPriority } from 'types/todo';
@@ -23,6 +24,7 @@ export type {
   FilterType,
   emojiType,
   colorType,
+  RemoveTodoType,
 };
 
 export { TStatus, TCategory, TPriority };

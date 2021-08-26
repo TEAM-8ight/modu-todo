@@ -1,14 +1,10 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
-import { ITodo } from 'types';
+import { remove, update } from 'context/todoContext/actionCreators';
+import { ITodo, TPriority, TStatus } from 'types';
 import { ReactComponent as Edit } from 'assets/svg/edit.svg';
 import { ReactComponent as Delete } from 'assets/svg/delete.svg';
-import Work from 'assets/svg/work.svg';
-import Study from 'assets/svg/study.svg';
-import Life from 'assets/svg/life.svg';
-import Exercise from 'assets/svg/exercise.svg';
-import Etc from 'assets/svg/etc.svg';
 import { ReactComponent as High } from 'assets/svg/high.svg';
 import { ReactComponent as Middle } from 'assets/svg/middle.svg';
 import { ReactComponent as Low } from 'assets/svg/low.svg';
@@ -21,26 +17,6 @@ interface TodoItemProps {
   todo: ITodo;
 }
 
-const getCategory = (category: string) => {
-  if (category === '업무') return <img src={Work} alt="업무" />;
-  if (category === '공부') return <img src={Study} alt="공부" />;
-  if (category === '생활') return <img src={Life} alt="생활" />;
-  if (category === '운동') return <img src={Exercise} alt="운동" />;
-  if (category === '기타') return <img src={Etc} alt="기타" />;
-};
-
-const getPriority = (priority: string) => {
-  if (priority === '상') return <High />;
-  if (priority === '중') return <Middle />;
-  if (priority === '하') return <Low />;
-};
-
-const getStatus = (status: string) => {
-  if (status === '시작안함') return <StartButton>시작</StartButton>;
-  if (status === '진행중') return <Check />;
-  if (status === '완료') return <Checked />;
-};
-
 const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
   const dispatch = useTodosDispatch();
   const {
@@ -52,10 +28,54 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
     setIsDragOver,
   } = useTodoItemDnD(todo.id);
 
+  const handleRemove = () => {
+    dispatch(remove(todo));
+  };
+
+  const categoryEmoji = {
+    업무: '👩‍💻',
+    공부: '📚',
+    생활: '🌱',
+    운동: '🏃‍',
+    기타: '💬',
+  };
+
+  const handleClick = (id: number, status: TStatus) => {
+    if (todo.status === '시작안함') return dispatch(update({ id, status: '진행중' }));
+    if (todo.status === '진행중') return dispatch(update({ id, status: '완료' }));
+    if (todo.status === '완료') return dispatch(update({ id, status: '진행중' }));
+  };
+
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     setIsDragOver(false);
     const movingTarget = e.dataTransfer.getData('text/plain');
     dispatch(swap(+movingTarget, todo.id));
+  };
+
+  type POptions = {
+    [key in TPriority]: JSX.Element;
+  };
+
+  const getPriority = (priority: TPriority) => {
+    const options: POptions = {
+      [TPriority.HIGH]: <High />,
+      [TPriority.MIDDLE]: <Middle />,
+      [TPriority.LOW]: <Low />,
+    };
+    return options[priority] || options[TPriority.MIDDLE];
+  };
+
+  type SOptions = {
+    [key in TStatus]: JSX.Element;
+  };
+
+  const getStatus = (status: TStatus) => {
+    const options: SOptions = {
+      [TStatus.NOT_STARTED]: <StartButton>시작</StartButton>,
+      [TStatus.ONGOING]: <Check />,
+      [TStatus.FINISHED]: <Checked />,
+    };
+    return options[status] || options[TStatus.NOT_STARTED];
   };
 
   return (
@@ -74,7 +94,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
           <ButtonWrapper>
             <Edit fill="black" className="edit" />
           </ButtonWrapper>
-          <ButtonWrapper>
+          <ButtonWrapper onClick={handleRemove}>
             <Delete fill="black" className="delete" />
           </ButtonWrapper>
         </div>
@@ -82,10 +102,12 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
       <DueDate>~ {todo.due.toISOString().split('T')[0]} </DueDate>
       <Down>
         <LeftIcon>
-          {getCategory(todo.category)}
+          <Category>{categoryEmoji[todo.category]}</Category>
           {getPriority(todo.priority)}
         </LeftIcon>
-        <RightIcon>{getStatus(todo.status)}</RightIcon>
+        <RightIcon onClick={() => handleClick(todo.id, todo.status)}>
+          {getStatus(todo.status)}
+        </RightIcon>
       </Down>
     </ItemContainer>
   );
@@ -161,9 +183,11 @@ const Down = styled.div`
 const LeftIcon = styled.div`
   display: flex;
   align-items: center;
-  img {
-    margin-right: 10px;
-  }
+`;
+
+const Category = styled.h3`
+  margin-right: 10px;
+  font-size: 20px;
 `;
 
 const RightIcon = styled.div`
