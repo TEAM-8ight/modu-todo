@@ -34,9 +34,15 @@ export interface IToggle {
   name: string;
 }
 
+export interface ISwap {
+  first: number;
+  second: number;
+}
+
 export type Action =
   | { type: 'CREATE'; payload: CreatedTodo }
   | { type: 'REMOVE'; payload: RemoveTodoType }
   | { type: 'UPDATE'; payload: any }
   | { type: 'LOAD'; payload?: {} }
-  | { type: 'TOGGLE_FILTER'; payload: IToggle };
+  | { type: 'TOGGLE_FILTER'; payload: IToggle }
+  | { type: 'SWAP'; payload: ISwap };

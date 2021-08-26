@@ -1,6 +1,6 @@
 import { LSHelper } from 'utils';
-import { CREATE, REMOVE, LOAD, TOGGLE_FILTER } from './actionTypes';
-import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType } from 'types';
+import { CREATE, REMOVE, LOAD, TOGGLE_FILTER, SWAP } from './actionTypes';
+import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType, ISwap, ITodos } from 'types';
 import { TODOS } from 'utils/contants';
 import { mockData } from './mockData';
 
@@ -28,10 +28,36 @@ export default function reducer(state: IState, action: Action): IState {
           : state.filter[type].filter((_, idx) => idx !== index);
 
       return { ...state, filter: { ...state.filter, [type]: newFilter } };
+    case SWAP:
+      return { ...state, todos: swapTodos(state.todos, payload) };
     default:
       return { ...state };
   }
 }
+
+const swapTodos = (prevTodos: ITodos, payload: ISwap): ITodos => {
+  const { first: firstId, second: secondId } = payload;
+  if (firstId === secondId) return prevTodos;
+  const firstTodo = prevTodos.find((todo) => todo.id === firstId);
+  const secondTodo = prevTodos.find((todo) => todo.id === secondId);
+  if (!firstTodo || !secondTodo) return prevTodos;
+  if (firstTodo.status === secondTodo.status) {
+    const firstIndex = prevTodos.findIndex((todo) => todo.id === firstId);
+    const secondIndex = prevTodos.findIndex((todo) => todo.id === secondId);
+    if (firstIndex === -1 || secondIndex === -1) return prevTodos;
+    const newTodos = [...prevTodos];
+    [newTodos[firstIndex], newTodos[secondIndex]] = [newTodos[secondIndex], newTodos[firstIndex]];
+    return newTodos;
+  } else {
+    const newTodos = [...prevTodos];
+    const firstIndex = prevTodos.findIndex((todo) => todo.id === firstId);
+    const firstTodo = newTodos.splice(firstIndex, 1)[0];
+    const secondIndex = newTodos.findIndex((todo) => todo.id === secondId);
+    firstTodo.status = newTodos[secondIndex].status;
+    newTodos.splice(secondIndex, 0, firstTodo);
+    return newTodos;
+  }
+};
 
 const loadTodos = (): IState => {
   let todos = LSHelper.getItem(TODOS);

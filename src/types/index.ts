@@ -4,6 +4,7 @@ import type {
   CreatedTodo,
   NewTodoPayload,
   IFilter,
+  ISwap,
   FilterType,
 } from 'types/context';
 import type { ITodo, ITodos } from 'types/todo';
@@ -18,6 +19,7 @@ export type {
   ITodo,
   ITodos,
   IFilter,
+  ISwap,
   FilterType,
   emojiType,
   colorType,
