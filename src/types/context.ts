@@ -39,5 +39,4 @@ export type Action =
   | { type: 'REMOVE'; payload: RemoveTodoType }
   | { type: 'UPDATE'; payload: any }
   | { type: 'LOAD'; payload?: {} }
-  | { type: 'TOGGLE_FILTER'; payload: IToggle }
-  | { type: 'TOGGLE_CHECK'; payload: any };
+  | { type: 'TOGGLE_FILTER'; payload: IToggle };
