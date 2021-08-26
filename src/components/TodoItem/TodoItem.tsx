@@ -14,44 +14,60 @@ import { ReactComponent as Middle } from 'assets/svg/middle.svg';
 import { ReactComponent as Low } from 'assets/svg/low.svg';
 import { ReactComponent as Check } from 'assets/svg/check.svg';
 import { ReactComponent as Checked } from 'assets/svg/checked.svg';
+import { useDragAndDrop } from '../../utils/hooks/useDragAndDrop';
+import { swap } from 'context/todoContext/actionCreators';
 
 interface TodoItemProps {
   todo: ITodo;
 }
 
+const getCategory = (category: string) => {
+  if (category === '업무') return <img src={Work} alt="업무" />;
+  if (category === '공부') return <img src={Study} alt="공부" />;
+  if (category === '생활') return <img src={Life} alt="생활" />;
+  if (category === '운동') return <img src={Exercise} alt="운동" />;
+  if (category === '기타') return <img src={Etc} alt="기타" />;
+};
+
+const getPriority = (priority: string) => {
+  if (priority === '상') return <High />;
+  if (priority === '중') return <Middle />;
+  if (priority === '하') return <Low />;
+};
+
+const getStatus = (status: string) => {
+  if (status === '시작안함') return <StartButton>시작</StartButton>;
+  if (status === '진행중') return <Check />;
+  if (status === '완료') return <Checked />;
+};
+
 const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
-  const getCategory = (category: string) => {
-    if (category === '업무') {
-      return <img src={Work} alt="업무" />;
-    }
-    if (category === '공부') {
-      return <img src={Study} alt="공부" />;
-    }
-    if (category === '생활') {
-      return <img src={Life} alt="생활" />;
-    }
-    if (category === '운동') {
-      return <img src={Exercise} alt="운동" />;
-    }
-    if (category === '기타') {
-      return <img src={Etc} alt="기타" />;
-    }
-  };
+  const dispatch = useTodosDispatch();
+  const {
+    isDragOver,
+    handleDragStart,
+    handleDragOver,
+    handleDragEnter,
+    handleDragLeave,
+    setIsDragOver,
+  } = useDragAndDrop(todo.id);
 
-  const getPriority = (priority: string) => {
-    if (priority === '상') return <High />;
-    if (priority === '중') return <Middle />;
-    if (priority === '하') return <Low />;
-  };
-
-  const getStatus = (status: string) => {
-    if (status === '시작안함') return <StartButton>시작</StartButton>;
-    if (status === '진행중') return <Check />;
-    if (status === '완료') return <Checked />;
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    setIsDragOver(false);
+    const movingTarget = e.dataTransfer.getData('text/plain');
+    dispatch(swap(+movingTarget, todo.id));
   };
 
   return (
-    <ItemContainer>
+    <ItemContainer
+      draggable
+      onDragStart={handleDragStart}
+      onDrop={handleDrop}
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      isDragOver={isDragOver}
+    >
       <Top>
         <Text>{todo.text}</Text>
         <div>
@@ -77,13 +93,15 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
 
 export default TodoItem;
 
-const ItemContainer = styled.div`
+const ItemContainer = styled.div<{ isDragOver: boolean }>`
   padding: 20px 25px;
   margin-bottom: 20px;
   width: 300px;
   border: 1px solid #c5c5c5;
   border-radius: 10px;
-  background-color: white;
+  // background-color: white;
+  background-color: ${({ isDragOver }) => (isDragOver ? 'red' : 'white')};
+  cursor: grab;
 `;
 
 const Top = styled.div`
