@@ -1,5 +1,5 @@
 import { LSHelper } from 'utils';
-import { CREATE, REMOVE, LOAD, TOGGLE_FILTER, SWAP } from './actionTypes';
+import { CREATE, REMOVE, LOAD, TOGGLE_FILTER, SWAP, UPDATE } from './actionTypes';
 import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType, ISwap, ITodos } from 'types';
 import { TODOS } from 'utils/contants';
 import { mockData } from './mockData';
@@ -16,7 +16,8 @@ export default function reducer(state: IState, action: Action): IState {
         todos: state.todos.concat(newTodo),
         nextId: newTodo.id + 1,
       };
-
+    case UPDATE:
+      return { ...state, todos: updateTodos(payload, state.todos) };
     case REMOVE:
       return { ...state, todos: state.todos.filter((todo: ITodo) => todo.id !== payload?.id) };
     case TOGGLE_FILTER:
@@ -34,6 +35,18 @@ export default function reducer(state: IState, action: Action): IState {
       return { ...state };
   }
 }
+
+const updateTodos = (payload: { id: number }, prevTodos: ITodos) => {
+  const { id, ...rest } = payload;
+  return prevTodos.map((todo) => {
+    if (todo.id !== id) return todo;
+    return {
+      ...todo,
+      ...rest,
+      updatedAt: new Date(),
+    };
+  });
+};
 
 const swapTodos = (prevTodos: ITodos, payload: ISwap): ITodos => {
   const { first: firstId, second: secondId } = payload;

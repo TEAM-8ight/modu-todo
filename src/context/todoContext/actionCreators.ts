@@ -1,4 +1,4 @@
-import { CREATE, LOAD, SWAP, TOGGLE_FILTER } from './actionTypes';
+import { CREATE, LOAD, SWAP, TOGGLE_FILTER, UPDATE } from './actionTypes';
 import { Action, CreatedTodo } from 'types';
 
 export const create = (payload: CreatedTodo): Action => {
@@ -16,3 +16,10 @@ export const swap = (first: number, second: number): Action => ({
   type: SWAP,
   payload: { first, second },
 });
+
+export const update = (payload: {}): Action => {
+  return {
+    type: UPDATE,
+    payload,
+  };
+};
