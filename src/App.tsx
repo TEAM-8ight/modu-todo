@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
+import TodoCreate from 'components/TodoCreate/TodoCreate';
 import TodoFilter from 'components/TodoFilter/TodoFilter';
 import TodoHeader from 'components/TodoHeader/TodoHeader';
-import DropdownTemp from 'components/temp/DropdownTemp';
 
-const App: React.FC<any> = () => {
+const App: React.FC = () => {
   return (
     <div className="App">
       <TodoHeader />
       <Container>
-        <DropdownTemp />
+        <TodoCreate />
         <Filter>
           <TodoFilter type="category" />
           <TodoFilter type="priority" />

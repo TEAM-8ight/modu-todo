@@ -1,4 +1,11 @@
-import type { IState, Action, CreateTodoDto, IFilter, FilterType } from 'types/context';
+import type {
+  IState,
+  Action,
+  CreatedTodo,
+  NewTodoPayload,
+  IFilter,
+  FilterType,
+} from 'types/context';
 import type { ITodo, ITodos } from 'types/todo';
 import { TStatus, TCategory, TPriority } from 'types/todo';
 import { emojiType, colorType } from 'types/filter';
@@ -6,7 +13,8 @@ import { emojiType, colorType } from 'types/filter';
 export type {
   IState,
   Action,
-  CreateTodoDto,
+  CreatedTodo,
+  NewTodoPayload,
   ITodo,
   ITodos,
   IFilter,
