@@ -15,7 +15,7 @@ interface TodoListBoxProps {
   status: TStatus;
 }
 
-const TodoBox: React.FC<TodoListBoxProps> = ({ title, todos, status, isLast = false }) => {
+const TodoSection: React.FC<TodoListBoxProps> = ({ title, todos, status, isLast = false }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [orderBy, setOrderBy] = useState('default');
 
@@ -61,7 +61,7 @@ const TodoBox: React.FC<TodoListBoxProps> = ({ title, todos, status, isLast = fa
   );
 };
 
-export default TodoBox;
+export default TodoSection;
 
 const TodoListBoxHeader = styled.div`
   display: flex;
