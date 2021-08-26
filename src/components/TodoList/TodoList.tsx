@@ -50,25 +50,19 @@ const Title = styled.h2`
   font-weight: 600;
 `;
 
-const NotStarted = styled.div`
-  margin-right: 25px;
+const GrayBackground = styled.div`
   padding: 25px;
   min-width: 300px;
   border-radius: 10px;
   background-color: ${({ theme }) => theme.color.lightGray};
 `;
 
-const InProgress = styled.div`
+const NotStarted = styled(GrayBackground)`
   margin-right: 25px;
-  padding: 25px;
-  min-width: 300px;
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.color.lightGray};
 `;
 
-const Completed = styled.div`
-  padding: 25px;
-  min-width: 300px;
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.color.lightGray};
+const InProgress = styled(GrayBackground)`
+  margin-right: 25px;
 `;
+
+const Completed = styled(GrayBackground)``;
