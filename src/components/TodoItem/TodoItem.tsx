@@ -22,12 +22,16 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
     dispatch(remove(todo));
   };
 
-  const getCategory = (category: string) => {
-    if (category === '업무') return '👩‍💻';
-    if (category === '공부') return '📚';
-    if (category === '생활') return '🌱';
-    if (category === '운동') return '🏃‍♂️';
-    else return '💬';
+  const handleClick = () => {
+    // if
+  };
+
+  const categoryEmoji = {
+    업무: '👩‍💻',
+    공부: '📚',
+    생활: '🌱',
+    운동: '🏃‍♂️',
+    기타: '💬',
   };
 
   type POptions = {
@@ -72,10 +76,10 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
       <DueDate>~ {todo.due.toISOString().split('T')[0]} </DueDate>
       <Down>
         <LeftIcon>
-          {getCategory(todo.category)}
+          <Category>{categoryEmoji[todo.category]}</Category>
           {getPriority(todo.priority)}
         </LeftIcon>
-        <RightIcon>{getStatus(todo.status)}</RightIcon>
+        <RightIcon onClick={handleClick}>{getStatus(todo.status)}</RightIcon>
       </Down>
     </ItemContainer>
   );
@@ -137,9 +141,11 @@ const Down = styled.div`
 const LeftIcon = styled.div`
   display: flex;
   align-items: center;
-  img {
-    margin-right: 10px;
-  }
+`;
+
+const Category = styled.h3`
+  margin-right: 10px;
+  font-size: 20px;
 `;
 
 const RightIcon = styled.div`

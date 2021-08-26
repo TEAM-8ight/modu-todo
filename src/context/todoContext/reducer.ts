@@ -1,5 +1,5 @@
 import { LSHelper } from 'utils';
-import { CREATE, REMOVE, LOAD, TOGGLE_FILTER, TOGGLE_CHECK } from './actionTypes';
+import { CREATE, REMOVE, LOAD, TOGGLE_FILTER } from './actionTypes';
 import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType } from 'types';
 import { TODOS } from 'utils/contants';
 import { mockData } from './mockData';
@@ -16,11 +16,7 @@ export default function reducer(state: IState, action: Action): IState {
         todos: state.todos.concat(newTodo),
         nextId: newTodo.id + 1,
       };
-    case TOGGLE_CHECK:
-      return {
-        ...state,
-        todos: state.todos.map((todo: ITodo) => (todo.id === payload?.id ? { ...todo } : todo)),
-      };
+
     case REMOVE:
       return { ...state, todos: state.todos.filter((todo: ITodo) => todo.id !== payload?.id) };
     case TOGGLE_FILTER:
