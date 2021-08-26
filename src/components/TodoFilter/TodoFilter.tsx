@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import FilterButton from 'components/common/FilterButton';
-import { TCategory, TPriority, FilterType, emojiType, colorType } from 'types';
+import { TCategory, TPriority, FilterType } from 'types';
+import { circle, emoji } from 'utils/contants';
 
 type CategoryKey = keyof typeof TCategory;
 type PriorityKey = keyof typeof TPriority;
@@ -11,20 +12,6 @@ interface TodoFilterProps {
 }
 
 const TodoFilter: React.FC<TodoFilterProps> = ({ type }) => {
-  const emoji: emojiType = {
-    WORK: '👩‍💻',
-    STUDY: '📚',
-    LIVING: '🌱',
-    EXERCISE: '🏃‍♀️',
-    ETC: '💬',
-  };
-
-  const circle: colorType = {
-    HIGH: 'red',
-    MIDDLE: 'yellow',
-    LOW: 'green',
-  };
-
   const renderCategory = () =>
     Object.entries(TCategory).map((item) => {
       const key = item[0] as CategoryKey;
