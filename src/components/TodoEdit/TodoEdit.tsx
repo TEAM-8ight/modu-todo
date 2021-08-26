@@ -5,6 +5,7 @@ import { getDate } from 'utils/date';
 import { DATE_OPTION, DATE_LABEL } from 'utils/contants';
 import { update } from 'context/todoContext/actionCreators';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
+import { ReactComponent as Close } from 'assets/svg/close.svg';
 import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
 import { ITodo, TCategory, TPriority, TStatus } from 'types';
 
@@ -88,6 +89,9 @@ const TodoEdit: React.FC<TodoEditProps> = ({ todo, closeModal }) => {
 
   return (
     <Wrapper>
+      <CloseDiv onClick={closeModal}>
+        <Close width="36" height="36" />
+      </CloseDiv>
       <Title>MODO TODO EDIT</Title>
       <Item>
         <TodoInput
@@ -111,7 +115,7 @@ const TodoEdit: React.FC<TodoEditProps> = ({ todo, closeModal }) => {
 export default TodoEdit;
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -120,6 +124,16 @@ const Wrapper = styled.div`
   background: ${({ theme }) => theme.color.white};
   border: 1px solid ${({ theme }) => theme.color.borderGray};
   border-radius: 16px;
+`;
+
+const CloseDiv = styled.div`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+  svg {
+    fill: ${({ theme }) => theme.color.red};
+  }
 `;
 
 const Title = styled.div`
