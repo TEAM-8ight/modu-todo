@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
-import { remove } from 'context/todoContext/actionCreators';
+import { remove, update } from 'context/todoContext/actionCreators';
 import { ITodo, TPriority, TStatus } from 'types';
 import { ReactComponent as Edit } from 'assets/svg/edit.svg';
 import { ReactComponent as Delete } from 'assets/svg/delete.svg';
@@ -22,15 +22,17 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
     dispatch(remove(todo));
   };
 
-  const handleClick = () => {
-    // if
+  const handleClick = (id: number, status: TStatus) => {
+    if (todo.status === '시작안함') return dispatch(update({ id, status: '진행중' }));
+    if (todo.status === '진행중') return dispatch(update({ id, status: '완료' }));
+    if (todo.status === '완료') return dispatch(update({ id, status: '진행중' }));
   };
 
   const categoryEmoji = {
     업무: '👩‍💻',
     공부: '📚',
     생활: '🌱',
-    운동: '🏃‍♂️',
+    운동: '🏃‍',
     기타: '💬',
   };
 
@@ -79,7 +81,9 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
           <Category>{categoryEmoji[todo.category]}</Category>
           {getPriority(todo.priority)}
         </LeftIcon>
-        <RightIcon onClick={handleClick}>{getStatus(todo.status)}</RightIcon>
+        <RightIcon onClick={() => handleClick(todo.id, todo.status)}>
+          {getStatus(todo.status)}
+        </RightIcon>
       </Down>
     </ItemContainer>
   );
