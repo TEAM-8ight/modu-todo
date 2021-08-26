@@ -10,6 +10,8 @@ import { ReactComponent as Middle } from 'assets/svg/middle.svg';
 import { ReactComponent as Low } from 'assets/svg/low.svg';
 import { ReactComponent as Check } from 'assets/svg/check.svg';
 import { ReactComponent as Checked } from 'assets/svg/checked.svg';
+import { useTodoItemDnD } from './utils/useTodoItemDnD';
+import { swap } from 'context/todoContext/actionCreators';
 
 interface TodoItemProps {
   todo: ITodo;
@@ -17,15 +19,17 @@ interface TodoItemProps {
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
   const dispatch = useTodosDispatch();
+  const {
+    isDragOver,
+    handleDragStart,
+    handleDragOver,
+    handleDragEnter,
+    handleDragLeave,
+    setIsDragOver,
+  } = useTodoItemDnD(todo.id);
 
   const handleRemove = () => {
     dispatch(remove(todo));
-  };
-
-  const handleClick = (id: number, status: TStatus) => {
-    if (todo.status === '시작안함') return dispatch(update({ id, status: '진행중' }));
-    if (todo.status === '진행중') return dispatch(update({ id, status: '완료' }));
-    if (todo.status === '완료') return dispatch(update({ id, status: '진행중' }));
   };
 
   const categoryEmoji = {
@@ -34,6 +38,18 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
     생활: '🌱',
     운동: '🏃‍',
     기타: '💬',
+  };
+
+  const handleClick = (id: number, status: TStatus) => {
+    if (todo.status === '시작안함') return dispatch(update({ id, status: '진행중' }));
+    if (todo.status === '진행중') return dispatch(update({ id, status: '완료' }));
+    if (todo.status === '완료') return dispatch(update({ id, status: '진행중' }));
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    setIsDragOver(false);
+    const movingTarget = e.dataTransfer.getData('text/plain');
+    dispatch(swap(+movingTarget, todo.id));
   };
 
   type POptions = {
@@ -63,16 +79,24 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
   };
 
   return (
-    <ItemContainer>
+    <ItemContainer
+      draggable
+      onDragStart={handleDragStart}
+      onDrop={handleDrop}
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      isDragOver={isDragOver}
+    >
       <Top>
         <Text>{todo.text}</Text>
         <div>
-          <EditBtn>
-            <Edit />
-          </EditBtn>
-          <DeleteBtn onClick={handleRemove}>
-            <Delete />
-          </DeleteBtn>
+          <ButtonWrapper>
+            <Edit fill="black" className="edit" />
+          </ButtonWrapper>
+          <ButtonWrapper onClick={handleRemove}>
+            <Delete fill="black" className="delete" />
+          </ButtonWrapper>
         </div>
       </Top>
       <DueDate>~ {todo.due.toISOString().split('T')[0]} </DueDate>
@@ -91,13 +115,14 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
 
 export default TodoItem;
 
-const ItemContainer = styled.div`
+const ItemContainer = styled.div<{ isDragOver: boolean }>`
   padding: 20px 25px;
   margin-bottom: 20px;
   width: 300px;
   border: 1px solid #c5c5c5;
   border-radius: 10px;
-  background-color: white;
+  background-color: ${({ isDragOver }) => (isDragOver ? '#eeeeee' : 'white')};
+  cursor: grab;
 `;
 
 const Top = styled.div`
@@ -114,9 +139,7 @@ const Top = styled.div`
 
   button {
     border: none;
-    background-color: white;
     padding: 0px;
-    margin-left: 8px;
   }
 `;
 
@@ -124,6 +147,8 @@ const Text = styled.h3`
   font-size: 18px;
   font-weight: 600;
   line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const DueDate = styled.p`
@@ -131,8 +156,21 @@ const DueDate = styled.p`
   font-size: 16px;
 `;
 
-const EditBtn = styled.button``;
-const DeleteBtn = styled.button``;
+const ButtonWrapper = styled.button`
+  background-color: transparent;
+  width: 23px;
+  height: 23px;
+  margin-left: 5px;
+  &: hover {
+    .edit {
+      fill: ${({ theme }) => theme.color.green};
+    }
+    .delete {
+      fill: ${({ theme }) => theme.color.red};
+    }
+  }
+  border-radius: 5px;
+`;
 
 const Down = styled.div`
   display: flex;

@@ -1,4 +1,4 @@
-import { CREATE, LOAD, TOGGLE_FILTER, REMOVE } from './actionTypes';
+import { CREATE, LOAD, SWAP, TOGGLE_FILTER, UPDATE, REMOVE } from './actionTypes';
 import { Action, CreatedTodo, RemoveTodoType } from 'types';
 
 export const create = (payload: CreatedTodo): Action => {
@@ -12,6 +12,17 @@ export const toggleFilter = (type: string, name: string): Action => ({
   payload: { type, name },
 });
 
+export const swap = (first: number, second: number): Action => ({
+  type: SWAP,
+  payload: { first, second },
+});
+
+export const update = (payload: {}): Action => {
+  return {
+    type: UPDATE,
+    payload,
+  };
+};
 export const remove = (payload: RemoveTodoType): Action => ({
   type: REMOVE,
   payload,
