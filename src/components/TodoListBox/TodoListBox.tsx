@@ -6,6 +6,7 @@ import Dropdown from 'components/common/Dropdown';
 import { TStatus } from 'types/todo';
 import { sortingMachine } from './utils/sort';
 import { dropDownOptions } from './data/dropDownOptions';
+import { useTodoBoxDnD } from './utils/useTodoBoxDnD';
 
 interface TodoListBoxProps {
   title: string;
@@ -17,33 +18,13 @@ interface TodoListBoxProps {
 const TodoListBox: React.FC<TodoListBoxProps> = ({ title, todos, status, isLast = false }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [orderBy, setOrderBy] = useState('default');
-  const [isDragOver, setIsDragOver] = useState(false);
 
   const handleOrderClick = (order: string) => {
     setOrderBy(order);
   };
 
-  // TODO: drag의 box 역할을 도와주는 커스텀훅 만들기
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-    if (!ref || !ref.current) return;
-    if (ref.current.isSameNode(e.target as Node)) {
-      setIsDragOver(false);
-      e.preventDefault();
-    }
-  };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    if (!ref || !ref.current) return;
-    if (ref.current.isSameNode(e.target as Node)) {
-      setIsDragOver(true);
-      e.preventDefault();
-    }
-  };
-
-  const handleDragLeave = () => {
-    setIsDragOver(false);
-  };
+  const { isDragOver, setIsDragOver, handleDragStart, handleDragOver, handleDragLeave } =
+    useTodoBoxDnD(ref);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     if (!ref || !ref.current) return;
@@ -58,7 +39,6 @@ const TodoListBox: React.FC<TodoListBoxProps> = ({ title, todos, status, isLast 
   };
 
   const ordered = sortingMachine(todos, orderBy);
-
   return (
     <TodoListBoxWrapper
       ref={ref}
