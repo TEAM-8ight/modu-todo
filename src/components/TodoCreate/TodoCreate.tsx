@@ -13,7 +13,7 @@ const categoryEmoji = {
   업무: '👩‍💻',
   공부: '📚',
   생활: '🌱',
-  운동: '🏃‍♂️',
+  운동: '🏃‍♀️',
   기타: '💬',
 };
 
@@ -23,14 +23,14 @@ const priorityEmoji = {
   하: '🟢',
 };
 
-const categoryOptions: { print: string; data: string; }[] = [
+const categoryOptions: { print: string; data: string }[] = [
   { print: '카테고리', data: '' },
   ...Object.entries(TCategory).map(([key, value]) => {
     return { print: `${categoryEmoji[value]} ${value}`, data: value };
   }),
 ];
 
-const priorityOptions: { print: string; data: string; }[] = [
+const priorityOptions: { print: string; data: string }[] = [
   { print: '중요도', data: '' },
   ...Object.entries(TPriority).map(([key, value]) => {
     return { print: `${priorityEmoji[value]} ${value}`, data: value };
@@ -46,7 +46,7 @@ const TodoCreate: React.FC = () => {
 
   const dispatch = useTodosDispatch();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
   };
 
@@ -57,30 +57,39 @@ const TodoCreate: React.FC = () => {
     setPriority('');
   };
 
+  const CreateSuccess = (createdTodo: CreatedTodo) => {
+    dispatch(create(createdTodo));
+    initializeState();
+    alert('🎉 할 일이 등록되었습니다!');
+  };
+
+  const CreateFail = (createdTodo: CreatedTodo) => {
+    const alertElement: {
+      [key: string]: string;
+    } = {
+      text: '할 일 내용',
+      due: '마감일자',
+      category: '카테고리',
+      priority: '중요도',
+    };
+    const alertMessage: string[] = [];
+    Object.entries(createdTodo).forEach(([key, value]) => {
+      value || alertMessage.push(alertElement[key]);
+    });
+    alert(`✏ ${alertMessage.join(', ')}를 입력해주세요!`);
+  };
+
   const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log({ text, due, category, priority });
     const createdTodo: CreatedTodo = { text, due, category, priority };
     if (text && due && category && priority) {
-      dispatch(create(createdTodo));
-      initializeState();
-      alert('🎉 할 일이 등록되었습니다!');
+      CreateSuccess(createdTodo);
     } else {
-      const alertElement = {
-        '할 일 내용': text,
-        마감일자: due,
-        카테고리: category,
-        중요도: priority,
-      };
-      const alertMessage: string[] = [];
-      Object.entries(alertElement).forEach(([key, value]) => {
-        value || alertMessage.push(key);
-      });
-      alert(`✏ ${alertMessage.join(', ')}를 입력해주세요!`);
+      CreateFail(createdTodo);
     }
   };
 
-  const selectDateHandler = (selectedDate: Date) => {
+  const handleDueChange = (selectedDate: Date) => {
     setDue(selectedDate);
   };
 
@@ -91,14 +100,14 @@ const TodoCreate: React.FC = () => {
           type="text"
           placeholder="할 일을 입력해주세요."
           value={text}
-          onChange={handleChange}
+          onChange={handleTextChange}
         />
         <CalendarWrapper>
           <DatePicker
             closeOnScroll={true}
             selected={due}
             minDate={today}
-            onChange={selectDateHandler}
+            onChange={handleDueChange}
             customInput={<Calender width="20" height="20" />}
           />
         </CalendarWrapper>
