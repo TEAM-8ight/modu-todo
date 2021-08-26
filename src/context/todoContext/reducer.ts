@@ -1,6 +1,6 @@
 import { LSHelper } from 'utils';
-import { CREATE, DELETE, LOAD, UPDATE, TOGGLE_FILTER } from './actionTypes';
-import { IState, Action, CreateTodoDto, FilterType, ITodo, TPriority, TStatus } from 'types';
+import { CREATE, REMOVE, LOAD, UPDATE, TOGGLE_FILTER } from './actionTypes';
+import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType } from 'types';
 import { TODOS } from 'utils/contants';
 import { mockData } from './mockData';
 
@@ -10,7 +10,7 @@ export default function reducer(state: IState, action: Action): IState {
     case LOAD:
       return loadTodos();
     case CREATE:
-      const newTodo = createTodo(state.nextId, payload);
+      const newTodo = createNewTodo(state.nextId, payload);
       return {
         ...state,
         todos: state.todos.concat(newTodo),
@@ -21,8 +21,8 @@ export default function reducer(state: IState, action: Action): IState {
         ...state,
         todos: state.todos.map((todo) => (todo.id === payload.id ? payload : todo)),
       };
-    case DELETE:
-      return { ...state };
+    case REMOVE:
+      return { ...state, todos: state.todos.filter((todo: ITodo) => todo.id !== payload?.id) };
     case TOGGLE_FILTER:
       const type = payload.type as FilterType;
       const index = state.filter[type].findIndex((filter) => filter === payload.name);
@@ -38,24 +38,33 @@ export default function reducer(state: IState, action: Action): IState {
 }
 
 const loadTodos = (): IState => {
-  const todos = LSHelper.getItem(TODOS) || mockData;
+  let todos = LSHelper.getItem(TODOS);
+  if (!todos) {
+    todos = mockData;
+  } else {
+    todos.forEach((todo: ITodo) => {
+      todo.due = new Date(todo.due);
+      if (todo.updatedAt) todo.updatedAt = new Date(todo.updatedAt);
+      if (todo.createdAt) todo.createdAt = new Date(todo.createdAt);
+    });
+  }
   const nextId = todos.length ? Math.max(...todos.map((todo: ITodo) => todo.id)) + 1 : 0;
   const filter = { category: [], priority: [] };
   return { todos, nextId: nextId, filter };
 };
 
-const createTodo = (nextId: number, createTodoDto: CreateTodoDto): ITodo => {
-  const { text, due, category } = createTodoDto;
+const createNewTodo = (id: number, payload: NewTodoPayload) => {
+  const { text, due, category, priority } = payload;
+  const now = new Date();
   const newTodo: ITodo = {
-    id: nextId,
-    text,
+    id,
     status: TStatus.NOT_STARTED,
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: now,
+    updatedAt: now,
+    text,
     due,
     category,
-    priority: TPriority.MIDDLE,
+    priority,
   };
-
   return newTodo;
 };

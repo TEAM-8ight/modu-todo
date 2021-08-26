@@ -1,11 +1,22 @@
-import { TCategory, ITodos } from './todo';
+import { TCategory, ITodos, TPriority } from './todo';
 
-export interface CreateTodoDto {
+export interface CreatedTodo {
+  text: string;
+  due: Date | null;
+  category: string;
+  priority: string;
+}
+
+export interface NewTodoPayload {
   text: string;
   due: Date;
   category: TCategory;
+  priority: TPriority;
 }
 
+export interface RemoveTodoType {
+  id: number;
+}
 export interface IFilter {
   category: string[];
   priority: string[];
@@ -24,8 +35,8 @@ export interface IToggle {
 }
 
 export type Action =
-  | { type: 'CREATE'; payload: CreateTodoDto }
-  | { type: 'DELETE'; payload: any }
+  | { type: 'CREATE'; payload: CreatedTodo }
+  | { type: 'REMOVE'; payload: RemoveTodoType }
   | { type: 'UPDATE'; payload: any }
   | { type: 'LOAD'; payload?: {} }
   | { type: 'TOGGLE_FILTER'; payload: IToggle };

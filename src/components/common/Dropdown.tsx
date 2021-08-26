@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { useDetectOutsideClick } from 'utils/hooks';
-
 import { ReactComponent as DownArrow } from 'assets/svg/down-arrow.svg';
 import { ReactComponent as UpArrow } from 'assets/svg/up-arrow.svg';
 
@@ -52,11 +51,13 @@ const DropdownContainer = styled.div<{ theme: {} }>`
   justify-content: center;
   align-items: center;
   position: relative;
-  width: 106px;
+  min-width: 72px;
   height: 35px;
+  padding: 8px 15px;
   font-size: 16px;
   background-color: ${({ theme }) => theme.color.alabaster};
   border-radius: 5px;
+  font-size: 16px;
 `;
 
 const DropdownHeader = styled.div`
@@ -67,7 +68,7 @@ const DropdownHeader = styled.div`
     cursor: pointer;
   }
   svg {
-    margin-left: 4px;
+    margin-left: 8px;
   }
 `;
 
