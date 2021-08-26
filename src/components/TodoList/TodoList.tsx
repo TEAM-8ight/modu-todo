@@ -11,24 +11,27 @@ const TodoList: React.FC<TodoListProps> = (props: TodoListProps) => {
     <TodoListContainer>
       <NotStarted>
         <Title>Not Started</Title>
-        {todos &&
-          todos
-            .filter((todo) => todo.status === '시작안함')
-            .map((todo) => <TodoItem key={todo.id} todo={todo} />)}
+        {todos
+          .filter((todo) => todo.status === '시작안함')
+          .map((todo) => (
+            <TodoItem key={todo.id} todo={todo} />
+          ))}
       </NotStarted>
       <InProgress>
         <Title>In Progress</Title>
-        {todos &&
-          todos
-            .filter((todo) => todo.status === '진행중')
-            .map((todo) => <TodoItem key={todo.id} todo={todo} />)}
+        {todos
+          .filter((todo) => todo.status === '진행중')
+          .map((todo) => (
+            <TodoItem key={todo.id} todo={todo} />
+          ))}
       </InProgress>
       <Completed>
         <Title>Completed</Title>
-        {todos &&
-          todos
-            .filter((todo) => todo.status === '완료')
-            .map((todo) => <TodoItem key={todo.id} todo={todo} />)}
+        {todos
+          .filter((todo) => todo.status === '완료')
+          .map((todo) => (
+            <TodoItem key={todo.id} todo={todo} />
+          ))}
       </Completed>
     </TodoListContainer>
   );

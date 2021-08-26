@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-// import { delete } from 'context/todoContext/actionCreators';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
 import { ITodo } from 'types';
 import { ReactComponent as Edit } from 'assets/svg/edit.svg';
@@ -22,7 +21,6 @@ interface TodoItemProps {
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
   const getCategory = (category: string) => {
-    // console.log(category);
     if (category === '업무') {
       return <img src={Work} alt="업무" />;
     }
@@ -68,7 +66,6 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
       <DueDate>~ {todo.due.toISOString().split('T')[0]} </DueDate>
       <Down>
         <LeftIcon>
-          {/* {<h1>{categoryEmoji[todo.category]}</h1>} */}
           {getCategory(todo.category)}
           {getPriority(todo.priority)}
         </LeftIcon>
