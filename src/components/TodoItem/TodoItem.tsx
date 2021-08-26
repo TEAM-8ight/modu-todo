@@ -71,12 +71,12 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
       <Top>
         <Text>{todo.text}</Text>
         <div>
-          <EditBtn>
-            <Edit />
-          </EditBtn>
-          <DeleteBtn>
-            <Delete />
-          </DeleteBtn>
+          <ButtonWrapper>
+            <Edit fill="black" className="edit" />
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <Delete fill="black" className="delete" />
+          </ButtonWrapper>
         </div>
       </Top>
       <DueDate>~ {todo.due.toISOString().split('T')[0]} </DueDate>
@@ -118,7 +118,6 @@ const Top = styled.div`
   button {
     border: none;
     padding: 0px;
-    margin-left: 8px;
   }
 `;
 
@@ -126,6 +125,8 @@ const Text = styled.h3`
   font-size: 18px;
   font-weight: 600;
   line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const DueDate = styled.p`
@@ -133,11 +134,20 @@ const DueDate = styled.p`
   font-size: 16px;
 `;
 
-const EditBtn = styled.button`
+const ButtonWrapper = styled.button`
   background-color: transparent;
-`;
-const DeleteBtn = styled.button`
-  background-color: transparent;
+  width: 23px;
+  height: 23px;
+  margin-left: 5px;
+  &: hover {
+    .edit {
+      fill: ${({ theme }) => theme.color.green};
+    }
+    .delete {
+      fill: ${({ theme }) => theme.color.red};
+    }
+  }
+  border-radius: 5px;
 `;
 
 const Down = styled.div`

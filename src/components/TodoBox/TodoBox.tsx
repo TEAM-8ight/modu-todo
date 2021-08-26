@@ -77,9 +77,8 @@ const Title = styled.h2`
 
 const TodoListBoxWrapper = styled.div<{ isLast: boolean; isDragOver: boolean }>`
   padding: 25px;
-  min-width: 300px;
+  min-width: 350px;
   border-radius: 10px;
-  // background-color: ${({ theme }) => theme.color.lightGray};
   margin-right: ${({ isLast }) => (isLast ? '0' : '25px')};
   background-color: ${({ isDragOver, theme }) => (isDragOver ? '#eeeeee' : theme.color.lightGray)};
 `;
