@@ -14,7 +14,7 @@ import { ReactComponent as Middle } from 'assets/svg/middle.svg';
 import { ReactComponent as Low } from 'assets/svg/low.svg';
 import { ReactComponent as Check } from 'assets/svg/check.svg';
 import { ReactComponent as Checked } from 'assets/svg/checked.svg';
-import { useDragAndDrop } from '../../utils/hooks/useDragAndDrop';
+import { useTodoItemDnD } from './utils/useTodoItemDnD';
 import { swap } from 'context/todoContext/actionCreators';
 
 interface TodoItemProps {
@@ -50,7 +50,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
     handleDragEnter,
     handleDragLeave,
     setIsDragOver,
-  } = useDragAndDrop(todo.id);
+  } = useTodoItemDnD(todo.id);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     setIsDragOver(false);

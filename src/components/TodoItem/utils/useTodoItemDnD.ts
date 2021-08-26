@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export const useDragAndDrop = (id: number) => {
+export const useTodoItemDnD = (id: number) => {
   const [isDragging, setisDragging] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
 
