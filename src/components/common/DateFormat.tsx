@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { getDate } from 'utils/date';
-import { DATE_OPTION, DATE_LABEL } from 'utils/contants';
+import { DATE_OPTION, DATE_LABEL } from 'utils/constants';
 import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
 
 interface Props {

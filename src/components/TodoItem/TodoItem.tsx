@@ -13,7 +13,7 @@ import { ReactComponent as Low } from 'assets/svg/low.svg';
 import { ReactComponent as Check } from 'assets/svg/check.svg';
 import { ReactComponent as Checked } from 'assets/svg/checked.svg';
 import { getDate } from 'utils/date';
-import { DATE_OPTION_NUMERIC } from 'utils/contants';
+import { DATE_OPTION_NUMERIC } from 'utils/constants';
 
 interface TodoItemProps {
   todo: ITodo;

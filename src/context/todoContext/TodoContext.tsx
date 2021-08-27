@@ -3,7 +3,7 @@ import reducer from './reducer';
 import { load } from './actionCreators';
 import { IState, Action } from 'types/context';
 import { LSHelper } from 'utils';
-import { TODOS } from 'utils/contants';
+import { TODOS } from 'utils/constants';
 
 const initialState: IState = {
   todos: [],

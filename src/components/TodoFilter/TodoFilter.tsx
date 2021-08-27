@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import FilterButton from 'components/common/FilterButton';
 import { TCategory, TPriority, FilterType } from 'types';
-import { CATEGORY_EMOJI, PRIORITY_CIRCLE } from 'utils/contants';
+import { CATEGORY_EMOJI, PRIORITY_CIRCLE } from 'utils/constants';
 
 type CategoryKey = keyof typeof TCategory;
 type PriorityKey = keyof typeof TPriority;

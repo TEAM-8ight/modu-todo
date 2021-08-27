@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import useModal from 'utils/hooks/useModal';
-import { DATE_LABEL, CATEGORY_EMOJI, PRIORITY_CIRCLE } from 'utils/contants';
+import { DATE_LABEL, CATEGORY_EMOJI, PRIORITY_CIRCLE } from 'utils/constants';
 import { update } from 'context/todoContext/actionCreators';
 import { ITodo, TCategory, TPriority, TStatus } from 'types';
 import { useTodosDispatch, useTodosStateById } from 'context/todoContext/TodoContext';
