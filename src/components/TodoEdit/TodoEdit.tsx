@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import useModal from 'utils/hooks/useModal';
-import { DATE_LABEL, CATEGORY_EMOJI, PRIORITY_CIRCLE } from 'utils/constants';
+import { DATE_LABEL, STATUS_SVG, CATEGORY_EMOJI, PRIORITY_CIRCLE } from 'utils/constants';
 import { update } from 'context/todoContext/actionCreators';
 import { ITodo, TCategory, TPriority, TStatus } from 'types';
 import { useTodosDispatch, useTodosStateById } from 'context/todoContext/TodoContext';
@@ -47,7 +47,7 @@ const TodoEdit: React.FC<TodoEditProps> = ({ id }) => {
       <CenterItem>
         {enumValues.map((item, idx) => {
           let icon = '';
-          if (type === 'status') icon = 'a';
+          if (type === 'status') icon = STATUS_SVG[item];
           if (type === 'category') icon = CATEGORY_EMOJI[item];
           if (type === 'priority') icon = PRIORITY_CIRCLE[item];
           return (
