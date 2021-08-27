@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components/macro';
+import useModal from 'utils/hooks/useModal';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
-import { remove, update } from 'context/todoContext/actionCreators';
+import { useTodoItemDnD } from './utils/useTodoItemDnD';
+import { remove, update, swap } from 'context/todoContext/actionCreators';
 import { ITodo, TPriority, TStatus } from 'types';
 import { ReactComponent as Edit } from 'assets/svg/edit.svg';
 import { ReactComponent as Delete } from 'assets/svg/delete.svg';
@@ -10,10 +12,6 @@ import { ReactComponent as Middle } from 'assets/svg/middle.svg';
 import { ReactComponent as Low } from 'assets/svg/low.svg';
 import { ReactComponent as Check } from 'assets/svg/check.svg';
 import { ReactComponent as Checked } from 'assets/svg/checked.svg';
-import { useTodoItemDnD } from './utils/useTodoItemDnD';
-import { swap } from 'context/todoContext/actionCreators';
-import useModal from 'utils/hooks/useModal';
-import TodoEdit from 'components/TodoEdit/TodoEdit';
 
 interface TodoItemProps {
   todo: ITodo;
@@ -21,12 +19,10 @@ interface TodoItemProps {
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
   const dispatch = useTodosDispatch();
-  const { Modal, openModal, closeModal } = useModal();
-  const [selectedTodo, setSelectedTodo] = useState<ITodo>();
+  const { openModal } = useModal();
 
   const showEditModal = () => {
-    setSelectedTodo(todo);
-    openModal();
+    openModal({ text: 'edit', id: todo.id });
   };
 
   const {
@@ -121,7 +117,6 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
           </RightIcon>
         </Down>
       </ItemContainer>
-      <Modal>{selectedTodo && <TodoEdit todo={selectedTodo} closeModal={closeModal} />}</Modal>
     </>
   );
 };

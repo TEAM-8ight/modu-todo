@@ -2,21 +2,24 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { getDate } from 'utils/date';
+import useModal from 'utils/hooks/useModal';
 import { DATE_OPTION, DATE_LABEL } from 'utils/contants';
 import { update } from 'context/todoContext/actionCreators';
-import { useTodosDispatch } from 'context/todoContext/TodoContext';
+import { useTodosDispatch, useTodosStateById } from 'context/todoContext/TodoContext';
+import { ITodo, TCategory, TPriority, TStatus } from 'types';
 import { ReactComponent as Close } from 'assets/svg/close.svg';
 import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
-import { ITodo, TCategory, TPriority, TStatus } from 'types';
 
 interface TodoEditProps {
-  todo: ITodo;
-  closeModal: () => void;
+  id: number;
 }
 
-const TodoEdit: React.FC<TodoEditProps> = ({ todo, closeModal }) => {
+const TodoEdit: React.FC<TodoEditProps> = ({ id }) => {
   const dispatch = useTodosDispatch();
-  const [editTodo, setEditTodo] = useState<ITodo>(todo);
+  const { closeModal } = useModal();
+
+  const todo: ITodo[] = useTodosStateById(id);
+  const [editTodo, setEditTodo] = useState<ITodo>(todo[0]);
   const { text, status, createdAt, updatedAt, due, category, priority }: ITodo = editTodo;
 
   const changeEditTodo = (e: React.ChangeEvent<HTMLInputElement>) => {

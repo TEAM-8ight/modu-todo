@@ -1,4 +1,4 @@
-import { CREATE, REMOVE, LOAD, UPDATE, TOGGLE_FILTER, SWAP } from './actionTypes';
+import { CREATE, REMOVE, LOAD, UPDATE, TOGGLE_FILTER, SWAP, MODAL } from './actionTypes';
 import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType, ISwap, ITodos } from 'types';
 import { LSHelper } from 'utils';
 import { TODOS } from 'utils/contants';
@@ -31,6 +31,9 @@ export default function reducer(state: IState, action: Action): IState {
       return { ...state, filter: { ...state.filter, [type]: newFilter } };
     case SWAP:
       return { ...state, todos: swapTodos(state.todos, payload) };
+
+    case MODAL:
+      return { ...state, modal: payload };
     default:
       return state;
   }
@@ -85,7 +88,7 @@ const loadTodos = (): IState => {
   }
   const nextId = todos.length ? Math.max(...todos.map((todo: ITodo) => todo.id)) + 1 : 0;
   const filter = { category: [], priority: [] };
-  return { todos, nextId: nextId, filter };
+  return { todos, nextId: nextId, filter, modal: { text: '' } };
 };
 
 const createNewTodo = (id: number, payload: NewTodoPayload) => {

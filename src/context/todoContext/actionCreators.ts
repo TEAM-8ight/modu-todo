@@ -1,4 +1,4 @@
-import { CREATE, LOAD, UPDATE, TOGGLE_FILTER, REMOVE, SWAP } from './actionTypes';
+import { CREATE, LOAD, UPDATE, TOGGLE_FILTER, REMOVE, SWAP, MODAL } from './actionTypes';
 import { Action, CreatedTodo, RemoveTodoType } from 'types';
 
 export const create = (payload: CreatedTodo): Action => {
@@ -23,7 +23,13 @@ export const update = (payload: {}): Action => {
     payload,
   };
 };
+
 export const remove = (payload: RemoveTodoType): Action => ({
   type: REMOVE,
+  payload,
+});
+
+export const modal = (payload: { text: string; id?: number }): Action => ({
+  type: MODAL,
   payload,
 });

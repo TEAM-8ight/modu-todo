@@ -9,6 +9,7 @@ const initialState: IState = {
   todos: [],
   nextId: 0,
   filter: { category: [], priority: [] },
+  modal: { text: '' },
 };
 
 type TodosDispatch = Dispatch<Action>;
@@ -54,6 +55,18 @@ export function useFilterState() {
   const state = useContext(TodosContext);
   if (!state) return { category: [], priority: [] };
   return state.filter;
+}
+
+export function useModalState() {
+  const state = useContext(TodosContext);
+  if (!state) return null;
+  return state.modal;
+}
+
+export function useTodosStateById(id: number) {
+  const state = useContext(TodosContext);
+  if (!state) return [];
+  return state.todos.filter((todo) => todo.id === id);
 }
 
 export function useTodosDispatch() {

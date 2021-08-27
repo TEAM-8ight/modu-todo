@@ -1,16 +1,18 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
+import { useModalState, useTodosDispatch } from 'context/todoContext/TodoContext';
+import { modal } from 'context/todoContext/actionCreators';
 
 const useModal = () => {
-  const [showModal, setShowModal] = useState(false);
+  const dispatch = useTodosDispatch();
 
-  const openModal = () => {
-    setShowModal(true);
+  const openModal = (data: { text: string; id: number }) => {
+    dispatch(modal(data));
   };
 
   const closeModal = () => {
-    setShowModal(false);
+    dispatch(modal({ text: '' }));
   };
 
   interface ModalProps {
@@ -18,10 +20,12 @@ const useModal = () => {
   }
 
   const Modal: React.FC<ModalProps> = ({ children }) => {
+    const modalState = useModalState();
+
     const ref = useRef<HTMLDivElement | null>(null);
     const elemRef = document.getElementById('modalDom') as HTMLElement;
 
-    if (!showModal) return null;
+    if (!modalState?.text) return null;
 
     return createPortal(
       <Container ref={ref}>
