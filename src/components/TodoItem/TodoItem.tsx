@@ -12,6 +12,8 @@ import { ReactComponent as Middle } from 'assets/svg/middle.svg';
 import { ReactComponent as Low } from 'assets/svg/low.svg';
 import { ReactComponent as Check } from 'assets/svg/check.svg';
 import { ReactComponent as Checked } from 'assets/svg/checked.svg';
+import { getDate } from 'utils/date';
+import { DATE_OPTION_NUMERIC } from 'utils/contants';
 
 interface TodoItemProps {
   todo: ITodo;
@@ -107,6 +109,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
           </div>
         </Top>
         <DueDate>~ {todo.due.toISOString().split('T')[0]} </DueDate>
+        <DueDate>~ {getDate(todo.due, DATE_OPTION_NUMERIC)} </DueDate>
         <Down>
           <LeftIcon>
             <Category>{categoryEmoji[todo.category]}</Category>

@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import styled, { css } from 'styled-components';
-import DatePicker from 'react-datepicker';
-import { getDate } from 'utils/date';
+import styled from 'styled-components';
 import useModal from 'utils/hooks/useModal';
-import { DATE_OPTION, DATE_LABEL } from 'utils/contants';
+import { DATE_LABEL, CATEGORY_EMOJI, PRIORITY_CIRCLE } from 'utils/contants';
 import { update } from 'context/todoContext/actionCreators';
-import { useTodosDispatch, useTodosStateById } from 'context/todoContext/TodoContext';
 import { ITodo, TCategory, TPriority, TStatus } from 'types';
+import { useTodosDispatch, useTodosStateById } from 'context/todoContext/TodoContext';
+import DateFormat from 'components/common/DateFormat';
+import ModalButton from 'components/common/ModalButton';
 import { ReactComponent as Close } from 'assets/svg/close.svg';
-import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
 
 interface TodoEditProps {
   id: number;
@@ -34,61 +33,37 @@ const TodoEdit: React.FC<TodoEditProps> = ({ id }) => {
     closeModal();
   };
 
-  const renderDate = (label: string, date: Date | null): JSX.Element => {
-    const today = new Date();
-    const selectDateHandler = (selectedDate: Date) => {
-      setEditTodo((prev) => ({ ...prev, due: selectedDate }));
-    };
-    const customDateInput = (
-      <CustomDateInput>
-        <Calender width="18" height="18" />
-        {date && getDate(date, DATE_OPTION)}
-      </CustomDateInput>
-    );
-
-    return (
-      <Item>
-        <Text>{label}:</Text>
-        {label === DATE_LABEL.due ? (
-          <DatePickerStyle
-            selected={due}
-            onChange={selectDateHandler}
-            minDate={today}
-            closeOnScroll={true}
-            customInput={customDateInput}
-          />
-        ) : (
-          date && getDate(date, DATE_OPTION)
-        )}
-      </Item>
-    );
+  const selectDateHandler = (selectedDate: Date) => {
+    setEditTodo((prev) => ({ ...prev, due: selectedDate }));
   };
 
-  type keyType = 'status' | 'category' | 'priority';
-  const renderItem = (key: keyType, data: string): JSX.Element => {
-    const enumType = {
-      status: TStatus,
-      category: TCategory,
-      priority: TPriority,
-    };
+  const changeEditState = (key: string, name: string) => {
+    setEditTodo((prev) => ({ ...prev, [key]: name }));
+  };
 
-    const onButtonClick = (item: string) => {
-      setEditTodo((prev) => ({ ...prev, [key]: item }));
-    };
-
+  function renderItem<T>(anEnum: T, type: string, value: string): JSX.Element {
+    const enumValues = Object.values(anEnum) as unknown as string[];
     return (
       <CenterItem>
-        {Object.entries(enumType[key]).map((obj, idx) => {
-          const item = obj[1] as string;
+        {enumValues.map((item, idx) => {
+          let icon = '';
+          if (type === 'status') icon = 'a';
+          if (type === 'category') icon = CATEGORY_EMOJI[item];
+          if (type === 'priority') icon = PRIORITY_CIRCLE[item];
           return (
-            <Button key={idx} active={data === item} onClick={() => onButtonClick(item)}>
-              {item}
-            </Button>
+            <ModalButton
+              key={idx}
+              type={type}
+              icon={icon}
+              name={item}
+              isActive={item === value}
+              changeEditState={changeEditState}
+            />
           );
         })}
       </CenterItem>
     );
-  };
+  }
 
   return (
     <Wrapper>
@@ -104,12 +79,20 @@ const TodoEdit: React.FC<TodoEditProps> = ({ id }) => {
           onChange={changeEditTodo}
         />
       </Item>
-      {renderDate(DATE_LABEL.createdAt, createdAt)}
-      {renderDate(DATE_LABEL.updatedAt, updatedAt)}
-      {renderDate(DATE_LABEL.due, due)}
-      {renderItem('status', status)}
-      {renderItem('category', category)}
-      {renderItem('priority', priority)}
+      <DateFormat
+        label={DATE_LABEL.createdAt}
+        date={createdAt}
+        selectDateHandler={selectDateHandler}
+      />
+      <DateFormat
+        label={DATE_LABEL.updatedAt}
+        date={updatedAt}
+        selectDateHandler={selectDateHandler}
+      />
+      <DateFormat label={DATE_LABEL.due} date={due} selectDateHandler={selectDateHandler} />
+      {renderItem(TStatus, 'status', status)}
+      {renderItem(TCategory, 'category', category)}
+      {renderItem(TPriority, 'priority', priority)}
       <EditButton onClick={editButtonClick}>수정</EditButton>
     </Wrapper>
   );
@@ -161,14 +144,6 @@ const CenterItem = styled(Item)`
   justify-content: center;
 `;
 
-const Text = styled.span`
-  padding-right: 8px;
-  font-size: 16px;
-  font-weight: 800;
-  color: ${({ theme }) => theme.color.darkGray};
-  white-space: nowrap;
-`;
-
 const TodoInput = styled.input`
   width: 100%;
   height: 40px;
@@ -178,48 +153,6 @@ const TodoInput = styled.input`
   font-size: 14px;
   font-weight: 800;
   outline: none;
-`;
-
-const CustomDateInput = styled.div`
-  display: flex;
-  align-items: center;
-  svg {
-    margin: 2px 4px 0 0;
-  }
-`;
-
-const DatePickerStyle = styled(DatePicker)`
-  width: fit-content;
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => theme.color.blue};
-    svg {
-      stroke: ${({ theme }) => theme.color.blue};
-    }
-  }
-`;
-
-const Button = styled.button<{ active: boolean }>`
-  width: 100px;
-  height: 30px;
-  border: 0;
-  outline: 0;
-  cursor: pointer;
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.color.borderGray};
-  color: ${({ theme }) => theme.color.darkGray};
-
-  & + & {
-    margin-left: 10px;
-  }
-
-  ${({ active }) =>
-    active &&
-    css`
-      background-color: ${({ theme }) => theme.color.blue};
-      color: ${({ theme }) => theme.color.white};
-    `}
 `;
 
 const EditButton = styled.button`

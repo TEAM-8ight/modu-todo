@@ -1,33 +1,34 @@
-import React, { Dispatch, memo } from 'react';
+import React, { memo } from 'react';
 import styled, { css } from 'styled-components';
-import { useTodosDispatch, useFilterState } from 'context/todoContext/TodoContext';
-import { toggleFilter } from 'context/todoContext/actionCreators';
-import { FilterType, TCategory, TPriority, Action, IFilter } from 'types';
 
-interface FilterButtonProps {
-  type: FilterType;
+interface ModalButtonProps {
+  type: string;
   icon: string;
-  name: TCategory | TPriority;
+  name: string;
+  isActive: boolean;
+  changeEditState: (type: string, name: string) => void;
 }
 
-const FilterButton: React.FC<FilterButtonProps> = ({ type, icon, name }) => {
-  const dispatch: Dispatch<Action> = useTodosDispatch();
-  const filter: IFilter = useFilterState();
-  const isActive: boolean = filter[type].includes(name);
-
-  const onClickFilter = () => {
-    dispatch(toggleFilter(type, name));
+const ModalButton: React.FC<ModalButtonProps> = ({
+  type,
+  icon,
+  name,
+  isActive,
+  changeEditState,
+}) => {
+  const onClickButton = () => {
+    changeEditState(type, name);
   };
 
   return (
-    <Button filter={type} isActive={isActive} onClick={onClickFilter}>
+    <Button filter={type} isActive={isActive} onClick={onClickButton}>
       <Icon>{type === 'priority' ? <Circle color={icon} /> : icon}</Icon>
       <Name>{name}</Name>
     </Button>
   );
 };
 
-export default FilterButton;
+export default ModalButton;
 
 const Button = styled.button<{ filter: string; isActive: boolean }>`
   display: flex;
