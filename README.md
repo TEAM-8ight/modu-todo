@@ -48,5 +48,5 @@
 
 [🔗 프로젝트 칸반보드](https://github.com/TEAM-8ight/modu-todo/projects/1)
 
-[🔗 팀 에잇 미팅 로그](https://www.notion.so/8-Assignment-8-2c8eb739e3944a63b8f8de0c2fd56475)
+[🔗 팀 에잇 미팅 로그](https://darkened-date-9ab.notion.site/8-Assignment-8-2c8eb739e3944a63b8f8de0c2fd56475)
 
