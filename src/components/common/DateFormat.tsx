@@ -3,34 +3,28 @@ import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import { getDate } from 'utils/date';
 import { DATE_OPTION, DATE_LABEL } from 'utils/constants';
-import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
 
 interface Props {
-  label: string;
+  label?: string;
   date: Date | null;
   selectDateHandler: (selectedDate: Date) => void;
+  customInput?: JSX.Element;
+  isModal: boolean;
 }
 
-const DateFormat: React.FC<Props> = ({ label, date, selectDateHandler }) => {
+const DateFormat: React.FC<Props> = ({ label, date, selectDateHandler, customInput, isModal }) => {
   const today = new Date();
-
-  const customDateInput = (
-    <CustomDateInput>
-      <Calender width="18" height="18" />
-      {date && getDate(date, DATE_OPTION)}
-    </CustomDateInput>
-  );
 
   return (
     <Item>
-      <Text>{label}:</Text>
+      {isModal && <Text>{label}:</Text>}
       {label === DATE_LABEL.due ? (
         <DatePickerStyle
           selected={date}
           onChange={selectDateHandler}
           minDate={today}
           closeOnScroll={true}
-          customInput={customDateInput}
+          customInput={customInput}
         />
       ) : (
         date && getDate(date, DATE_OPTION)
@@ -41,22 +35,16 @@ const DateFormat: React.FC<Props> = ({ label, date, selectDateHandler }) => {
 
 export default DateFormat;
 
-const CustomDateInput = styled.div`
+const DatePickerStyle = styled(DatePicker)`
   display: flex;
   align-items: center;
-  svg {
-    margin: 2px 4px 0 0;
-  }
-`;
-
-const DatePickerStyle = styled(DatePicker)`
   width: fit-content;
   cursor: pointer;
-
+  font-size: 14px;
   &:hover {
-    color: ${({ theme }) => theme.color.blue};
+    color: ${({ theme }) => theme.color.green};
     svg {
-      stroke: ${({ theme }) => theme.color.blue};
+      fill: ${({ theme }) => theme.color.green};
     }
   }
 `;
@@ -65,6 +53,7 @@ const Item = styled.div`
   display: flex;
   align-items: center;
   padding: 16px 0px;
+  font-size: 14px;
 
   & + & {
     border-top: 1px solid ${({ theme }) => theme.color.borderGray};
@@ -72,9 +61,8 @@ const Item = styled.div`
 `;
 
 const Text = styled.span`
-  padding-right: 8px;
-  font-size: 16px;
-  font-weight: 800;
+  padding: 0px 8px 0px 4px;
+  font-size: 14px;
   color: ${({ theme }) => theme.color.darkGray};
   white-space: nowrap;
 `;

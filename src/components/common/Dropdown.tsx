@@ -58,6 +58,7 @@ const DropdownContainer = styled.div<{ theme: {} }>`
   background-color: ${({ theme }) => theme.color.alabaster};
   border-radius: 5px;
   font-size: 14px;
+  border: 1px solid #d5d5d5;
 `;
 
 const DropdownHeader = styled.div`
@@ -84,7 +85,7 @@ const DropdownList = styled.ul<{ isOpen: boolean }>`
 `;
 
 const DropdownItem = styled.li`
-  padding: 4px;
+  padding: 10px 4px;
   width: 100%;
   text-align: center;
   :hover {
