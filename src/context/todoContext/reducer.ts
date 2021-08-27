@@ -1,6 +1,16 @@
 import { LSHelper } from 'utils';
 import { TODOS } from 'utils/constants';
-import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType, ISwap, ITodos } from 'types';
+import {
+  ITodo,
+  TStatus,
+  IState,
+  Action,
+  NewTodoPayload,
+  FilterType,
+  ISwap,
+  ITodos,
+  IUpdate,
+} from 'types';
 import {
   CREATE,
   REMOVE,
@@ -29,14 +39,14 @@ export default function reducer(state: IState, action: Action): IState {
     case REMOVE:
       return { ...state, todos: state.todos.filter((todo: ITodo) => todo.id !== payload?.id) };
     case TOGGLE_FILTER:
-      const type = payload.type as FilterType;
-      const index = state.filter[type].findIndex((filter) => filter === payload.name);
+      const filterType = payload.type as FilterType;
+      const index = state.filter[filterType].findIndex((filter) => filter === payload.name);
       const newFilter =
         index === -1
-          ? state.filter[type].concat(payload.name)
-          : state.filter[type].filter((_, idx) => idx !== index);
+          ? state.filter[filterType].concat(payload.name)
+          : state.filter[filterType].filter((_, idx) => idx !== index);
 
-      return { ...state, filter: { ...state.filter, [type]: newFilter } };
+      return { ...state, filter: { ...state.filter, [filterType]: newFilter } };
     case SWAP:
       return { ...state, todos: swapTodos(state.todos, payload) };
 
@@ -47,11 +57,11 @@ export default function reducer(state: IState, action: Action): IState {
   }
 }
 
-const updateTodos = (payload: { id: number; status?: TStatus }, prevTodos: ITodos) => {
+const updateTodos = (payload: IUpdate, prevTodos: ITodos) => {
   const { id, status, ...rest } = payload;
   if (status) {
     const todoIdx = prevTodos.findIndex((todo) => todo.id === id);
-    if (todoIdx === -1 || prevTodos[todoIdx].status === status) return prevTodos;
+    if (todoIdx === -1) return prevTodos;
     const prevTodo = prevTodos.splice(todoIdx, 1);
     const newTodo = { ...prevTodo[0], status, ...rest, updatedAt: new Date() };
     const newTodos = [newTodo, ...prevTodos];

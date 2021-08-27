@@ -1,8 +1,8 @@
-import { TCategory, ITodos, TPriority } from 'types/todo';
+import { TCategory, ITodos, TStatus, TPriority } from 'types/todo';
 
 export interface CreatedTodo {
   text: string;
-  due: Date | null;
+  due: Date;
   category: string;
   priority: string;
 }
@@ -14,7 +14,7 @@ export interface NewTodoPayload {
   priority: TPriority;
 }
 
-export interface RemoveTodoType {
+export interface IRemove {
   id: number;
 }
 export interface IFilter {
@@ -36,6 +36,17 @@ export interface IState {
   modal: IModal;
 }
 
+export interface IUpdate {
+  id: number;
+  text?: string;
+  status?: TStatus;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+  due?: Date;
+  category?: TCategory;
+  priority?: TPriority;
+}
+
 export interface IToggle {
   type: string;
   name: string;
@@ -48,9 +59,9 @@ export interface ISwap {
 
 export type Action =
   | { type: 'CREATE'; payload: CreatedTodo }
-  | { type: 'REMOVE'; payload: RemoveTodoType }
-  | { type: 'UPDATE'; payload: any }
-  | { type: 'LOAD'; payload?: {} }
+  | { type: 'REMOVE'; payload: IRemove }
+  | { type: 'UPDATE'; payload: IUpdate }
+  | { type: 'LOAD'; payload?: any }
   | { type: 'TOGGLE_FILTER'; payload: IToggle }
   | { type: 'SWAP'; payload: ISwap }
   | { type: 'MODAL'; payload: IModal };

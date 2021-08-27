@@ -1,12 +1,12 @@
-import { Action, CreatedTodo, RemoveTodoType } from 'types';
+import { Action, IUpdate, IRemove, ISwap, IModal, CreatedTodo } from 'types';
 import {
   CREATE,
-  LOAD,
   UPDATE,
   TOGGLE_FILTER,
   REMOVE,
   SWAP,
   MODAL,
+  LOAD,
 } from 'context/todoContext/actionTypes';
 
 export const create = (payload: CreatedTodo): Action => {
@@ -20,24 +20,24 @@ export const toggleFilter = (type: string, name: string): Action => ({
   payload: { type, name },
 });
 
-export const swap = (first: number, second: number): Action => ({
+export const swap = (payload: ISwap): Action => ({
   type: SWAP,
-  payload: { first, second },
+  payload,
 });
 
-export const update = (payload: {}): Action => {
+export const update = (payload: IUpdate): Action => {
   return {
     type: UPDATE,
     payload,
   };
 };
 
-export const remove = (payload: RemoveTodoType): Action => ({
+export const remove = (payload: IRemove): Action => ({
   type: REMOVE,
   payload,
 });
 
-export const modal = (payload: { text: string; id?: number; message?: string }): Action => ({
+export const modal = (payload: IModal): Action => ({
   type: MODAL,
   payload,
 });

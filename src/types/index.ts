@@ -6,7 +6,9 @@ import type {
   IFilter,
   ISwap,
   FilterType,
-  RemoveTodoType,
+  IRemove,
+  IUpdate,
+  IModal,
 } from 'types/context';
 import type { ITodo, ITodos } from 'types/todo';
 import { TStatus, TCategory, TPriority } from 'types/todo';
@@ -20,8 +22,10 @@ export type {
   ITodos,
   IFilter,
   ISwap,
+  IUpdate,
   FilterType,
-  RemoveTodoType,
+  IRemove,
+  IModal,
 };
 
 export { TStatus, TCategory, TPriority };

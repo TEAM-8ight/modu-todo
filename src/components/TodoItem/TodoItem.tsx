@@ -46,9 +46,9 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
 
   const handleClick = (id: number, status: TStatus) => {
     const options: StatusOptions = {
-      [TStatus.NOT_STARTED]: () => dispatch(update({ id, status: '진행중' })),
-      [TStatus.ONGOING]: () => dispatch(update({ id, status: '완료' })),
-      [TStatus.FINISHED]: () => dispatch(update({ id, status: '진행중' })),
+      [TStatus.NOT_STARTED]: () => dispatch(update({ id, status: TStatus.ONGOING })),
+      [TStatus.ONGOING]: () => dispatch(update({ id, status: TStatus.FINISHED })),
+      [TStatus.FINISHED]: () => dispatch(update({ id, status: TStatus.ONGOING })),
     };
     options[status]();
   };
@@ -56,7 +56,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     setIsDragOver(false);
     const movingTarget = e.dataTransfer.getData('text/plain');
-    dispatch(swap(+movingTarget, todo.id));
+    dispatch(swap({first: +movingTarget, second: todo.id}));
   };
 
   type POptions = {

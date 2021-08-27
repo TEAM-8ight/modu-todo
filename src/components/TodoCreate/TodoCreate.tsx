@@ -14,9 +14,10 @@ import { ReactComponent as CirclePlus } from 'assets/svg/circle-plus.svg';
 
 const TodoCreate: React.FC = () => {
   const dispatch = useTodosDispatch();
+  const today = new Date();
 
   const [text, setText] = useState<string>('');
-  const [due, setDue] = useState<Date | null>(null);
+  const [due, setDue] = useState<Date>(today);
   const [category, setCategory] = useState<string>('');
   const [priority, setPriority] = useState<string>('');
 
@@ -26,7 +27,7 @@ const TodoCreate: React.FC = () => {
 
   const initializeState = () => {
     setText('');
-    setDue(null);
+    setDue(today);
     setCategory('');
     setPriority('');
   };
