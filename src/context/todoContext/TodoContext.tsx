@@ -3,12 +3,13 @@ import reducer from './reducer';
 import { load } from './actionCreators';
 import { IState, Action } from 'types/context';
 import { LSHelper } from 'utils';
-import { TODOS } from 'utils/contants';
+import { TODOS } from 'utils/constants';
 
 const initialState: IState = {
   todos: [],
   nextId: 0,
   filter: { category: [], priority: [] },
+  modal: { text: '' },
 };
 
 type TodosDispatch = Dispatch<Action>;
@@ -54,6 +55,18 @@ export function useFilterState() {
   const state = useContext(TodosContext);
   if (!state) return { category: [], priority: [] };
   return state.filter;
+}
+
+export function useModalState() {
+  const state = useContext(TodosContext);
+  if (!state) return null;
+  return state.modal;
+}
+
+export function useTodosStateById(id: number) {
+  const state = useContext(TodosContext);
+  if (!state) return [];
+  return state.todos.filter((todo) => todo.id === id);
 }
 
 export function useTodosDispatch() {

@@ -6,9 +6,11 @@ import { TStatus } from 'types';
 
 const TodoList: React.FC = () => {
   const todos = useTodosState();
+
   const notStarted = todos.filter((todo) => todo.status === '시작안함');
   const onGoing = todos.filter((todo) => todo.status === '진행중');
   const completed = todos.filter((todo) => todo.status === '완료');
+
   return (
     <TodoListContainer>
       <TodoSection title="Not Started" status={TStatus.NOT_STARTED} todos={notStarted} />

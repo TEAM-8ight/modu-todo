@@ -23,10 +23,16 @@ export interface IFilter {
 }
 export type FilterType = keyof IFilter;
 
+export interface IModal {
+  text: string;
+  id?: number;
+}
+
 export interface IState {
   todos: ITodos;
   nextId: number;
   filter: IFilter;
+  modal: IModal;
 }
 
 export interface IToggle {
@@ -45,4 +51,5 @@ export type Action =
   | { type: 'UPDATE'; payload: any }
   | { type: 'LOAD'; payload?: {} }
   | { type: 'TOGGLE_FILTER'; payload: IToggle }
-  | { type: 'SWAP'; payload: ISwap };
+  | { type: 'SWAP'; payload: ISwap }
+  | { type: 'MODAL'; payload: IModal };

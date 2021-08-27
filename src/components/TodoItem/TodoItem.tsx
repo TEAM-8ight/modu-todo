@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/macro';
+import useModal from 'utils/hooks/useModal';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
-import { remove, update } from 'context/todoContext/actionCreators';
+import { useTodoItemDnD } from './utils/useTodoItemDnD';
+import { remove, update, swap } from 'context/todoContext/actionCreators';
 import { ITodo, TPriority, TStatus } from 'types';
 import { ReactComponent as Edit } from 'assets/svg/edit.svg';
 import { ReactComponent as Delete } from 'assets/svg/delete.svg';
@@ -10,8 +12,8 @@ import { ReactComponent as Middle } from 'assets/svg/middle.svg';
 import { ReactComponent as Low } from 'assets/svg/low.svg';
 import { ReactComponent as Check } from 'assets/svg/check.svg';
 import { ReactComponent as Checked } from 'assets/svg/checked.svg';
-import { useTodoItemDnD } from './utils/useTodoItemDnD';
-import { swap } from 'context/todoContext/actionCreators';
+import { getDate } from 'utils/date';
+import { DATE_OPTION_NUMERIC } from 'utils/constants';
 
 interface TodoItemProps {
   todo: ITodo;
@@ -19,6 +21,12 @@ interface TodoItemProps {
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
   const dispatch = useTodosDispatch();
+  const { openModal } = useModal();
+
+  const showEditModal = () => {
+    openModal({ text: 'edit', id: todo.id });
+  };
+
   const {
     isDragOver,
     handleDragStart,
@@ -79,37 +87,40 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
   };
 
   return (
-    <ItemContainer
-      draggable
-      onDragStart={handleDragStart}
-      onDrop={handleDrop}
-      onDragEnter={handleDragEnter}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      isDragOver={isDragOver}
-    >
-      <Top>
-        <Text>{todo.text}</Text>
-        <div>
-          <ButtonWrapper>
-            <Edit fill="black" className="edit" />
-          </ButtonWrapper>
-          <ButtonWrapper onClick={handleRemove}>
-            <Delete fill="black" className="delete" />
-          </ButtonWrapper>
-        </div>
-      </Top>
-      <DueDate>~ {todo.due.toISOString().split('T')[0]} </DueDate>
-      <Down>
-        <LeftIcon>
-          <Category>{categoryEmoji[todo.category]}</Category>
-          {getPriority(todo.priority)}
-        </LeftIcon>
-        <RightIcon onClick={() => handleClick(todo.id, todo.status)}>
-          {getStatus(todo.status)}
-        </RightIcon>
-      </Down>
-    </ItemContainer>
+    <>
+      <ItemContainer
+        draggable
+        onDragStart={handleDragStart}
+        onDrop={handleDrop}
+        onDragEnter={handleDragEnter}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        isDragOver={isDragOver}
+      >
+        <Top>
+          <Text>{todo.text}</Text>
+          <div>
+            <ButtonWrapper>
+              <Edit fill="black" className="edit" onClick={showEditModal} />
+            </ButtonWrapper>
+            <ButtonWrapper onClick={handleRemove}>
+              <Delete fill="black" className="delete" />
+            </ButtonWrapper>
+          </div>
+        </Top>
+        <DueDate>~ {todo.due.toISOString().split('T')[0]} </DueDate>
+        <DueDate>~ {getDate(todo.due, DATE_OPTION_NUMERIC)} </DueDate>
+        <Down>
+          <LeftIcon>
+            <Category>{categoryEmoji[todo.category]}</Category>
+            {getPriority(todo.priority)}
+          </LeftIcon>
+          <RightIcon onClick={() => handleClick(todo.id, todo.status)}>
+            {getStatus(todo.status)}
+          </RightIcon>
+        </Down>
+      </ItemContainer>
+    </>
   );
 };
 
@@ -161,7 +172,8 @@ const ButtonWrapper = styled.button`
   width: 23px;
   height: 23px;
   margin-left: 5px;
-  &: hover {
+
+  &:hover {
     .edit {
       fill: ${({ theme }) => theme.color.green};
     }

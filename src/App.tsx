@@ -1,11 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import TodoList from 'components/TodoList/TodoList';
+import { useModalState } from 'context/todoContext/TodoContext';
+import useModal from 'utils/hooks/useModal';
+import TodoHeader from 'components/TodoHeader/TodoHeader';
 import TodoCreate from 'components/TodoCreate/TodoCreate';
 import TodoFilter from 'components/TodoFilter/TodoFilter';
-import TodoHeader from 'components/TodoHeader/TodoHeader';
+import TodoList from 'components/TodoList/TodoList';
+import TodoEdit from 'components/TodoEdit/TodoEdit';
 
 const App: React.FC = () => {
+  const { Modal } = useModal();
+  const modalState = useModalState();
+
   return (
     <div className="App">
       <TodoHeader />
@@ -17,14 +23,14 @@ const App: React.FC = () => {
         </Filter>
         <TodoList />
       </Container>
+      {modalState && (
+        <Modal>
+          {modalState.text === 'edit' && modalState.id && <TodoEdit id={modalState.id} />}
+        </Modal>
+      )}
     </div>
   );
 };
-
-const Filter = styled.div`
-  display: flex;
-  padding: 20px;
-`;
 
 export default App;
 
@@ -33,4 +39,9 @@ const Container = styled.main`
   height: calc(100vh - 60px);
   padding-top: 60px;
   margin: 0 auto;
+`;
+
+const Filter = styled.div`
+  display: flex;
+  padding: 20px;
 `;

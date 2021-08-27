@@ -1,33 +1,40 @@
-import React, { Dispatch, memo } from 'react';
+import React, { memo } from 'react';
 import styled, { css } from 'styled-components';
-import { useTodosDispatch, useFilterState } from 'context/todoContext/TodoContext';
-import { toggleFilter } from 'context/todoContext/actionCreators';
-import { FilterType, TCategory, TPriority, Action, IFilter } from 'types';
 
-interface FilterButtonProps {
-  type: FilterType;
+interface ModalButtonProps {
+  type: string;
   icon: string;
-  name: TCategory | TPriority;
+  name: string;
+  isActive: boolean;
+  changeEditState: (type: string, name: string) => void;
 }
 
-const FilterButton: React.FC<FilterButtonProps> = ({ type, icon, name }) => {
-  const dispatch: Dispatch<Action> = useTodosDispatch();
-  const filter: IFilter = useFilterState();
-  const isActive: boolean = filter[type].includes(name);
+const ModalButton: React.FC<ModalButtonProps> = ({
+  type,
+  icon,
+  name,
+  isActive,
+  changeEditState,
+}) => {
+  const onClickButton = () => {
+    changeEditState(type, name);
+  };
 
-  const onClickFilter = () => {
-    dispatch(toggleFilter(type, name));
+  const getIcon = () => {
+    if (type === 'status') return icon && <img src={icon} alt={type} />;
+    if (type === 'priority') return <Circle color={icon} />;
+    return icon;
   };
 
   return (
-    <Button filter={type} isActive={isActive} onClick={onClickFilter}>
-      <Icon>{type === 'priority' ? <Circle color={icon} /> : icon}</Icon>
+    <Button filter={type} isActive={isActive} onClick={onClickButton}>
+      <Icon>{getIcon()}</Icon>
       <Name>{name}</Name>
     </Button>
   );
 };
 
-export default FilterButton;
+export default ModalButton;
 
 const Button = styled.button<{ filter: string; isActive: boolean }>`
   display: flex;
@@ -60,7 +67,14 @@ const Button = styled.button<{ filter: string; isActive: boolean }>`
 `;
 
 const Icon = memo(styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-right: 8px;
+  img {
+    width: 14px;
+    height: 14px;
+  }
 `);
 
 const Name = memo(styled.span`
@@ -68,8 +82,8 @@ const Name = memo(styled.span`
 `);
 
 const Circle = styled.div<{ color: string }>`
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background-color: ${({ theme, color }) => theme.color[color]}; ;
 `;
