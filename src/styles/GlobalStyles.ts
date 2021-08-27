@@ -15,6 +15,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 button {
   cursor: pointer;
 }
@@ -24,9 +25,6 @@ code {
     monospace;
 }
 
-button{
-  cursor: pointer;
-}
 `;
 
 export default GlobalStyles;

@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
-import { getDate } from 'utils/date';
+import { getDate } from 'utils';
 import { DATE_OPTION, DATE_LABEL } from 'utils/constants';
 
-interface Props {
+interface DateFormatProps {
   label?: string;
   date: Date | null;
   selectDateHandler: (selectedDate: Date) => void;
@@ -12,35 +12,45 @@ interface Props {
   isModal: boolean;
 }
 
-const DateFormat: React.FC<Props> = ({ label, date, selectDateHandler, customInput, isModal }) => {
+const DateFormat: React.FC<DateFormatProps> = ({
+  label,
+  date,
+  selectDateHandler,
+  customInput,
+  isModal,
+}) => {
   const today = new Date();
+
+  const renderDate =
+    label === DATE_LABEL.due ? (
+      <StyledDatePicker
+        selected={date}
+        onChange={selectDateHandler}
+        minDate={today}
+        closeOnScroll={true}
+        customInput={customInput}
+      />
+    ) : (
+      date && getDate(date, DATE_OPTION)
+    );
 
   return (
     <Item>
       {isModal && <Text>{label}:</Text>}
-      {label === DATE_LABEL.due ? (
-        <DatePickerStyle
-          selected={date}
-          onChange={selectDateHandler}
-          minDate={today}
-          closeOnScroll={true}
-          customInput={customInput}
-        />
-      ) : (
-        date && getDate(date, DATE_OPTION)
-      )}
+      {renderDate}
     </Item>
   );
 };
 
 export default DateFormat;
 
-const DatePickerStyle = styled(DatePicker)`
+const StyledDatePicker = styled(DatePicker)`
   display: flex;
   align-items: center;
   width: fit-content;
-  cursor: pointer;
   font-size: 14px;
+  cursor: pointer;
+
   &:hover {
     color: ${({ theme }) => theme.color.green};
     svg {

@@ -15,7 +15,7 @@ import DateFormat from 'components/common/DateFormat';
 import ModalButton from 'components/common/ModalButton';
 import { ReactComponent as Close } from 'assets/svg/close.svg';
 import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
-import { getDate } from 'utils/date';
+import { getDate } from 'utils';
 interface TodoEditProps {
   id: number;
 }

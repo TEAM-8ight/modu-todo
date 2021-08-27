@@ -8,7 +8,7 @@ import { CreatedTodo, TCategory, TPriority } from 'types';
 import Dropdown from '../common/Dropdown';
 import DateFormat from 'components/common/DateFormat';
 import { DATE_LABEL, CATEGORY_EMOJI, DATE_OPTION } from 'utils/constants';
-import { getDate } from 'utils/date';
+import { getDate } from 'utils';
 import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
 import { modal } from '../../context/todoContext/actionCreators';
 

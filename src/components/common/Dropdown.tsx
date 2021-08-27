@@ -11,7 +11,7 @@ interface DropdownProps {
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ selectedItem, onItemClick, options }) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLUListElement>(null);
   const [isOpened, setIsOpened] = useDetectOutsideClick(ref, false);
 
   const dataToPrint = () => {
@@ -46,7 +46,7 @@ const Dropdown: React.FC<DropdownProps> = ({ selectedItem, onItemClick, options 
 
 export default Dropdown;
 
-const DropdownContainer = styled.div<{ theme: {} }>`
+const DropdownContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,42 +54,44 @@ const DropdownContainer = styled.div<{ theme: {} }>`
   min-width: 94px;
   height: 35px;
   padding: 8px 13px;
-  font-size: 16px;
   background-color: ${({ theme }) => theme.color.alabaster};
+  border: 1px solid ${({ theme }) => theme.color.borderGray};
   border-radius: 5px;
   font-size: 14px;
-  border: 1px solid #d5d5d5;
 `;
 
 const DropdownHeader = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  :hover {
-    cursor: pointer;
-  }
+
   svg {
     margin-left: 6px;
+  }
+
+  &:hover {
+    cursor: pointer;
   }
 `;
 
 const DropdownList = styled.ul<{ isOpen: boolean }>`
   display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
   width: 100%;
-  border-radius: 5px;
-  z-index: 99;
-  background-color: white;
-  border: 0.5px solid #edf1f9;
   position: absolute;
-  top: 40px;
+  top: 35px;
+  z-index: 5;
+  background-color: white;
+  border: 0.5px solid ${({ theme }) => theme.color.borderGray};
+  border-radius: 5px;
 `;
 
 const DropdownItem = styled.li`
   padding: 10px 4px;
   width: 100%;
   text-align: center;
-  :hover {
+
+  &:hover {
     cursor: pointer;
-    background-color: #dce35b33;
+    background-color: ${({ theme }) => theme.color.ligthGreen};
   }
 `;
