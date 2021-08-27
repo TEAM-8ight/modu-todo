@@ -34,6 +34,7 @@ const TodoEdit: React.FC<TodoEditProps> = ({ id }) => {
   };
 
   const editButtonClick = () => {
+    if (!editTodo.text) return;
     if (Object.entries(todo).toString() !== Object.entries(editTodo).toString()) {
       dispatch(update(editTodo));
     }
@@ -189,6 +190,7 @@ const CustomDateInput = styled.div`
 const EditButton = styled.button`
   width: 100%;
   padding: 12px;
+  margin-top: 15px;
   color: ${({ theme }) => theme.color.white};
   background-color: ${({ theme }) => theme.color.darkGray};
   font-size: 16px;

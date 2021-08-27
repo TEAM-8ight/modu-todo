@@ -26,6 +26,7 @@ export type FilterType = keyof IFilter;
 export interface IModal {
   text: string;
   id?: number;
+  message?: string;
 }
 
 export interface IState {

@@ -29,7 +29,7 @@ export const remove = (payload: RemoveTodoType): Action => ({
   payload,
 });
 
-export const modal = (payload: { text: string; id?: number }): Action => ({
+export const modal = (payload: { text: string; id?: number; message?: string }): Action => ({
   type: MODAL,
   payload,
 });

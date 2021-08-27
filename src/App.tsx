@@ -7,6 +7,7 @@ import TodoCreate from 'components/TodoCreate/TodoCreate';
 import TodoFilter from 'components/TodoFilter/TodoFilter';
 import TodoList from 'components/TodoList/TodoList';
 import TodoEdit from 'components/TodoEdit/TodoEdit';
+import ErrorMessage from './components/common/ErrorMessage';
 
 const App: React.FC = () => {
   const { Modal } = useModal();
@@ -26,6 +27,9 @@ const App: React.FC = () => {
       {modalState && (
         <Modal>
           {modalState.text === 'edit' && modalState.id && <TodoEdit id={modalState.id} />}
+          {modalState.text === 'error' && modalState.message && (
+            <ErrorMessage message={modalState.message} />
+          )}
         </Modal>
       )}
     </>
@@ -35,7 +39,6 @@ const App: React.FC = () => {
 export default App;
 
 const Container = styled.main`
-  // width: 80vw;
   width: 1100px;
   height: calc(100vh - 60px);
   padding-top: 80px;
@@ -48,7 +51,6 @@ const Container = styled.main`
 
 const Filter = styled.div`
   display: flex;
-  // padding: 20px;
   padding: 20px 20px 20px 0;
   align-self: flex-start;
 `;

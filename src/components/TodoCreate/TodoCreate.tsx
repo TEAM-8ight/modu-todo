@@ -10,6 +10,7 @@ import DateFormat from 'components/common/DateFormat';
 import { DATE_LABEL, CATEGORY_EMOJI, DATE_OPTION } from 'utils/constants';
 import { getDate } from 'utils/date';
 import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
+import { modal } from '../../context/todoContext/actionCreators';
 
 const priorityEmoji = {
   상: '🔴',
@@ -30,13 +31,11 @@ const priorityOptions: { print: string; data: string }[] = [
     return { print: `${priorityEmoji[value]} ${value}`, data: value };
   }),
 ];
-
 const TodoCreate: React.FC = () => {
   const [text, setText] = useState<string>('');
   const [due, setDue] = useState<Date | null>(null);
   const [category, setCategory] = useState<string>('');
   const [priority, setPriority] = useState<string>('');
-
   const dispatch = useTodosDispatch();
 
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +52,6 @@ const TodoCreate: React.FC = () => {
   const CreateSuccess = (createdTodo: CreatedTodo) => {
     dispatch(create(createdTodo));
     initializeState();
-    alert('🎉 할 일이 등록되었습니다!');
   };
 
   const CreateFail = (createdTodo: CreatedTodo) => {
@@ -69,7 +67,7 @@ const TodoCreate: React.FC = () => {
     Object.entries(createdTodo).forEach(([key, value]) => {
       value || alertMessage.push(alertElement[key]);
     });
-    alert(`✏ ${alertMessage.join(', ')}를 입력해주세요!`);
+    dispatch(modal({ text: 'error', message: `❗  ${alertMessage.join(', ')}를 입력해주세요.` }));
   };
 
   const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
@@ -200,6 +198,6 @@ const CustomDateInput = styled.div`
   align-items: center;
   font-size: 14px;
   svg {
-    margin-left: 5px;
+    margin-left: 3px;
   }
 `;

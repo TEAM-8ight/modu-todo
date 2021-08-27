@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 import { useModalState, useTodosDispatch } from 'context/todoContext/TodoContext';
@@ -24,6 +24,14 @@ const useModal = () => {
 
     const ref = useRef<HTMLDivElement | null>(null);
     const elemRef = document.getElementById('modalDom') as HTMLElement;
+
+    useEffect(() => {
+      if (modalState?.text) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'unset';
+      }
+    }, [modalState]);
 
     if (!modalState?.text) return null;
 
