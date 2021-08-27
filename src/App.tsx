@@ -24,7 +24,9 @@ const App: React.FC = () => {
         <TodoList />
       </Container>
       {modalState && (
-        <Modal>{modalState.text === 'edit' && <TodoEdit id={modalState.id || 0} />}</Modal>
+        <Modal>
+          {modalState.text === 'edit' && modalState.id && <TodoEdit id={modalState.id} />}
+        </Modal>
       )}
     </div>
   );
