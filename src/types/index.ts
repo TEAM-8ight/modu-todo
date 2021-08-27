@@ -6,11 +6,12 @@ import type {
   IFilter,
   ISwap,
   FilterType,
-  RemoveTodoType,
+  IRemove,
+  IUpdate,
+  IModal,
 } from 'types/context';
 import type { ITodo, ITodos } from 'types/todo';
 import { TStatus, TCategory, TPriority } from 'types/todo';
-import { emojiType, colorType } from 'types/filter';
 
 export type {
   IState,
@@ -21,10 +22,10 @@ export type {
   ITodos,
   IFilter,
   ISwap,
+  IUpdate,
   FilterType,
-  emojiType,
-  colorType,
-  RemoveTodoType,
+  IRemove,
+  IModal,
 };
 
 export { TStatus, TCategory, TPriority };

@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/macro';
+import { TStatus } from 'types';
 import { useTodosState } from 'context/todoContext/TodoContext';
 import TodoSection from 'components/TodoBox/TodoBox';
-import { TStatus } from 'types';
 
 const TodoList: React.FC = () => {
   const todos = useTodosState();
@@ -15,7 +15,7 @@ const TodoList: React.FC = () => {
     <TodoListContainer>
       <TodoSection title="Not Started" status={TStatus.NOT_STARTED} todos={notStarted} />
       <TodoSection title="In Progress" status={TStatus.ONGOING} todos={onGoing} />
-      <TodoSection title="Completed" status={TStatus.FINISHED} todos={completed} isLast />
+      <TodoSection title="Completed" status={TStatus.FINISHED} todos={completed} />
     </TodoListContainer>
   );
 };

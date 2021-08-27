@@ -7,6 +7,7 @@ ${reset}
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -15,8 +16,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 button {
   cursor: pointer;
+  outline: none;
 }
 
 code {
@@ -24,9 +27,6 @@ code {
     monospace;
 }
 
-button{
-  cursor: pointer;
-}
 `;
 
 export default GlobalStyles;

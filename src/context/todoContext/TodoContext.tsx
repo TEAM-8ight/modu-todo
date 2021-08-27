@@ -1,9 +1,9 @@
 import React, { useReducer, useEffect, useContext, createContext, Dispatch } from 'react';
-import reducer from './reducer';
-import { load } from './actionCreators';
-import { IState, Action } from 'types/context';
 import { LSHelper } from 'utils';
 import { TODOS } from 'utils/constants';
+import { IState, Action } from 'types/context';
+import reducer from 'context/todoContext/reducer';
+import { load } from 'context/todoContext/actionCreators';
 
 const initialState: IState = {
   todos: [],

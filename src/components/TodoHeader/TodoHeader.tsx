@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { getDate } from 'utils';
+import { DATE_OPTION } from 'utils/constants';
 import { ReactComponent as ModuTodo } from 'assets/svg/modu-todo.svg';
 
 const message = [
@@ -14,12 +16,7 @@ const message = [
 
 const TodoHeader: React.FC = () => {
   const today = new Date();
-  const dateString = today.toLocaleDateString('ko-KR', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const dateString = getDate(today, DATE_OPTION);
   const dayIndex = today.getDay();
 
   return (
@@ -43,15 +40,15 @@ const TodoHeader: React.FC = () => {
 export default TodoHeader;
 
 const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   width: 100%;
   height: 60px;
   padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  border-bottom: #e9e9e9 solid 1px;
+  background-color: ${({ theme }) => theme.color.white};
+  border-bottom: 1px solid ${({ theme }) => theme.color.headerGray};
   z-index: 10;
 `;
 
@@ -59,7 +56,6 @@ const Div = styled.div`
   display: flex;
   justify-content: space-between;
   width: 1100px;
-  margin: 0 auto;
 `;
 
 const Wrapper = styled.div`
@@ -69,14 +65,15 @@ const Wrapper = styled.div`
 
 const DateString = styled.span`
   margin: 0 20px;
-  color: #676767;
   font-size: 14px;
+  color: ${({ theme }) => theme.color.textGray};
 `;
 
 const Message = styled.span`
   font-size: 14px;
+
   b {
-    font-weight: 700;
     margin-right: 5px;
+    font-weight: 700;
   }
 `;

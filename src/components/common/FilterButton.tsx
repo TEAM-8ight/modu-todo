@@ -1,8 +1,8 @@
 import React, { Dispatch, memo } from 'react';
 import styled, { css } from 'styled-components';
+import { FilterType, TCategory, TPriority, Action, IFilter } from 'types';
 import { useTodosDispatch, useFilterState } from 'context/todoContext/TodoContext';
 import { toggleFilter } from 'context/todoContext/actionCreators';
-import { FilterType, TCategory, TPriority, Action, IFilter } from 'types';
 
 interface FilterButtonProps {
   type: FilterType;
@@ -40,7 +40,6 @@ const Button = styled.button<{ filter: string; isActive: boolean }>`
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.color.borderGray};
   color: ${({ theme }) => theme.color.black};
-  outline: none;
   cursor: pointer;
 
   & + & {
@@ -68,9 +67,9 @@ const Name = memo(styled.span`
   font-weight: 600;
 `);
 
-const Circle = styled.div<{ color: string }>`
-  width: 8px;
-  height: 8px;
+const Circle = memo(styled.div<{ color: string }>`
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background-color: ${({ theme, color }) => theme.color[color]}; ;
-`;
+`);

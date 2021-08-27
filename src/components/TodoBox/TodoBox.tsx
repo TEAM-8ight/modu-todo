@@ -1,23 +1,21 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import TodoItem from '../TodoItem/TodoItem';
-import { ITodos } from 'types';
-import Dropdown from 'components/common/Dropdown';
-import { TStatus } from 'types/todo';
-import { sortingMachine } from './utils/sort';
-import { dropDownOptions } from './data/dropDownOptions';
-import { useTodoBoxDnD } from './utils/useTodoBoxDnD';
+import { sortingMachine } from 'utils';
+import { useTodoBoxDnD } from 'utils/hooks';
+import { ITodos, TStatus } from 'types';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
 import { update } from 'context/todoContext/actionCreators';
+import Dropdown from 'components/common/Dropdown';
+import TodoItem from 'components/TodoItem/TodoItem';
+import { dropDownOptions } from './data/dropDownOptions';
 
 interface TodoListBoxProps {
   title: string;
   todos: ITodos;
-  isLast?: boolean;
   status: TStatus;
 }
 
-const TodoSection: React.FC<TodoListBoxProps> = ({ title, todos, status, isLast = false }) => {
+const TodoSection: React.FC<TodoListBoxProps> = ({ title, todos, status }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [orderBy, setOrderBy] = useState('default');
   const dispatch = useTodosDispatch();
@@ -39,9 +37,8 @@ const TodoSection: React.FC<TodoListBoxProps> = ({ title, todos, status, isLast 
 
   const ordered = sortingMachine(todos, orderBy);
   return (
-    <TodoListBoxWrapper
+    <TodoSectionWrapper
       ref={ref}
-      isLast={isLast}
       draggable
       isDragOver={isDragOver}
       onDragStart={handleDragStart}
@@ -56,11 +53,23 @@ const TodoSection: React.FC<TodoListBoxProps> = ({ title, todos, status, isLast 
       {ordered.map((todo) => (
         <TodoItem key={todo.id} todo={todo} />
       ))}
-    </TodoListBoxWrapper>
+    </TodoSectionWrapper>
   );
 };
 
 export default TodoSection;
+
+const TodoSectionWrapper = styled.div<{ isDragOver: boolean }>`
+  padding: 25px;
+  min-width: 350px;
+  background-color: ${({ isDragOver, theme }) =>
+    isDragOver ? theme.color.dragGray : theme.color.lightGray};
+  border-radius: 10px;
+
+  & + & {
+    margin-left: 25px;
+  }
+`;
 
 const TodoListBoxHeader = styled.div`
   display: flex;
@@ -72,12 +81,4 @@ const TodoListBoxHeader = styled.div`
 const Title = styled.h2`
   font-size: 20px;
   font-weight: 600;
-`;
-
-const TodoListBoxWrapper = styled.div<{ isLast: boolean; isDragOver: boolean }>`
-  padding: 25px;
-  min-width: 350px;
-  border-radius: 10px;
-  margin-right: ${({ isLast }) => (isLast ? '0' : '25px')};
-  background-color: ${({ isDragOver, theme }) => (isDragOver ? '#eeeeee' : theme.color.lightGray)};
 `;

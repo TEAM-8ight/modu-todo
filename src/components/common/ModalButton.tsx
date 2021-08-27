@@ -21,7 +21,7 @@ const ModalButton: React.FC<ModalButtonProps> = ({
   };
 
   const getIcon = () => {
-    if (type === 'status') return icon && <img src={icon} alt={type} />;
+    if (type === 'status' && icon) return <img src={icon} alt={type} />;
     if (type === 'priority') return <Circle color={icon} />;
     return icon;
   };
@@ -44,8 +44,8 @@ const Button = styled.button<{ filter: string; isActive: boolean }>`
   height: 35px;
   padding: 5px 10px;
   background-color: ${({ theme }) => theme.color.lightGray};
-  border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.color.borderGray};
+  border-radius: 5px;
   color: ${({ theme }) => theme.color.black};
   outline: none;
   cursor: pointer;
@@ -72,6 +72,7 @@ const Icon = memo(styled.span`
   justify-content: center;
   align-items: center;
   margin-right: 8px;
+
   img {
     width: 14px;
     height: 14px;
@@ -82,9 +83,9 @@ const Name = memo(styled.span`
   font-weight: 600;
 `);
 
-const Circle = styled.div<{ color: string }>`
-  width: 10px;
-  height: 10px;
+const Circle = memo(styled.div<{ color: string }>`
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background-color: ${({ theme, color }) => theme.color[color]}; ;
-`;
+`);
