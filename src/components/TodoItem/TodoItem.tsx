@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components/macro';
+import { getDate } from 'utils';
+import { DATE_OPTION, CATEGORY_EMOJI } from 'utils/constants';
 import useModal from 'utils/hooks/useModal';
-import { useTodosDispatch } from 'context/todoContext/TodoContext';
 import { useTodoItemDnD } from './utils/useTodoItemDnD';
-import { remove, update, swap } from 'context/todoContext/actionCreators';
 import { ITodo, TPriority, TStatus } from 'types';
+import { useTodosDispatch } from 'context/todoContext/TodoContext';
+import { remove, update, swap } from 'context/todoContext/actionCreators';
 import { ReactComponent as Edit } from 'assets/svg/edit.svg';
 import { ReactComponent as Delete } from 'assets/svg/delete.svg';
 import { ReactComponent as High } from 'assets/svg/high.svg';
@@ -12,8 +14,6 @@ import { ReactComponent as Middle } from 'assets/svg/middle.svg';
 import { ReactComponent as Low } from 'assets/svg/low.svg';
 import { ReactComponent as Check } from 'assets/svg/check.svg';
 import { ReactComponent as Checked } from 'assets/svg/checked.svg';
-import { getDate } from 'utils';
-import { DATE_OPTION, CATEGORY_EMOJI } from 'utils/constants';
 
 interface TodoItemProps {
   todo: ITodo;

@@ -1,4 +1,4 @@
-import { TCategory, ITodos, TPriority } from './todo';
+import { TCategory, ITodos, TPriority } from 'types/todo';
 
 export interface CreatedTodo {
   text: string;

@@ -7,6 +7,7 @@ ${reset}
 * {
   box-sizing: border-box;
 }
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -18,6 +19,7 @@ body {
 
 button {
   cursor: pointer;
+  outline: none;
 }
 
 code {

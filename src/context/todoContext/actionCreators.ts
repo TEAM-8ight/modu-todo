@@ -1,5 +1,13 @@
-import { CREATE, LOAD, UPDATE, TOGGLE_FILTER, REMOVE, SWAP, MODAL } from './actionTypes';
 import { Action, CreatedTodo, RemoveTodoType } from 'types';
+import {
+  CREATE,
+  LOAD,
+  UPDATE,
+  TOGGLE_FILTER,
+  REMOVE,
+  SWAP,
+  MODAL,
+} from 'context/todoContext/actionTypes';
 
 export const create = (payload: CreatedTodo): Action => {
   return { type: CREATE, payload };

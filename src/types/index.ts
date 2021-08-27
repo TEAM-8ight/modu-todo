@@ -10,7 +10,6 @@ import type {
 } from 'types/context';
 import type { ITodo, ITodos } from 'types/todo';
 import { TStatus, TCategory, TPriority } from 'types/todo';
-import { emojiType, colorType } from 'types/filter';
 
 export type {
   IState,
@@ -22,8 +21,6 @@ export type {
   IFilter,
   ISwap,
   FilterType,
-  emojiType,
-  colorType,
   RemoveTodoType,
 };
 

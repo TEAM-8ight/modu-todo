@@ -1,8 +1,16 @@
-import { CREATE, REMOVE, LOAD, UPDATE, TOGGLE_FILTER, SWAP, MODAL } from './actionTypes';
-import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType, ISwap, ITodos } from 'types';
 import { LSHelper } from 'utils';
 import { TODOS } from 'utils/constants';
-import { mockData } from './mockData';
+import { ITodo, TStatus, IState, Action, NewTodoPayload, FilterType, ISwap, ITodos } from 'types';
+import {
+  CREATE,
+  REMOVE,
+  LOAD,
+  UPDATE,
+  TOGGLE_FILTER,
+  SWAP,
+  MODAL,
+} from 'context/todoContext/actionTypes';
+import { mockData } from 'context/todoContext/mockData';
 
 export default function reducer(state: IState, action: Action): IState {
   const { type, payload } = action;

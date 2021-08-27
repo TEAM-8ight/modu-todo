@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import FilterButton from 'components/common/FilterButton';
-import { TCategory, TPriority, FilterType } from 'types';
 import { CATEGORY_EMOJI, PRIORITY_CIRCLE } from 'utils/constants';
+import { TCategory, TPriority, FilterType } from 'types';
+import FilterButton from 'components/common/FilterButton';
 
 type CategoryKey = keyof typeof TCategory;
 type PriorityKey = keyof typeof TPriority;
-
 interface TodoFilterProps {
   type: FilterType;
 }
@@ -34,6 +33,8 @@ const TodoFilter: React.FC<TodoFilterProps> = ({ type }) => {
   );
 };
 
+export default TodoFilter;
+
 const Wrapper = styled.div`
   display: flex;
   align-items: center;
@@ -49,5 +50,3 @@ const Text = styled.div`
   font-weight: 700;
   white-space: nowrap;
 `;
-
-export default TodoFilter;

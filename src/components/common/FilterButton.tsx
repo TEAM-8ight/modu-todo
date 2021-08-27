@@ -40,7 +40,6 @@ const Button = styled.button<{ filter: string; isActive: boolean }>`
   border-radius: 5px;
   border: 1px solid ${({ theme }) => theme.color.borderGray};
   color: ${({ theme }) => theme.color.black};
-  outline: none;
   cursor: pointer;
 
   & + & {

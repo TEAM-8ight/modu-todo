@@ -1,5 +1,5 @@
-import { ITodos, TCategory, TPriority, TStatus } from 'types';
 import { getRandomEnum } from 'utils';
+import { ITodos, TCategory, TPriority, TStatus } from 'types';
 
 const today = new Date();
 

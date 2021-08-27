@@ -32,4 +32,4 @@ const sortingMachine = (todos: ITodos, key: string) => {
   return options[key];
 };
 
-export { sortingMachine };
+export default sortingMachine;

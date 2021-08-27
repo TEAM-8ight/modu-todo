@@ -1,3 +1,3 @@
-import { useDetectOutsideClick } from './useDetectOutsideClick';
-
-export { useDetectOutsideClick };
+import { useDetectOutsideClick } from 'utils/hooks/useDetectOutsideClick';
+import { useTodoBoxDnD } from 'utils/hooks/useTodoBoxDnD';
+export { useDetectOutsideClick, useTodoBoxDnD };

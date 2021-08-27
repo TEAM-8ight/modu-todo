@@ -1,42 +1,24 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components/macro';
-import { ReactComponent as CirclePlus } from 'assets/svg/circle-plus.svg';
+import { getDate } from 'utils';
+import { DATE_LABEL, DATE_OPTION } from 'utils/constants';
+import { CreatedTodo } from 'types';
 import { create } from 'context/todoContext/actionCreators';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
-import { CreatedTodo, TCategory, TPriority } from 'types';
-import Dropdown from '../common/Dropdown';
+import { modal } from 'context/todoContext/actionCreators';
+import Dropdown from 'components/common/Dropdown';
 import DateFormat from 'components/common/DateFormat';
-import { DATE_LABEL, CATEGORY_EMOJI, DATE_OPTION } from 'utils/constants';
-import { getDate } from 'utils';
+import { categoryOptions, priorityOptions } from 'components/TodoCreate/data/TodoCreateData';
 import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
-import { modal } from '../../context/todoContext/actionCreators';
+import { ReactComponent as CirclePlus } from 'assets/svg/circle-plus.svg';
 
-const priorityEmoji = {
-  상: '🔴',
-  중: '🟡',
-  하: '🟢',
-};
-
-const categoryOptions: { print: string; data: string }[] = [
-  { print: '카테고리', data: '' },
-  ...Object.entries(TCategory).map(([key, value]) => {
-    return { print: `${CATEGORY_EMOJI[value]} ${value}`, data: value };
-  }),
-];
-
-const priorityOptions: { print: string; data: string }[] = [
-  { print: '중요도', data: '' },
-  ...Object.entries(TPriority).map(([key, value]) => {
-    return { print: `${priorityEmoji[value]} ${value}`, data: value };
-  }),
-];
 const TodoCreate: React.FC = () => {
+  const dispatch = useTodosDispatch();
+
   const [text, setText] = useState<string>('');
   const [due, setDue] = useState<Date | null>(null);
   const [category, setCategory] = useState<string>('');
   const [priority, setPriority] = useState<string>('');
-  const dispatch = useTodosDispatch();
 
   const handleTextChange = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -49,6 +31,14 @@ const TodoCreate: React.FC = () => {
     setPriority('');
   };
 
+  const customInput = (
+    <CustomDateInput>
+      완료일 :
+      <Calender width="18" height="18" />
+      {due && getDate(due, DATE_OPTION)}
+    </CustomDateInput>
+  );
+
   const CreateSuccess = (createdTodo: CreatedTodo) => {
     dispatch(create(createdTodo));
     initializeState();
@@ -58,7 +48,7 @@ const TodoCreate: React.FC = () => {
     const alertElement: {
       [key: string]: string;
     } = {
-      text: '할 일 내용',
+      text: '텍스트',
       due: '완료일자',
       category: '카테고리',
       priority: '중요도',
@@ -84,14 +74,6 @@ const TodoCreate: React.FC = () => {
     setDue(selectedDate);
   };
 
-  const customInput = (
-    <CustomDateInput>
-      완료일 :
-      <Calender width="18" height="18" />
-      {due && getDate(due, DATE_OPTION)}
-    </CustomDateInput>
-  );
-
   return (
     <Form>
       <InputContainer>
@@ -102,7 +84,7 @@ const TodoCreate: React.FC = () => {
           onChange={handleTextChange}
         />
         <TodoOptions>
-          <Wrapper>
+          <DateWrapper>
             <DateFormat
               label={DATE_LABEL.due}
               date={due}
@@ -110,7 +92,7 @@ const TodoCreate: React.FC = () => {
               customInput={customInput}
               isModal={false}
             />
-          </Wrapper>
+          </DateWrapper>
           <Dropdown selectedItem={category} onItemClick={setCategory} options={categoryOptions} />
           <Dropdown selectedItem={priority} onItemClick={setPriority} options={priorityOptions} />
         </TodoOptions>
@@ -126,36 +108,38 @@ const TodoCreate: React.FC = () => {
 export default TodoCreate;
 
 const Form = styled.form`
-  align-self: flex-start;
   display: flex;
   justify-content: center;
+  align-self: flex-start;
   gap: 7px;
-  font-size: 12px;
   margin-top: 10px;
   padding-left: 10px;
+  font-size: 12px;
 `;
 
 const InputContainer = styled.div`
-  width: 900px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 5px;
-  border: 1px solid #c2c2c2;
-  border-radius: 5px;
   padding: 0px 15px;
+  width: 900px;
+  gap: 5px;
+  border: 1px solid ${({ theme }) => theme.color.borderGray};
+  border-radius: 5px;
 `;
 
 const TodoInput = styled.input`
   flex-grow: 1;
   min-height: 45px;
   border: none;
-  :focus {
+  font-size: 18px;
+
+  &:focus {
     outline: none;
   }
-  ::placeholder {
-    font-size: 16px;
-    color: #b1b1b1;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.color.borderGray};
   }
 `;
 
@@ -165,39 +149,40 @@ const TodoOptions = styled.div`
   gap: 10px;
 `;
 
-const Wrapper = styled.div`
+const DateWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  background-color: ${(props) => props.theme.color.alabaster};
-  border: 1px solid #d5d5d5;
-  border-radius: 5px;
-  cursor: pointer;
   height: 35px;
   padding: 0 10px;
-`;
-
-const Button = styled.button`
-  width: 136px;
-  height: 55px;
-  padding: 7px;
-  display: flex;
-  align-items: center;
   gap: 5px;
-  justify-content: center;
-  background-color: ${(props) => props.theme.color.darkGray};
-  color: white;
-  font-size: 18px;
+  background-color: ${({ theme }) => theme.color.alabaster};
+  border: 1px solid ${({ theme }) => theme.color.borderGray};
   border-radius: 5px;
-  border: none;
+  cursor: pointer;
 `;
 
 const CustomDateInput = styled.div`
   display: flex;
   align-items: center;
   font-size: 14px;
+
   svg {
     margin-left: 3px;
   }
+`;
+
+const Button = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 136px;
+  height: 55px;
+  padding: 7px;
+  gap: 5px;
+  background-color: ${({ theme }) => theme.color.darkGray};
+  border: none;
+  border-radius: 5px;
+  color: ${({ theme }) => theme.color.white};
+  font-size: 16px;
 `;

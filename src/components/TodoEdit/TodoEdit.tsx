@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import useModal from 'utils/hooks/useModal';
+import styled from 'styled-components/macro';
+import { getDate } from 'utils';
 import {
   DATE_OPTION,
   DATE_LABEL,
@@ -8,14 +8,14 @@ import {
   CATEGORY_EMOJI,
   PRIORITY_CIRCLE,
 } from 'utils/constants';
-import { update } from 'context/todoContext/actionCreators';
+import useModal from 'utils/hooks/useModal';
 import { ITodo, TCategory, TPriority, TStatus } from 'types';
+import { update } from 'context/todoContext/actionCreators';
 import { useTodosDispatch, useTodosStateById } from 'context/todoContext/TodoContext';
 import DateFormat from 'components/common/DateFormat';
 import ModalButton from 'components/common/ModalButton';
 import { ReactComponent as Close } from 'assets/svg/close.svg';
 import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
-import { getDate } from 'utils';
 interface TodoEditProps {
   id: number;
 }
@@ -49,15 +49,17 @@ const TodoEdit: React.FC<TodoEditProps> = ({ id }) => {
     setEditTodo((prev) => ({ ...prev, [key]: name }));
   };
 
-  function renderItem<T>(anEnum: T, type: string, value: string): JSX.Element {
-    const enumValues = Object.values(anEnum) as unknown as string[];
+  function renderItem<T>(Enum: T, type: string, value: string): JSX.Element {
+    // TODO: 여기까지 봄 string[] 로 타입 지정했을 때 에러가 나는지 체크하고 다음꺼진행하기
+    const enumValues: string[] = Object.values(Enum);
+
     return (
       <CenterItem>
         {enumValues.map((item, idx) => {
           let icon = '';
           if (type === 'status') icon = STATUS_SVG[item];
-          if (type === 'category') icon = CATEGORY_EMOJI[item];
-          if (type === 'priority') icon = PRIORITY_CIRCLE[item];
+          else if (type === 'category') icon = CATEGORY_EMOJI[item];
+          else if (type === 'priority') icon = PRIORITY_CIRCLE[item];
           return (
             <ModalButton
               key={idx}
@@ -83,13 +85,13 @@ const TodoEdit: React.FC<TodoEditProps> = ({ id }) => {
   return (
     <Wrapper>
       <CloseDiv onClick={closeModal}>
-        <Close width="36" height="36" />
+        <Close width="30" height="30" />
       </CloseDiv>
-      <Title>MODO TODO EDIT</Title>
+      <Title>MODU TODO EDIT</Title>
       <Item>
         <TodoInput
           name="text"
-          placeholder="할 일을 입력해주세요"
+          placeholder="할 일을 입력해주세요."
           value={text}
           onChange={changeEditTodo}
         />
@@ -137,9 +139,10 @@ const Wrapper = styled.div`
 
 const CloseDiv = styled.div`
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 15px;
+  right: 15px;
   cursor: pointer;
+
   svg {
     fill: ${({ theme }) => theme.color.red};
   }
@@ -156,7 +159,7 @@ const Title = styled.div`
 const Item = styled.div`
   display: flex;
   align-items: center;
-  padding: 16px 0px;
+  padding: 10px 0px;
 
   & + & {
     border-top: 1px solid ${({ theme }) => theme.color.borderGray};
@@ -170,18 +173,23 @@ const CenterItem = styled(Item)`
 const TodoInput = styled.input`
   width: 100%;
   height: 40px;
-  padding: 8px;
-  border: 1px solid ${({ theme }) => theme.color.gray};
-  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid ${({ theme }) => theme.color.borderGray};
+  border-radius: 5px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 600;
   outline: none;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.color.borderGray};
+  }
 `;
 
 const CustomDateInput = styled.div`
   display: flex;
   align-items: center;
   font-size: 14px;
+
   svg {
     margin: 2px 4px 0 0;
   }
@@ -191,11 +199,10 @@ const EditButton = styled.button`
   width: 100%;
   padding: 12px;
   margin-top: 15px;
-  color: ${({ theme }) => theme.color.white};
   background-color: ${({ theme }) => theme.color.darkGray};
-  font-size: 16px;
-  border-radius: 10px;
   border: 0;
-  outline: 0;
+  border-radius: 5px;
+  font-size: 16px;
+  color: ${({ theme }) => theme.color.white};
   cursor: pointer;
 `;
