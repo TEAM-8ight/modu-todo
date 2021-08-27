@@ -7,15 +7,7 @@ import { useTodosDispatch } from 'context/todoContext/TodoContext';
 import { CreatedTodo, TCategory, TPriority } from 'types';
 import Dropdown from '../common/Dropdown';
 import DateFormat from 'components/common/DateFormat';
-import { DATE_LABEL } from 'utils/constants';
-
-const categoryEmoji = {
-  업무: '👩‍💻',
-  공부: '📚',
-  생활: '🌱',
-  운동: '🏃‍♀️',
-  기타: '💬',
-};
+import { DATE_LABEL, CATEGORY_EMOJI } from 'utils/constants';
 
 const priorityEmoji = {
   상: '🔴',
@@ -26,7 +18,7 @@ const priorityEmoji = {
 const categoryOptions: { print: string; data: string }[] = [
   { print: '카테고리', data: '' },
   ...Object.entries(TCategory).map(([key, value]) => {
-    return { print: `${categoryEmoji[value]} ${value}`, data: value };
+    return { print: `${CATEGORY_EMOJI[value]} ${value}`, data: value };
   }),
 ];
 
