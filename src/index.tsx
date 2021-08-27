@@ -1,16 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { TodoProvider } from 'context/todoContext/TodoContext';
+import GlobalStyles from 'styles/GlobalStyles';
 import { ThemeProvider } from 'styled-components';
-import App from './App';
-import GlobalStyles from './styles/GlobalStyles';
-import { Theme } from './styles/Theme';
+import { Theme } from 'styles/Theme';
+import 'react-datepicker/dist/react-datepicker.css';
+import App from 'App';
 
 ReactDOM.render(
-  <React.StrictMode>
+  <TodoProvider>
     <GlobalStyles />
     <ThemeProvider theme={{ ...Theme }}>
       <App />
     </ThemeProvider>
-  </React.StrictMode>,
+  </TodoProvider>,
   document.getElementById('root'),
 );
