@@ -1,34 +1,34 @@
-# 모두 컴퍼니 기업과제 (Team - 8ight)
+# 모두 컴퍼니 기업과제 (Team - 에잇)
 
 ## [🔗 배포 링크](https://modu-8ight.netlify.app/)
 
 
 ## 요구 사항
 
--[x] 투두리스트에 적합한 타입 구성
--[x] 투두리스트 기능 구현을 위한 데이터 조작
--[x] Task 목록 조회,추가,삭제,수정
--[x] Task 상태 변경(시작전,진행중,완료)
--[x] Task 필터링(상태, 생성일, 생성자, 중요도)
--[x] Drag & Drop 애니메이션 구현
--[x] Header 추가
+- [x] 투두리스트에 적합한 타입 구성
+- [x] 투두리스트 기능 구현을 위한 데이터 조작
+- [x] Task 목록 조회,추가,삭제,수정
+- [x] Task 상태 변경(시작전,진행중,완료)
+- [x] Task 필터링(상태, 생성일, 생성자, 중요도)
+- [x] Drag & Drop 애니메이션 구현
+- [x] Header 추가
 
 ## 팀원 별 분담한 기능
 ### Together
+- 코드 리뷰 및 리팩토링 
+- Drag and Drop - Todo 움직이기 
 
 ### 🙋‍♀️ 윤맑은이슬
 - Header
   - 로고, 현재 날짜, 요일별 메시지
 - Todo Input 및 추가 
-  - todo 텍스트 / 완료일(react-datepicker) / 카테고리 / 중요도
-  - 모든 값을 입력한 경우에만 todo가 등록되도록 validation 
-
+  - Todo 텍스트 / 완료일(react-datepicker) / 카테고리 / 중요도
+  - 생성시 입력 유효성 검사
 ### 🙋‍♂️ 남상혁
 - 로컬스토리지 utils 함수
-- TodoService- context API 구현
-- 정렬 
+- context 작성
+- Todo 정렬 
   - 사용자지정순, 신규순, 오래된순, 중요도순, 마감임박순
-- Drag and Drop - Todo 움직이기 
 ### 🙋‍♀️ 강준희
 - 전체 UI 레이아웃 및 디자인
 - Todo 목록 섹션별로 보여주기 
@@ -37,8 +37,7 @@
 
 ### 🙋‍♀️ 이다은
 - 필터링
-  - 카테고리 필터
-  - 중요도 필터
+  - 카테고리 / 중요도 필터
 - 모달 기능 구현
   - createPortal & context API 사용
 - Todo 수정 기능 구현
@@ -49,5 +48,5 @@
 
 [🔗 프로젝트 칸반보드](https://github.com/TEAM-8ight/modu-todo/projects/1)
 
-[🔗 팀 8ight 미팅 로그](https://www.notion.so/8-Assignment-8-2c8eb739e3944a63b8f8de0c2fd56475)
+[🔗 팀 에잇 미팅 로그](https://www.notion.so/8-Assignment-8-2c8eb739e3944a63b8f8de0c2fd56475)
 
