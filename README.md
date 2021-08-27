@@ -43,6 +43,14 @@
 - Todo 수정 기능 구현
   - todo 텍스트 / 완료일(react-datepicker) / 상태 / 카테고리 / 중요도
 
+## 설치 및 사용방법
+```javascript
+- git clone https://github.com/TEAM-8ight/modu-todo.git
+- cd modu-todo
+- npm install
+- npm start
+```
+
 ## 프로젝트 더 자세히 알아보기
 [🔗 피그마 링크](https://www.figma.com/file/6QwW9HSCuVP9FySUV9O0vJ/modu-todo)
 
