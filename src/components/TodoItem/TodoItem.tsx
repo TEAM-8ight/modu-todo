@@ -13,7 +13,7 @@ import { ReactComponent as Low } from 'assets/svg/low.svg';
 import { ReactComponent as Check } from 'assets/svg/check.svg';
 import { ReactComponent as Checked } from 'assets/svg/checked.svg';
 import { getDate } from 'utils/date';
-import { DATE_OPTION_NUMERIC } from 'utils/constants';
+import { DATE_OPTION, CATEGORY_EMOJI } from 'utils/constants';
 
 interface TodoItemProps {
   todo: ITodo;
@@ -40,18 +40,17 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
     dispatch(remove(todo));
   };
 
-  const categoryEmoji = {
-    업무: '👩‍💻',
-    공부: '📚',
-    생활: '🌱',
-    운동: '🏃‍',
-    기타: '💬',
+  type StatusOptions = {
+    [key in TStatus]: () => void;
   };
 
   const handleClick = (id: number, status: TStatus) => {
-    if (todo.status === '시작안함') return dispatch(update({ id, status: '진행중' }));
-    if (todo.status === '진행중') return dispatch(update({ id, status: '완료' }));
-    if (todo.status === '완료') return dispatch(update({ id, status: '진행중' }));
+    const options: StatusOptions = {
+      [TStatus.NOT_STARTED]: () => dispatch(update({ id, status: '진행중' })),
+      [TStatus.ONGOING]: () => dispatch(update({ id, status: '완료' })),
+      [TStatus.FINISHED]: () => dispatch(update({ id, status: '진행중' })),
+    };
+    options[status]();
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -100,19 +99,18 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
         <Top>
           <Text>{todo.text}</Text>
           <div>
-            <ButtonWrapper>
-              <Edit fill="black" className="edit" onClick={showEditModal} />
+            <ButtonWrapper onClick={showEditModal}>
+              <Edit fill="black" className="edit" />
             </ButtonWrapper>
             <ButtonWrapper onClick={handleRemove}>
               <Delete fill="black" className="delete" />
             </ButtonWrapper>
           </div>
         </Top>
-        <DueDate>~ {todo.due.toISOString().split('T')[0]} </DueDate>
-        <DueDate>~ {getDate(todo.due, DATE_OPTION_NUMERIC)} </DueDate>
+        <DueDate>~ {getDate(todo.due, DATE_OPTION)} </DueDate>
         <Down>
           <LeftIcon>
-            <Category>{categoryEmoji[todo.category]}</Category>
+            <Category>{CATEGORY_EMOJI[todo.category]}</Category>
             {getPriority(todo.priority)}
           </LeftIcon>
           <RightIcon onClick={() => handleClick(todo.id, todo.status)}>
@@ -160,6 +158,7 @@ const Text = styled.h3`
   line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const DueDate = styled.p`

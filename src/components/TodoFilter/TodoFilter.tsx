@@ -47,6 +47,7 @@ const Text = styled.div`
   padding: 10px;
   color: ${({ theme }) => theme.color.textGray};
   font-weight: 700;
+  white-space: nowrap;
 `;
 
 export default TodoFilter;

@@ -24,14 +24,16 @@ const TodoHeader: React.FC = () => {
 
   return (
     <HeaderContainer>
-      <Wrapper>
-        <ModuTodo />
-        <DateString>{dateString}</DateString>
-      </Wrapper>
-      <Message>
-        <b>{message[dayIndex][0]}</b>
-        {message[dayIndex][1]}
-      </Message>
+      <Div>
+        <Wrapper>
+          <ModuTodo />
+          <DateString>{dateString}</DateString>
+        </Wrapper>
+        <Message>
+          <b>{message[dayIndex][0]}</b>
+          {message[dayIndex][1]}
+        </Message>
+      </Div>
     </HeaderContainer>
   );
 };
@@ -40,15 +42,22 @@ export default TodoHeader;
 
 const HeaderContainer = styled.div`
   position: fixed;
-  width: 100vw;
+  width: 100%;
   height: 60px;
-  padding: 20px 10vw;
+  padding: 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   background-color: white;
   border-bottom: #e9e9e9 solid 1px;
   z-index: 10;
+`;
+
+const Div = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 1100px;
+  margin: 0 auto;
 `;
 
 const Wrapper = styled.div`

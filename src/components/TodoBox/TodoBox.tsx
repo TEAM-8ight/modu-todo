@@ -7,6 +7,8 @@ import { TStatus } from 'types/todo';
 import { sortingMachine } from './utils/sort';
 import { dropDownOptions } from './data/dropDownOptions';
 import { useTodoBoxDnD } from './utils/useTodoBoxDnD';
+import { useTodosDispatch } from 'context/todoContext/TodoContext';
+import { update } from 'context/todoContext/actionCreators';
 
 interface TodoListBoxProps {
   title: string;
@@ -18,6 +20,7 @@ interface TodoListBoxProps {
 const TodoSection: React.FC<TodoListBoxProps> = ({ title, todos, status, isLast = false }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [orderBy, setOrderBy] = useState('default');
+  const dispatch = useTodosDispatch();
 
   const handleOrderClick = (order: string) => {
     setOrderBy(order);
@@ -29,12 +32,8 @@ const TodoSection: React.FC<TodoListBoxProps> = ({ title, todos, status, isLast 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     if (!ref || !ref.current) return;
     if (!ref.current.isSameNode(e.target as Node)) return;
-    // TODO: update 리듀서가 구현되면 사용하기
-    // TODO: 현재 박스의 필터를 알려줘야한다.
-    // TODO: dispatch(update) 상태바꾸기. 아래의 movingTarget이 드래그하는 아이템이다.
-    // TODO: 목표 status는 props.status
-    // TODO: const id = +e.dataTransfer.getData('text/plain');
-    // TODO: dispatch(update({id, status}))
+    const id = +e.dataTransfer.getData('text/plain');
+    dispatch(update({ id, status }));
     setIsDragOver(false);
   };
 

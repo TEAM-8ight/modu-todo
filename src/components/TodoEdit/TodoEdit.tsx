@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import useModal from 'utils/hooks/useModal';
-import { DATE_LABEL, STATUS_SVG, CATEGORY_EMOJI, PRIORITY_CIRCLE } from 'utils/constants';
+import {
+  DATE_OPTION,
+  DATE_LABEL,
+  STATUS_SVG,
+  CATEGORY_EMOJI,
+  PRIORITY_CIRCLE,
+} from 'utils/constants';
 import { update } from 'context/todoContext/actionCreators';
 import { ITodo, TCategory, TPriority, TStatus } from 'types';
 import { useTodosDispatch, useTodosStateById } from 'context/todoContext/TodoContext';
 import DateFormat from 'components/common/DateFormat';
 import ModalButton from 'components/common/ModalButton';
 import { ReactComponent as Close } from 'assets/svg/close.svg';
-
+import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
+import { getDate } from 'utils/date';
 interface TodoEditProps {
   id: number;
 }
@@ -65,6 +72,13 @@ const TodoEdit: React.FC<TodoEditProps> = ({ id }) => {
     );
   }
 
+  const customInput = (
+    <CustomDateInput>
+      <Calender width="18" height="18" />
+      {due && getDate(due, DATE_OPTION)}
+    </CustomDateInput>
+  );
+
   return (
     <Wrapper>
       <CloseDiv onClick={closeModal}>
@@ -83,13 +97,21 @@ const TodoEdit: React.FC<TodoEditProps> = ({ id }) => {
         label={DATE_LABEL.createdAt}
         date={createdAt}
         selectDateHandler={selectDateHandler}
+        isModal={true}
       />
       <DateFormat
         label={DATE_LABEL.updatedAt}
         date={updatedAt}
         selectDateHandler={selectDateHandler}
+        isModal={true}
       />
-      <DateFormat label={DATE_LABEL.due} date={due} selectDateHandler={selectDateHandler} />
+      <DateFormat
+        label={DATE_LABEL.due}
+        date={due}
+        selectDateHandler={selectDateHandler}
+        customInput={customInput}
+        isModal={true}
+      />
       {renderItem(TStatus, 'status', status)}
       {renderItem(TCategory, 'category', category)}
       {renderItem(TPriority, 'priority', priority)}
@@ -126,7 +148,7 @@ const Title = styled.div`
   display: flex;
   justify-content: center;
   padding: 16px;
-  font-size: 30px;
+  font-size: 24px;
   font-weight: 800;
 `;
 
@@ -141,7 +163,7 @@ const Item = styled.div`
 `;
 
 const CenterItem = styled(Item)`
-  justify-content: center;
+  justify-content: left;
 `;
 
 const TodoInput = styled.input`
@@ -155,12 +177,22 @@ const TodoInput = styled.input`
   outline: none;
 `;
 
+const CustomDateInput = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  svg {
+    margin: 2px 4px 0 0;
+  }
+`;
+
 const EditButton = styled.button`
   width: 100%;
   padding: 12px;
   color: ${({ theme }) => theme.color.white};
   background-color: ${({ theme }) => theme.color.darkGray};
   font-size: 16px;
+  border-radius: 10px;
   border: 0;
   outline: 0;
   cursor: pointer;

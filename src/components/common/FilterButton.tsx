@@ -34,6 +34,7 @@ const Button = styled.button<{ filter: string; isActive: boolean }>`
   justify-content: center;
   align-items: center;
   min-width: ${({ filter }) => (filter === 'category' ? '80px' : '60px')};
+  height: 35px;
   padding: 5px 10px;
   background-color: ${({ theme }) => theme.color.lightGray};
   border-radius: 5px;

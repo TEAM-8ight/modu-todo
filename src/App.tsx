@@ -13,7 +13,7 @@ const App: React.FC = () => {
   const modalState = useModalState();
 
   return (
-    <div className="App">
+    <>
       <TodoHeader />
       <Container>
         <TodoCreate />
@@ -28,20 +28,27 @@ const App: React.FC = () => {
           {modalState.text === 'edit' && modalState.id && <TodoEdit id={modalState.id} />}
         </Modal>
       )}
-    </div>
+    </>
   );
 };
 
 export default App;
 
 const Container = styled.main`
-  width: 80vw;
+  // width: 80vw;
+  width: 1100px;
   height: calc(100vh - 60px);
-  padding-top: 60px;
+  padding-top: 80px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: left;
 `;
 
 const Filter = styled.div`
   display: flex;
-  padding: 20px;
+  // padding: 20px;
+  padding: 20px 20px 20px 0;
+  align-self: flex-start;
 `;
