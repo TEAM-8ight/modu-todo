@@ -173,7 +173,7 @@ const CenterItem = styled(Item)`
 const TodoInput = styled.input`
   width: 100%;
   height: 40px;
-  padding: 10px;
+  padding: 10px10px 10px 15px;
   border: 1px solid ${({ theme }) => theme.color.borderGray};
   border-radius: 5px;
   font-size: 14px;

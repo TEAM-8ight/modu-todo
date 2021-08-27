@@ -1,4 +1,4 @@
-const dropDownOptions: Array<{ print: string; data: string }> = [
+const dropDownOptions: Array<{ print: JSX.Element | string; data: string }> = [
   {
     print: '사용자지정',
     data: 'default',

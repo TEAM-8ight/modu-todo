@@ -168,7 +168,7 @@ const CustomDateInput = styled.div`
   font-size: 14px;
 
   svg {
-    margin-left: 3px;
+    margin: 0 3px;
   }
 `;
 

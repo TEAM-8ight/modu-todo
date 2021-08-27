@@ -7,7 +7,7 @@ import { ReactComponent as UpArrow } from 'assets/svg/up-arrow.svg';
 interface DropdownProps {
   selectedItem: string;
   onItemClick: (selectedOption: string) => void;
-  options: Array<{ print: string; data: string }>;
+  options: Array<{ print: JSX.Element | string; data: string }>;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ selectedItem, onItemClick, options }) => {
@@ -58,6 +58,7 @@ const DropdownContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.color.borderGray};
   border-radius: 5px;
   font-size: 14px;
+  user-select: none;
 `;
 
 const DropdownHeader = styled.div`
@@ -86,6 +87,9 @@ const DropdownList = styled.ul<{ isOpen: boolean }>`
 `;
 
 const DropdownItem = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 10px 4px;
   width: 100%;
   text-align: center;
