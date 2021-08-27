@@ -20,7 +20,7 @@ import {
   SWAP,
   MODAL,
 } from 'context/todoContext/actionTypes';
-import { mockData } from 'context/todoContext/mockData';
+import { mockData } from 'utils/data/mockData';
 
 export default function reducer(state: IState, action: Action): IState {
   const { type, payload } = action;
@@ -58,15 +58,19 @@ export default function reducer(state: IState, action: Action): IState {
 }
 
 const updateTodos = (payload: IUpdate, prevTodos: ITodos) => {
-  const { id, status, ...rest } = payload;
-  if (status) {
-    const todoIdx = prevTodos.findIndex((todo) => todo.id === id);
-    if (todoIdx === -1) return prevTodos;
-    const prevTodo = prevTodos.splice(todoIdx, 1);
-    const newTodo = { ...prevTodo[0], status, ...rest, updatedAt: new Date() };
-    const newTodos = [newTodo, ...prevTodos];
-    return [...newTodos];
+  const { id, ...rest } = payload;
+  const todoIdx = prevTodos.findIndex((todo) => todo.id === id);
+  if (todoIdx === -1) return prevTodos;
+
+  if (Object.keys(payload).length !== Object.keys(prevTodos[todoIdx]).length) {
+    if (payload.status) {
+      const prevTodo = prevTodos.splice(todoIdx, 1);
+      const newTodo = { ...prevTodo[0], status: payload.status, ...rest, updatedAt: new Date() };
+      const newTodos = [newTodo, ...prevTodos];
+      return [...newTodos];
+    }
   }
+
   return prevTodos.map((todo) => {
     if (todo.id !== id) return todo;
     return {
@@ -80,6 +84,7 @@ const updateTodos = (payload: IUpdate, prevTodos: ITodos) => {
 const swapTodos = (prevTodos: ITodos, payload: ISwap): ITodos => {
   const { first: firstId, second: secondId } = payload;
   if (firstId === secondId) return prevTodos;
+
   const firstTodo = prevTodos.find((todo) => todo.id === firstId);
   const secondTodo = prevTodos.find((todo) => todo.id === secondId);
   if (!firstTodo || !secondTodo) return prevTodos;
