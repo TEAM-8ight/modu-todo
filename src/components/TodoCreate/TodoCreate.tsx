@@ -1,21 +1,13 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components/macro';
 import { ReactComponent as CirclePlus } from 'assets/svg/circle-plus.svg';
-import { ReactComponent as Calender } from 'assets/svg/calendar.svg';
 import { create } from 'context/todoContext/actionCreators';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
 import { CreatedTodo, TCategory, TPriority } from 'types';
 import Dropdown from '../common/Dropdown';
-
-const categoryEmoji = {
-  업무: '👩‍💻',
-  공부: '📚',
-  생활: '🌱',
-  운동: '🏃‍♀️',
-  기타: '💬',
-};
+import DateFormat from 'components/common/DateFormat';
+import { DATE_LABEL, CATEGORY_EMOJI } from 'utils/constants';
 
 const priorityEmoji = {
   상: '🔴',
@@ -26,7 +18,7 @@ const priorityEmoji = {
 const categoryOptions: { print: string; data: string }[] = [
   { print: '카테고리', data: '' },
   ...Object.entries(TCategory).map(([key, value]) => {
-    return { print: `${categoryEmoji[value]} ${value}`, data: value };
+    return { print: `${CATEGORY_EMOJI[value]} ${value}`, data: value };
   }),
 ];
 
@@ -38,7 +30,6 @@ const priorityOptions: { print: string; data: string }[] = [
 ];
 
 const TodoCreate: React.FC = () => {
-  const today = new Date();
   const [text, setText] = useState<string>('');
   const [due, setDue] = useState<Date | null>(null);
   const [category, setCategory] = useState<string>('');
@@ -68,7 +59,7 @@ const TodoCreate: React.FC = () => {
       [key: string]: string;
     } = {
       text: '할 일 내용',
-      due: '마감일자',
+      due: '완료일자',
       category: '카테고리',
       priority: '중요도',
     };
@@ -102,17 +93,13 @@ const TodoCreate: React.FC = () => {
           value={text}
           onChange={handleTextChange}
         />
-        <CalendarWrapper>
-          <DatePicker
-            closeOnScroll={true}
-            selected={due}
-            minDate={today}
-            onChange={handleDueChange}
-            customInput={<Calender width="20" height="20" />}
-          />
-        </CalendarWrapper>
-        <Dropdown selectedItem={category} onItemClick={setCategory} options={categoryOptions} />
-        <Dropdown selectedItem={priority} onItemClick={setPriority} options={priorityOptions} />
+        <TodoOptions>
+          <Wrapper>
+            <DateFormat label={DATE_LABEL.due} date={due} selectDateHandler={handleDueChange} />
+          </Wrapper>
+          <Dropdown selectedItem={category} onItemClick={setCategory} options={categoryOptions} />
+          <Dropdown selectedItem={priority} onItemClick={setPriority} options={priorityOptions} />
+        </TodoOptions>
       </InputContainer>
       <Button onClick={handleSubmit}>
         <CirclePlus width="22" height="22" />
@@ -126,15 +113,17 @@ export default TodoCreate;
 
 const Form = styled.form`
   display: flex;
+  justify-content: center;
   gap: 7px;
   font-size: 12px;
   margin-top: 10px;
 `;
 
 const InputContainer = styled.div`
-  width: 590px;
+  width: 900px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 5px;
   border: 1px solid #c2c2c2;
   border-radius: 5px;
@@ -142,7 +131,7 @@ const InputContainer = styled.div`
 `;
 
 const TodoInput = styled.input`
-  width: 300px;
+  flex-grow: 1;
   min-height: 45px;
   border: none;
   :focus {
@@ -154,19 +143,22 @@ const TodoInput = styled.input`
   }
 `;
 
-const CalendarWrapper = styled.div`
+const TodoOptions = styled.div`
+  display: flex; 
+  align-items: center;  
+  gap: 10px;
+`
+
+const Wrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  padding: 5px;
   background-color: ${(props) => props.theme.color.alabaster};
   border-radius: 5px;
   cursor: pointer;
-  width: 35px;
   height: 35px;
-  .react-datepicker-popper {
-    margin-top: 10px;
-  }
+  padding: 0 10px;
 `;
 
 const Button = styled.button`
