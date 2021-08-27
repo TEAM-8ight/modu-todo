@@ -4,7 +4,8 @@ export const Theme = {
     orange: '#FF8B37',
     yellow: '#F7C73D',
     green: '#35AF63',
-    ligthGreen: '#f8f9e0',
+    lightRed: '#ffebee',
+    lightGreen: '#f8f9e0',
     blue: '#4CB1F8',
     purple: '#A771FE',
     indigo: '#7180FE',
@@ -17,5 +18,6 @@ export const Theme = {
     borderGray: '#D5D5D5',
     dragGray: '#eeeeee',
     alabaster: '#F9F9F9',
+    headerGray: '#e9e9e9',
   },
 };

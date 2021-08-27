@@ -4,31 +4,28 @@ import { CATEGORY_EMOJI, PRIORITY_CIRCLE } from 'utils/constants';
 import { TCategory, TPriority, FilterType } from 'types';
 import FilterButton from 'components/common/FilterButton';
 
-type CategoryKey = keyof typeof TCategory;
-type PriorityKey = keyof typeof TPriority;
 interface TodoFilterProps {
   type: FilterType;
 }
 
 const TodoFilter: React.FC<TodoFilterProps> = ({ type }) => {
   const renderCategory = () =>
-    Object.entries(TCategory).map((item) => {
-      const key = item[0] as CategoryKey;
-      const name = item[1] as TCategory;
+    Object.entries(TCategory).map(([key, name]) => {
       return <FilterButton key={key} type={type} icon={CATEGORY_EMOJI[name]} name={name} />;
     });
 
   const renderPriority = () =>
-    Object.entries(TPriority).map((item) => {
-      const key = item[0] as PriorityKey;
-      const name = item[1] as TPriority;
+    Object.entries(TPriority).map(([key, name]) => {
       return <FilterButton key={key} type={type} icon={PRIORITY_CIRCLE[name]} name={name} />;
     });
 
+  const text = type === 'category' ? '카테고리' : '중요도';
+  const renderFilter = type === 'category' ? renderCategory() : renderPriority();
+
   return (
     <Wrapper>
-      <Text>{type === 'category' ? '카테고리' : '중요도'}</Text>
-      {type === 'category' ? renderCategory() : renderPriority()}
+      <Text>{text}</Text>
+      {renderFilter}
     </Wrapper>
   );
 };

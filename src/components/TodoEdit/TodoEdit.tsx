@@ -50,7 +50,6 @@ const TodoEdit: React.FC<TodoEditProps> = ({ id }) => {
   };
 
   function renderItem<T>(Enum: T, type: string, value: string): JSX.Element {
-    // TODO: 여기까지 봄 string[] 로 타입 지정했을 때 에러가 나는지 체크하고 다음꺼진행하기
     const enumValues: string[] = Object.values(Enum);
 
     return (
@@ -173,7 +172,7 @@ const CenterItem = styled(Item)`
 const TodoInput = styled.input`
   width: 100%;
   height: 40px;
-  padding: 10px10px 10px 15px;
+  padding: 10px 10px 10px 15px;
   border: 1px solid ${({ theme }) => theme.color.borderGray};
   border-radius: 5px;
   font-size: 14px;

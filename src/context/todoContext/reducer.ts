@@ -21,7 +21,7 @@ export default function reducer(state: IState, action: Action): IState {
       const newTodo = createNewTodo(state.nextId, payload);
       return {
         ...state,
-        todos: state.todos.concat(newTodo),
+        todos: [newTodo, ...state.todos],
         nextId: newTodo.id + 1,
       };
     case UPDATE:
@@ -47,8 +47,16 @@ export default function reducer(state: IState, action: Action): IState {
   }
 }
 
-const updateTodos = (payload: { id: number }, prevTodos: ITodos) => {
-  const { id, ...rest } = payload;
+const updateTodos = (payload: { id: number; status?: TStatus }, prevTodos: ITodos) => {
+  const { id, status, ...rest } = payload;
+  if (status) {
+    const todoIdx = prevTodos.findIndex((todo) => todo.id === id);
+    if (todoIdx === -1 || prevTodos[todoIdx].status === status) return prevTodos;
+    const prevTodo = prevTodos.splice(todoIdx, 1);
+    const newTodo = { ...prevTodo[0], status, ...rest, updatedAt: new Date() };
+    const newTodos = [newTodo, ...prevTodos];
+    return [...newTodos];
+  }
   return prevTodos.map((todo) => {
     if (todo.id !== id) return todo;
     return {
@@ -65,6 +73,7 @@ const swapTodos = (prevTodos: ITodos, payload: ISwap): ITodos => {
   const firstTodo = prevTodos.find((todo) => todo.id === firstId);
   const secondTodo = prevTodos.find((todo) => todo.id === secondId);
   if (!firstTodo || !secondTodo) return prevTodos;
+
   if (firstTodo.status === secondTodo.status) {
     const firstIndex = prevTodos.findIndex((todo) => todo.id === firstId);
     const secondIndex = prevTodos.findIndex((todo) => todo.id === secondId);

@@ -67,6 +67,7 @@ const DropdownHeader = styled.div`
   align-items: center;
 
   svg {
+    margin-top: 3px;
     margin-left: 6px;
   }
 
@@ -96,6 +97,6 @@ const DropdownItem = styled.li`
 
   &:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => theme.color.ligthGreen};
+    background-color: ${({ theme }) => theme.color.lightGreen};
   }
 `;

@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 import { getDate } from 'utils';
 import { DATE_OPTION, CATEGORY_EMOJI } from 'utils/constants';
 import useModal from 'utils/hooks/useModal';
-import { useTodoItemDnD } from './utils/useTodoItemDnD';
+import { useTodoItemDnD } from 'utils/hooks';
 import { ITodo, TPriority, TStatus } from 'types';
 import { useTodosDispatch } from 'context/todoContext/TodoContext';
 import { remove, update, swap } from 'context/todoContext/actionCreators';
@@ -85,6 +85,10 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
     return options[status] || options[TStatus.NOT_STARTED];
   };
 
+  const gap = new Date().getTime() - todo.due.getTime();
+  const result = Math.floor(gap / (1000 * 60 * 60 * 24));
+  const DDay = result > 0 ? `D+${result}` : `D-${Math.abs(result)}`;
+
   return (
     <>
       <ItemContainer
@@ -112,6 +116,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo }: TodoItemProps) => {
           <LeftIcon>
             <Category>{CATEGORY_EMOJI[todo.category]}</Category>
             {getPriority(todo.priority)}
+            <DDayDiv passed={result > 0}> {DDay}</DDayDiv>
           </LeftIcon>
           <RightIcon onClick={() => handleClick(todo.id, todo.status)}>
             {getStatus(todo.status)}
@@ -128,9 +133,10 @@ const ItemContainer = styled.div<{ isDragOver: boolean }>`
   padding: 20px 25px;
   margin-bottom: 20px;
   width: 300px;
-  border: 1px solid #c5c5c5;
+  background-color: ${({ theme, isDragOver }) =>
+    isDragOver ? theme.color.dragGray : theme.color.white};
+  border: 1px solid ${({ theme }) => theme.color.borderGray};
   border-radius: 10px;
-  background-color: ${({ isDragOver }) => (isDragOver ? '#eeeeee' : 'white')};
   cursor: grab;
 `;
 
@@ -147,8 +153,8 @@ const Top = styled.div`
   }
 
   button {
-    border: none;
     padding: 0px;
+    border: none;
   }
 `;
 
@@ -162,15 +168,16 @@ const Text = styled.h3`
 `;
 
 const DueDate = styled.p`
-  color: #8f8c8c;
+  color: ${({ theme }) => theme.color.textGray};
   font-size: 16px;
 `;
 
 const ButtonWrapper = styled.button`
-  background-color: transparent;
   width: 23px;
   height: 23px;
   margin-left: 5px;
+  background-color: transparent;
+  border-radius: 5px;
 
   &:hover {
     .edit {
@@ -180,7 +187,6 @@ const ButtonWrapper = styled.button`
       fill: ${({ theme }) => theme.color.red};
     }
   }
-  border-radius: 5px;
 `;
 
 const Down = styled.div`
@@ -201,18 +207,31 @@ const Category = styled.h3`
   font-size: 20px;
 `;
 
+const DDayDiv = styled.div<{ passed: boolean }>`
+  margin-left: 10px;
+  font-weight: 500;
+  padding: 3px 5px;
+  background-color: ${({ passed, theme }) =>
+    passed ? theme.color.lightRed : theme.color.lightGreen};
+  border-radius: 3px;
+`;
+
 const RightIcon = styled.div`
   svg {
     cursor: pointer;
+  }
+
+  &:active {
+    transform: scale(1.1);
   }
 `;
 
 const StartButton = styled.button`
   width: 51px;
   height: 29px;
+  background-color: ${({ theme }) => theme.color.darkGray};
   border: none;
   border-radius: 5px;
-  background-color: #3b3b3b;
-  color: white;
+  color: ${({ theme }) => theme.color.white};
   font-size: 15px;
 `;
